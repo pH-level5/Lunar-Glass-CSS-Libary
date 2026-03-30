@@ -1,0 +1,1158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNAG.CSS — CSS Library Showcase</title>
+    <link rel="stylesheet" href="css/lunag.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <style>
+        /* ── Showcase page chrome ── */
+        .sc-theme-bar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 14px 40px;
+            border-bottom: 1px solid var(--lna-glass-border);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            background: rgba(0, 0, 0, 0.55);
+            transition: background var(--lna-speed) ease, border-color var(--lna-speed) ease;
+        }
+
+        .sc-theme-bar .lna-section-label { margin-bottom: 0; }
+
+        /* Intensity controls only visible in relevant theme */
+        .sc-candle-ctrl { display: none; align-items: center; gap: 12px; }
+        .sc-candle-ctrl .lna-section-label { margin-bottom: 0; white-space: nowrap; }
+        body.lna-candlelight .sc-candle-ctrl { display: flex; }
+
+        /* Showcase section wrapper */
+        .sc-section { margin-bottom: 48px; }
+        .sc-section-head {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .sc-section-head code {
+            font-size: 11px;
+            color: var(--lna-text-muted);
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 2px;
+            border: 1px solid var(--lna-glass-border);
+            font-family: inherit;
+        }
+
+        /* Row helpers inside sections */
+        .sc-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Course list mirroring original template */
+        .sc-course-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--lna-radius);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background var(--lna-speed), border-color var(--lna-speed);
+            margin-bottom: 10px;
+        }
+        .sc-course-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(120,140,160,0.18); }
+        .sc-course-name { font-size: 13px; flex: 1; }
+        .sc-course-progress { display: flex; align-items: center; gap: 14px; width: 200px; }
+        .sc-progress-text  { font-size: 11px; font-weight: 600; width: 36px; text-align: right; color: var(--lna-accent-soft); }
+
+        /* Coffee ring positions */
+        #cr1 { width: 180px; height: 180px; top: 12%; left: 60%; }
+        #cr2 { width: 120px; height: 120px; top: 45%; left: 8%;  }
+        #cr3 { width: 220px; height: 220px; top: 70%; left: 72%; }
+        #cr4 { width: 90px;  height: 90px;  top: 28%; left: 38%; }
+
+        /* ── Material Symbols sizing ── */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            line-height: 1;
+            vertical-align: middle;
+            user-select: none;
+        }
+        .lna-feed-icon .material-symbols-outlined { font-size: 18px; }
+    </style>
+</head>
+<body class="lna-moon">
+<div class="lna-scene">
+
+    <!-- Coffee ring decoration (shown via CSS when lna-coffee is active) -->
+    <div class="lna-coffee-ring" id="cr1"></div>
+    <div class="lna-coffee-ring" id="cr2"></div>
+    <div class="lna-coffee-ring" id="cr3"></div>
+    <div class="lna-coffee-ring" id="cr4"></div>
+
+    <!-- Moon orb (shown via CSS when lna-moon is active) -->
+    <div class="lna-moon-orb">
+        <div class="lna-moon-noise"></div>
+    </div>
+
+    <!-- Stars layer (shown via CSS when lna-moon is active) -->
+    <div class="lna-stars" id="lna-stars-layer" aria-hidden="true"></div>
+
+    <!-- ── Theme control bar ── -->
+    <div class="sc-theme-bar">
+        <div class="lna-flex lna-flex-center lna-gap-sm">
+            <span class="lna-section-label" style="margin-bottom:0">Theme</span>
+            <div class="lna-radio-group" id="theme-picker">
+                <div class="lna-radio-opt">
+                    <input type="radio" name="lna-theme" id="th-default" value="default">
+                    <label for="th-default">
+                        <span class="lna-radio-dot"></span> Default
+                    </label>
+                </div>
+                <div class="lna-radio-opt">
+                    <input type="radio" name="lna-theme" id="th-candle" value="lna-candlelight">
+                    <label for="th-candle">
+                        <span class="lna-radio-dot"></span>
+                        <span class="material-symbols-outlined" style="font-size:16px">hourglass_empty</span> Candlelight
+                    </label>
+                </div>
+                <div class="lna-radio-opt">
+                    <input type="radio" name="lna-theme" id="th-coffee" value="lna-coffee">
+                    <label for="th-coffee">
+                        <span class="lna-radio-dot"></span>
+                        <span class="material-symbols-outlined" style="font-size:16px">coffee</span> Spill Coffee
+                    </label>
+                </div>
+                <div class="lna-radio-opt">
+                    <input type="radio" name="lna-theme" id="th-moon" value="lna-moon" checked>
+                    <label for="th-moon">
+                        <span class="lna-radio-dot"></span>
+                        <span class="material-symbols-outlined" style="font-size:16px">nightlight</span> Moonlit
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candlelight intensity (only in candlelight mode) -->
+        <div class="sc-candle-ctrl">
+            <span class="lna-section-label">Intensity</span>
+            <div class="lna-slider-row" style="width:180px">
+                <input type="range" class="lna-slider" id="sepia-slider" min="0" max="60" value="22">
+                <span class="lna-slider-value" id="sepia-value">22%</span>
+            </div>
+        </div>
+
+        <div class="lna-flex lna-flex-col" style="gap:1px;text-align:right">
+            <span class="lna-subtitle">LUNAG.CSS · v1.0</span>
+            <a href="https://github.com/Plu101" target="_blank" rel="noopener"
+               style="font-size:11px;color:var(--lna-text-muted);text-decoration:none;letter-spacing:1px;transition:color var(--lna-speed)"
+               onmouseover="this.style.color='var(--lna-accent-soft)'"
+               onmouseout="this.style.color='var(--lna-text-muted)'">
+                <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle">code</span>
+                @Plu101
+            </a>
+        </div>
+    </div>
+
+    <!-- ── Header ── -->
+    <header class="lna-header lna-glass lna-glass-grain" style="margin-top:-5px;"">
+        <div class="lna-flex lna-flex-col" style="gap:1px">
+            <span class="lna-logo">LUNAR<span class="lna-logo-accent"> GLASS</span></span>
+            <span class="lna-section-label" style="margin-bottom:0">a Glassy CSS Library</span>
+        </div>
+        <nav class="lna-nav">
+            <button class="lna-btn lna-btn-primary lna-glass" onclick="window.open('https://github.com/Plu101', '_blank', 'noopener')">
+                Get Started
+            </button>
+        </nav>
+    </header>
+
+    <!-- ── Main content ── -->
+    <div class="lna-container" >
+
+        <!-- Hero -->
+        <div class="sc-section lna-mb-lg">
+            <div class="lna-card lna-glass lna-p-lg lna-text-center" style="margin-top: 32px;">
+                <div class="lna-title lna-mb-sm">Glassmorphism CSS Library</div>
+                <p class="lna-subtitle lna-mb-md">Toned down · Modern but with old-school chill · Fira Code monospace aesthetic</p>
+                <div class="sc-row" style="justify-content:center; gap:8px">
+                    <span class="lna-badge">LUNAG.CSS</span>
+                    <span class="lna-badge lna-badge-ok">v1.0</span>
+                    <span class="lna-badge">MIT</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Credits ── -->
+        <div class="sc-section lna-mb-lg">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Credits</h2>
+                <code>lunag.css · built on great shoulders</code>
+            </div>
+            <div class="lna-card lna-glass lna-green-zone">
+                <h3 class="lna-heading">Special Thanks</h3>
+                <div class="lna-feed">
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon info"><span class="material-symbols-outlined">grain</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Grainy Gradients — SVG feTurbulence noise technique</div>
+                            <div class="lna-feed-time">Jimmy Chion · css-tricks.com/grainy-gradients</div>
+                        </div>
+                        <a href="https://css-tricks.com/grainy-gradients/" target="_blank" rel="noopener" class="lna-btn lna-btn-ghost" style="margin-top:0;padding:6px 12px;font-size:10px">↗ Visit</a>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon success"><span class="material-symbols-outlined">blur_on</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">CSS.Glass — Glassmorphism generator &amp; reference</div>
+                            <div class="lna-feed-time">@miketromba · github.com/miketromba/css.glass</div>
+                        </div>
+                        <a href="https://github.com/miketromba/css.glass" target="_blank" rel="noopener" class="lna-btn lna-btn-ghost" style="margin-top:0;padding:6px 12px;font-size:10px">↗ Visit</a>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon warning"><span class="material-symbols-outlined">font_download</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Fira Code — Monospace font with ligatures</div>
+                            <div class="lna-feed-time">Nikita Prokopov · fonts.google.com/specimen/Fira+Code</div>
+                        </div>
+                        <a href="https://fonts.google.com/specimen/Fira+Code" target="_blank" rel="noopener" class="lna-btn lna-btn-ghost" style="margin-top:0;padding:6px 12px;font-size:10px">↗ Visit</a>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon" style="background:rgba(100,120,140,0.15);color:#8a9bae"><span class="material-symbols-outlined">category</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Material Symbols — Icon library</div>
+                            <div class="lna-feed-time">Google Fonts · fonts.google.com/icons</div>
+                        </div>
+                        <a href="https://fonts.google.com/icons" target="_blank" rel="noopener" class="lna-btn lna-btn-ghost" style="margin-top:0;padding:6px 12px;font-size:10px">↗ Visit</a>
+                    </div>
+                </div>
+                <hr class="lna-divider" style="margin-top:20px">
+                <p class="lna-muted" style="font-size:11px;line-height:1.8">
+                    LUNAG.CSS is released under the <span class="lna-accent-txt">MIT License</span>.
+                    Free to use, modify, and distribute — attribution appreciated but not required.
+                </p>
+            </div>
+        </div>
+
+        <!-- ── Glass Grain ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Glass Grain</h2>
+                <code>.lna-glass-grain</code>
+            </div>
+            <div class="lna-grid lna-grid-2">
+                <div class="lna-card lna-glass">
+                    <p class="lna-label lna-mb-sm">Default glass</p>
+                    <p class="lna-muted">Clean backdrop-filter blur — no texture applied.</p>
+                    <hr class="lna-divider">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fira Code at rest.</p>
+                </div>
+                <div class="lna-card lna-glass lna-glass-grain">
+                    <p class="lna-label lna-mb-sm">Grain glass</p>
+                    <p class="lna-muted">SVG fractalNoise overlay · contrast(110%) brightness(250%) · opacity 5.5%</p>
+                    <hr class="lna-divider">
+                    <p>Same panel — add <code style="font-family:inherit;font-size:11px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:2px">.lna-glass-grain</code> for tactile surface texture.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Typography ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Typography</h2>
+                <code>.lna-title · .lna-heading · .lna-section-label</code>
+            </div>
+            <div class="lna-card lna-glass">
+                <div class="lna-title lna-mb-sm">lna-title — Display Heading</div>
+                <h2 class="lna-heading">lna-heading — Section Header</h2>
+                <p class="lna-section-label">lna-section-label — Category Label</p>
+                <p class="lna-mb-sm">Base body text · Fira Code monospace at 14px. Comfortable for both code and prose.</p>
+                <p class="lna-muted lna-mb-sm">lna-muted — Secondary information, hints, timestamps.</p>
+                <p class="lna-accent-txt">lna-accent-txt — Highlighted values &amp; accents</p>
+                <hr class="lna-divider">
+                <div class="sc-row">
+                    <span class="lna-badge">Default</span>
+                    <span class="lna-badge lna-badge-ok">Success</span>
+                    <span class="lna-badge lna-badge-warn">Warning</span>
+                    <span class="lna-badge lna-badge-danger">Danger</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Buttons ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Buttons</h2>
+                <code>.lna-btn · ::before shine · ::after dot-sweep</code>
+            </div>
+            <div class="lna-card lna-glass">
+                <p class="lna-label lna-mb-sm">Hover to see the shine dissolve through the glass and the dot sweep along the bottom edge</p>
+                <div class="sc-row lna-mb-md">
+                    <button class="lna-btn lna-glass">Default</button>
+                    <button class="lna-btn lna-btn-primary lna-glass">Primary</button>
+                    <button class="lna-btn lna-btn-danger lna-glass">Danger</button>
+                    <button class="lna-btn lna-btn-ghost">Ghost</button>
+                    <button class="lna-btn lna-btn-icon lna-glass" title="Icon button">✦</button>
+                </div>
+                <button class="lna-btn lna-btn-primary lna-btn-block lna-glass" id="show-toast-btn">
+                    <span class="material-symbols-outlined" style="font-size:16px">notifications</span> Trigger Notification Toast
+                </button>
+            </div>
+        </div>
+
+        <!-- ── Grid & Stat Cards ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Stats Grid</h2>
+                <code>.lna-grid-4 · .lna-card · .lna-stat</code>
+            </div>
+            <div class="lna-grid lna-grid-4">
+                <div class="lna-card lna-glass">
+                    <div class="lna-stat">
+                        <span class="lna-stat-icon material-symbols-outlined">timer</span>
+                        <div class="lna-stat-info">
+                            <div class="lna-stat-label">Study Hours</div>
+                            <div class="lna-stat-value">124</div>
+                            <span class="lna-stat-change up">+5.2%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lna-card lna-glass">
+                    <div class="lna-stat">
+                        <span class="lna-stat-icon material-symbols-outlined">description</span>
+                        <div class="lna-stat-info">
+                            <div class="lna-stat-label">Assignments</div>
+                            <div class="lna-stat-value">18/25</div>
+                            <span class="lna-stat-change flat">72%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lna-card lna-glass">
+                    <div class="lna-stat">
+                        <span class="lna-stat-icon material-symbols-outlined">event_upcoming</span>
+                        <div class="lna-stat-info">
+                            <div class="lna-stat-label">Upcoming Exams</div>
+                            <div class="lna-stat-value">3</div>
+                            <span class="lna-stat-change down">This Week</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lna-card lna-glass">
+                    <div class="lna-stat">
+                        <span class="lna-stat-icon material-symbols-outlined">edit</span>
+                        <div class="lna-stat-info">
+                            <div class="lna-stat-label">GPA Average</div>
+                            <div class="lna-stat-value">3.75</div>
+                            <span class="lna-stat-change up">+0.15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Progress bars ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Progress Bars</h2>
+                <code>.lna-progress-row · .lna-progress-fill · shimmer</code>
+            </div>
+            <div class="lna-grid lna-grid-2">
+                <div class="lna-card lna-glass">
+                    <p class="lna-heading">Study Progress</p>
+                    <div class="lna-progress-row">
+                        <span class="lna-progress-label">Math</span>
+                        <div class="lna-progress-track"><div class="lna-progress-fill" data-width="78"></div></div>
+                        <span class="lna-progress-value">78%</span>
+                    </div>
+                    <div class="lna-progress-row">
+                        <span class="lna-progress-label">Physics</span>
+                        <div class="lna-progress-track"><div class="lna-progress-fill" data-width="54"></div></div>
+                        <span class="lna-progress-value">54%</span>
+                    </div>
+                    <div class="lna-progress-row">
+                        <span class="lna-progress-label">CS</span>
+                        <div class="lna-progress-track"><div class="lna-progress-fill" data-width="91"></div></div>
+                        <span class="lna-progress-value">91%</span>
+                    </div>
+                    <div class="lna-progress-row">
+                        <span class="lna-progress-label">History</span>
+                        <div class="lna-progress-track"><div class="lna-progress-fill" data-width="32"></div></div>
+                        <span class="lna-progress-value">32%</span>
+                    </div>
+                </div>
+                <div class="lna-card lna-glass">
+                    <p class="lna-heading">Course Progress</p>
+                    <div class="sc-course-item">
+                        <span class="sc-course-name">Coursera: Machine Learning</span>
+                        <div class="sc-course-progress">
+                            <div class="lna-bar-track"><div class="lna-bar-fill" style="width:65%"></div></div>
+                            <span class="sc-progress-text">65%</span>
+                        </div>
+                    </div>
+                    <div class="sc-course-item">
+                        <span class="sc-course-name">Khan Academy: Calculus II</span>
+                        <div class="sc-course-progress">
+                            <div class="lna-bar-track"><div class="lna-bar-fill" style="width:42%"></div></div>
+                            <span class="sc-progress-text">42%</span>
+                        </div>
+                    </div>
+                    <div class="sc-course-item">
+                        <span class="sc-course-name">Udemy: Web Development</span>
+                        <div class="sc-course-progress">
+                            <div class="lna-bar-track"><div class="lna-bar-fill" style="width:88%"></div></div>
+                            <span class="sc-progress-text">88%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Forms ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Forms</h2>
+                <code>.lna-input · .lna-select · .lna-textarea · .lna-upload</code>
+            </div>
+            <div class="lna-grid lna-grid-2">
+                <div class="lna-card lna-glass">
+                    <h3 class="lna-heading">Profile Form</h3>
+                    <div class="lna-form-group">
+                        <label class="lna-label">Username</label>
+                        <input type="text" class="lna-input" placeholder="Enter username…">
+                    </div>
+                    <div class="lna-form-group">
+                        <label class="lna-label">Email</label>
+                        <input type="email" class="lna-input" placeholder="you@example.com">
+                    </div>
+                    <div class="lna-form-group">
+                        <label class="lna-label">Bio</label>
+                        <textarea class="lna-textarea" placeholder="Tell us about yourself…"></textarea>
+                    </div>
+                    <label class="lna-upload"><span class="material-symbols-outlined" style="font-size:16px;margin-right:8px">upload</span>Upload Avatar</label>
+                    <button class="lna-btn lna-btn-primary lna-btn-block lna-glass">Save Profile</button>
+                </div>
+                <div class="lna-card lna-glass">
+                    <h3 class="lna-heading">Security</h3>
+                    <div class="lna-form-group">
+                        <label class="lna-label">Current Password</label>
+                        <input type="password" class="lna-input" placeholder="Current password">
+                    </div>
+                    <div class="lna-form-group">
+                        <label class="lna-label">New Password</label>
+                        <input type="password" class="lna-input" id="pw-input" placeholder="New password">
+                        <div class="lna-strength-track"><div class="lna-strength-fill" id="strength-fill"></div></div>
+                        <span class="lna-strength-hint" id="strength-text">Password strength</span>
+                    </div>
+                    <div class="lna-form-group">
+                        <label class="lna-label">Time Zone</label>
+                        <select class="lna-select">
+                            <option>UTC</option>
+                            <option>CET / Central European</option>
+                            <option>EST / Eastern</option>
+                            <option>PST / Pacific</option>
+                        </select>
+                    </div>
+                    <button class="lna-btn lna-btn-block lna-glass">Update Password</button>
+                    <button class="lna-btn lna-btn-danger lna-btn-block lna-glass" style="margin-top:8px">Delete Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Toggles & Sliders ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Toggles &amp; Sliders</h2>
+                <code>.lna-toggle · .lna-pref-row · .lna-slider</code>
+            </div>
+            <div class="lna-card lna-glass">
+                <h3 class="lna-heading">Preferences</h3>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4>Email Notifications</h4>
+                        <p>Receive updates about courses and assignments</p>
+                    </div>
+                    <label class="lna-toggle">
+                        <input type="checkbox" checked>
+                        <span class="lna-toggle-track"></span>
+                    </label>
+                </div>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4>Study Reminders</h4>
+                        <p>Get reminded about upcoming study sessions</p>
+                    </div>
+                    <label class="lna-toggle">
+                        <input type="checkbox" checked>
+                        <span class="lna-toggle-track"></span>
+                    </label>
+                </div>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4><span class="material-symbols-outlined" style="font-size:16px;margin-right:6px">hourglass_empty</span>Candlelight Mode</h4>
+                        <p>Warm sepia filter for comfortable night reading</p>
+                    </div>
+                    <label class="lna-toggle">
+                        <input type="checkbox" id="toggle-candle">
+                        <span class="lna-toggle-track"></span>
+                    </label>
+                </div>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4>Opacity Level</h4>
+                        <p>Drag to adjust the backdrop intensity</p>
+                    </div>
+                    <div class="lna-slider-row" style="width:200px">
+                        <input type="range" class="lna-slider" id="demo-slider" min="0" max="100" value="50">
+                        <span class="lna-slider-value" id="demo-slider-val">50%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Activity Feed ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Activity Feed</h2>
+                <code>.lna-feed · .lna-feed-item · .lna-feed-icon</code>
+            </div>
+            <div class="lna-card lna-glass">
+                <h3 class="lna-heading">Upcoming Schedule</h3>
+                <div class="lna-feed">
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon warning"><span class="material-symbols-outlined">warning</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Physics Exam — Room 204</div>
+                            <div class="lna-feed-time">Tomorrow, 9:00 AM</div>
+                        </div>
+                        <span class="lna-badge lna-badge-warn">Exam</span>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon info"><span class="material-symbols-outlined">info</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Math Assignment Due</div>
+                            <div class="lna-feed-time">Friday, 11:59 PM</div>
+                        </div>
+                        <span class="lna-badge">Due</span>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon success"><span class="material-symbols-outlined">check_circle</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">Study Group — Library B2</div>
+                            <div class="lna-feed-time">Saturday, 2:00 PM</div>
+                        </div>
+                        <span class="lna-badge lna-badge-ok">Session</span>
+                    </div>
+                    <div class="lna-feed-item">
+                        <div class="lna-feed-icon error"><span class="material-symbols-outlined">notifications</span></div>
+                        <div class="lna-feed-body">
+                            <div class="lna-feed-text">CS Project Presentation</div>
+                            <div class="lna-feed-time">Next Monday, 10:30 AM</div>
+                        </div>
+                        <span class="lna-badge lna-badge-danger">Urgent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Empty State ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Empty State</h2>
+                <code>.lna-empty</code>
+            </div>
+            <div class="lna-card lna-glass">
+                <div class="lna-empty">
+                    <div class="lna-empty-icon"><span class="material-symbols-outlined" style="font-size:44px">menu_book</span></div>
+                    <div class="lna-empty-title">No items yet</div>
+                    <p class="lna-empty-desc">Data will appear here once you connect a backend or add some entries.</p>
+                    <p class="lna-empty-hint">// waiting for data…</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SVG Matcher + Data Table ── -->
+        <div class="sc-section">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">SVG Matcher &amp; Table</h2>
+                <code>.lna-svg · .lna-table</code>
+            </div>
+            <div class="lna-card lna-glass" style="overflow:hidden">
+                <p class="lna-label lna-mb-sm">Global Network — SVG inherits theme color via <code style="font-family:inherit;font-size:11px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:2px">currentColor</code></p>
+
+                                                <!-- World map SVG — worldLow.svg embedded inline, themed via currentColor -->
+                <div style="width:100%; margin:0 auto 24px;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.5 5.98 965 503.04" class="lna-svg" style="width:100%;height:auto;display:block;color:var(--lna-accent-soft);transition:color var(--lna-speed) ease;">
+  <!-- Created using SVG Map Generator: dojo.amcharts.com/svg-map-generator -->
+  <style>.land { fill: currentColor; fill-opacity: 0.09; stroke: currentColor; stroke-opacity: 0.30; stroke-width: 0.5; }</style>
+  <g id="polygons">
+    <path d="M960,280.33L960,280.33L960,280.33Z" class="land" id="TV" title="Tuvalu"/>
+    <path d="M485.28,423.2L485.28,423.2L485.28,423.2Z" class="land" id="BV" title="Bouvet Island"/>
+    <path d="M463.8,140.1L463.8,140.1L463.8,140.1Z" class="land" id="GI" title="Gibraltar"/>
+    <path d="M604.35,289.78L604.35,289.78L604.35,289.78Z" class="land" id="GO" title="Glorioso Islands"/>
+    <path d="M591.29,307.02L591.29,307.02L591.29,307.02Z" class="land" id="JU" title="Juan De Nova Island"/>
+    <path d="M44.88,254.82L44.88,254.82L44.88,254.82Z" class="land" id="UM-DQ" title="Jarvis Island"/>
+    <path d="M0.46,252.88L0.46,252.88L0.46,252.88Z" class="land" id="UM-FQ" title="Baker Island"/>
+    <path d="M0,251.09L0,251.09L0,251.09Z" class="land" id="UM-HQ" title="Howland Island"/>
+    <path d="M25.17,201.21L25.17,201.21L25.17,201.21Z" class="land" id="UM-JQ" title="Johnston Atoll"/>
+    <path d="M15.97,165.19L15.97,165.19L15.97,165.19Z" class="land" id="UM-MQ" title="Midway Islands"/>
+    <path d="M919.86,193.2L919.86,193.2L919.86,193.2Z" class="land" id="UM-WQ" title="Wake Island"/>
+    <path d="M294.25,215.59L294.25,215.59L294.25,215.59Z" class="land" id="BQ" title="Bonair, Saint Eustachius and Saba"/>
+    <path d="M487.24,93.08L486.48,93.62L485.18,93.11ZM487.24,93.08L485.73,92.88L487.78,90.32L488.4,88.43L489.26,90.08L490.27,89.46L489.8,87.97L491.37,87.04L493.11,86.94L494.01,87.41L493.73,90.1L493.09,91.51L491.25,91.95L491.84,92.78L491.44,95L491.02,93.87L487.88,92.82Z" class="land" id="NL" title="Netherlands"/>
+    <path d="M559.87,323.76L554.83,323.1L554.03,321.9L551.45,321.15L550.53,319.55L550.69,317.88L549.59,317.71L549.48,316.67L546.77,314.76L544.56,309.28L546.15,309.78L549.23,309.8L551.79,306.46L554.04,305.32L554.52,303.61L556.74,302.54L558.52,302.53L558.59,303.64L560.72,303.73L562.54,305L565.19,305.89L565.07,311.06L564.23,313.07L564.86,315.81L563.32,318.45L562.93,320.4Z" class="land" id="ZW" title="Zimbabwe"/>
+    <path d="M565.91,283L567.03,284.42L567.8,286.7L566.7,287.65L566.55,289.66L566.91,292.65L565.89,293.09L565.68,294.95L564.85,296.16L566.22,297.42L558.16,300.49L558.52,302.53L556.74,302.54L554.52,303.61L554.04,305.32L551.79,306.46L549.23,309.8L546.15,309.78L544.56,309.28L543.72,308.49L541.98,308.3L539.58,308.8L536.4,305.53L536.01,303.51L536.24,294.25L541.24,294.25L541.68,292.44L541.72,287.58L543.17,289.36L544.97,288.74L545.39,289.93L547.18,290.77L549.66,290.8L549.94,289.91L551.2,291.73L553.39,292.62L555.07,295.4L557.16,295.48L557.28,291.6L556.27,292.47L555.3,292.21L553.78,290.53L553.48,289.5L554.3,286.95L554.34,284.32L553.76,282.43L555.35,280.05L560.16,279.2L563.31,281.89Z" class="land" id="ZM" title="Zambia"/>
+    <path d="M559.87,323.76L560.35,327.16L561.32,330.23L560.9,334.95L559.55,334.28L557.81,336.38L558.34,338.58L560.63,339.19L561.14,337.72L563.16,337.75L561.92,342.01L561.17,343.33L558.52,345.72L555.43,350.73L551.41,354.9L548.67,357.29L544.84,359.51L543.73,359.36L542.76,360.3L541.15,360.18L540.66,360.79L537.53,360.22L534.09,360.48L532.86,361.44L529.64,361.72L528.28,362.73L527.3,362.63L525.31,360.6L523.12,357L524.12,356.02L524.16,353.16L522.9,350.88L521.24,345.8L520.04,343.32L521.69,341.47L522.62,343.58L524.3,344.12L527.26,344.22L529.24,342.8L529.75,331.23L530.67,332.03L531.72,334.81L531.21,336.48L531.45,337.75L533.82,337.77L536.53,335.3L537.25,333.37L538.3,332.77L539.89,333.82L542.09,334.5L544.31,333.84L545.32,331.14L547.83,329.54L548.76,327.29L550.8,325.87L551.7,324.68L554.83,323.1ZM549.54,344.24L547.36,346.62L548.09,348.67L549.65,349.7L550.73,348.14L552.6,347.42L553.51,345.37L551.68,343.21Z" class="land" id="ZA" title="South Africa"/>
+    <path d="M618.92,201.47L616.97,202.58L616.82,204.58L615.24,205.58L609.35,207.77L607.63,209.61L605.81,209.62L604.32,210.83L602.69,211.45L599.68,211.84L598.1,213.48L595.15,214.11L593.9,213.41L591.43,204.59L591.53,202.34L592.45,201.34L592.39,199.24L597.59,199.02L598.3,199.36L601.71,199.52L602.56,200.51L603.77,200.01L605.49,196.73L607.71,195.4L615.41,194.1Z" class="land" id="YE" title="Yemen"/>
+    <path d="M15.52,295.71L16.01,296.77L14.49,296.06Z" class="land" id="WS" title="Samoa"/>
+    <path d="M0.74,298.38L0.74,298.38L0.74,298.38Z" class="land" id="WF" title="Wallis and Futuna"/>
+    <path d="M565.57,155.67L565.41,155.31L566.06,154.49ZM568.59,154.82L567.27,154.43L567.12,152.68L567.61,151.5L568.58,151.94Z" class="land" id="PS" title="Palestinian Territories"/>
+    <path d="M923.32,299.97L924.11,302.04L923.01,302.51L922.72,300.05ZM924.27,303.95L925.16,305.06L924.05,305.39Z" class="land" id="VU" title="Vanuatu"/>
+    <path d="M762.77,186.21L761.4,187.63L759.66,187.93L759.62,190.04L758.4,191.14L757.95,194.19L758.89,195.65L760.79,197.39L760.85,198.11L763.1,200.68L765.62,202.46L768.15,205.45L770.06,210.22L770.71,213.04L770.27,214.02L770.53,216.9L768.28,219.38L765.72,221.05L764.51,220.94L764.07,223.42L761.33,225.14L759.8,226.74L759.43,223.53L759.81,222.09L758.1,221.01L760.53,219.36L762.61,219.13L761.57,217.18L762.87,217.04L762.98,216.2L765.77,214.9L765.67,211.53L764.67,209.38L764.95,207.56L765.08,205.84L763.64,204.29L764.06,203.37L762.01,202.06L761.27,200.51L755.62,194.7L753.17,193.02L753.36,191.96L754.76,192.17L755.55,190.89L754.3,188.91L752.73,187.99L751.76,188.75L750.25,188.14L749.45,186.01L746.82,183.47L747.63,182.33L749.09,183.23L749.68,182.26L752.54,182.45L754.52,180.43L756.28,181.76L758.85,182.21L758.44,183.42L759.19,184.66L761.07,185.89Z" class="land" id="VN" title="Vietnam"/>
+    <path d="M304.87,197.87L304.87,197.87L304.87,197.87Z" class="land" id="VI" title="US Virgin Islands"/>
+    <path d="M306.06,195.77L306.06,195.77L306.06,195.77Z" class="land" id="VG" title="British Virgin Islands"/>
+    <path d="M315.67,226.84L316.14,227.6L313.65,230.13L314.46,231.86L312.41,232.64L312.41,234.15L311.72,235.11L313.37,237.31L313.72,237.96L312.62,239.4L309.48,240.76L307.97,241.02L307.25,242.34L306.39,241.31L302.95,241.38L303.86,242.36L304.61,245.91L306.04,246.63L304.29,247.62L304.07,248.52L300.69,250.86L299.82,250.5L297.8,251.01L296.6,249.75L295.73,246.1L294.07,244.53L295.51,242.9L294.59,241.5L294.11,239.49L294.26,237.1L295.37,234.74L294.27,233.91L289.99,234.4L288.31,231.88L282.97,231.39L282.05,230.27L282.25,227.37L281.34,225.09L279.86,224.72L280.9,222.96L281.94,219.68L284.08,217.08L285.84,216.47L284.06,217.87L284.85,220.24L283.3,222.88L284.32,225.2L285.38,225.04L286.14,223.22L285.34,221.48L285.25,219.28L288.65,218L288.62,216.4L289.44,215.48L290.29,217.67L292.44,217.82L293.54,218.67L293.87,220.52L294.83,220.82L299.22,220.32L300.22,221.49L302.89,221.99L305.61,220.22L308.77,219.95L308.34,220.99L309.18,221.75L313.69,224.3L312.19,227.28L313.57,226.71Z" class="land" id="VE" title="Venezuela"/>
+    <path d="M313.32,212.41L313.32,212.41L313.32,212.41Z" class="land" id="VC" title="Saint Vincent and the Grenadines"/>
+    <path d="M508.06,122.16L508.06,122.16L508.06,122.16Z" class="land" id="VA" title="Vatican City"/>
+    <path d="M652.37,121.07L651.03,123.18L654.42,124.53L655.15,123.67L657.74,125.36L658.94,125.62L655.91,127.6L654.01,127.33L652.41,126.66L653.11,125.77L652.11,124.88L649.4,126.31L649.74,127.49L648.32,127.51L648.32,129.52L646.4,129.26L645.76,130.44L647.85,131.32L648.99,134.23L648.24,136.93L645,136.37L644.68,134.3L642.11,133.59L637.98,131.35L633.59,128.52L630.88,124.67L627.2,124.27L626.17,123.71L625.86,122.13L624.98,120.93L623.97,120.91L621.51,119.42L620.77,119.71L620.01,121.25L618.13,122.29L618.65,124.14L616.03,123.95L613.58,112.57L619.44,110.84L626.28,114.42L629.36,117.21L632.24,116.79L635.33,117.03L636.33,116.52L638.1,117.77L639.19,119.12L639.84,118.77L640.38,121.83L641.59,121.86L643.02,124.51L645.76,124.34L647.06,126.03L648.43,123.81Z" class="land" id="UZ" title="Uzbekistan"/>
+    <path d="M110.73,66.73L111.43,66.93L110.62,68.07L108.91,68.47L107.46,67.8ZM108.6,57.58L111,57.41L110.6,59.1ZM189.52,41.29L165.99,66.97L169.49,67.58L171.04,70.03L170.65,70.96L173.13,70.25L174.73,68.95L177.03,68.41L177.07,69.86L178.28,71.53L178.55,77.07L180.53,78.71L180.86,79.71L179.63,81.45L177.32,83L177.03,81.86L178.51,80.16L177.28,78.92L176.93,76.35L175.74,75.97L176.67,74.45L176.65,72.96L175.59,72.26L173.97,72.83L173.43,71.9L171.08,72.86L169.68,71.89L169.03,70.43L166.37,68.6L163.72,67.91L161.21,67.55L159.1,67.79L157.46,66.87L155.61,66.46L154.78,64.97L151.16,65.4L149.77,67.34L148.81,67.85L146.62,67.82L141.33,69.98L139.46,70.14L141.49,67.86L142.67,67.24L144.33,65.71L146.99,64.91L147.33,64.13L143.86,65.23L143.42,65.68L138.17,68.18L134.67,69.64L133.96,70.34L135.15,71.02L132.61,72.14L131.26,73.11L129.19,73.52L124.14,75.51L123.58,76.16L119.9,77.53L117.5,78.11L117.22,78.81L113.4,79.94L112.37,79.99L108.79,81.13L107.28,81.17L105.89,81.91L103.61,82.46L103.96,81.78L107.17,80.21L110.08,79.32L110.28,80.06L112.91,78.47L116.17,77.37L119.9,75.6L122.28,74.72L124.58,72.35L123.51,71.11L121.22,72.21L121.06,70.94L119.89,70.54L115.61,71.8L118.07,69L118.75,67.31L115.68,68.26L114.05,68.37L113.76,66.96L112.89,66.28L115.08,65.29L114,64.69L114.87,62.71L118.71,60.83L122.54,58.76L124.33,59.23L128.47,58.1L130.65,57.81L132.08,57.08L133.92,54.98L132.84,54.33L129.33,55.54L128.01,54.95L125.11,55.31L122.81,54.97L122.63,52.66L121.9,52.02L131.79,49.58L133.6,49.64L132.44,50.86L136.31,50.94L137.44,50.4L140.72,49.94L140.12,49.26L138.13,49.18L138.93,48.24L136.7,48.3L135.7,47.85L136.09,46.74L133.92,44.55L135.69,43.32L139.77,43.18L143.49,41.99L145.05,41.01L148.99,39.5L150.7,39.57L155.85,38.07L158.41,38.16L162.28,36.93L164.87,37.5L165.95,38.28L168.28,37.93L169.94,38.25L169.49,39.19L175.05,39.06L177.42,39.8L181.08,39.95L181.94,40.35L186.26,40.07L188.7,41.29ZM63.97,194.05L63.22,193.86L63.3,191.73L64.29,190.08L65.74,190.96L66.42,192.44ZM297.35,125L295.38,126.04L294.65,125.21ZM295.45,112.54L303.23,112.53L303.94,111.66L304.96,111.74L307,109.76L308.42,107.29L310.95,104.98L311.71,105.78L313.1,105.31L314.06,106.15L312.91,110.39L314.05,112.03L313.86,112.9L311.55,114.24L310.69,114.07L306.39,116.24L305.41,116.36L302.08,120.81L302.75,121.13L303.09,123L300.56,122.98L300.12,123.78L296.74,124.13L294.71,124.89L292.77,126.18L293.21,127.05L291.28,129.99L288.63,130.91L289.06,132.76L287.06,134.48L285.89,132.78L285.08,136.35L285.49,138.54L283.53,140.52L285.22,140.92L285.03,141.71L282.88,142.9L282.06,143.93L279.02,145.99L278.09,147.17L276.62,147.29L274.31,149.61L269.57,152.82L267,156.72L267,160.13L268.07,164.25L267.56,165.21L268.22,170.28L267.59,172.6L266.7,174.18L265.63,174.73L264.77,174.22L264.35,172.61L263.52,172.13L263.37,170.71L262.23,168.74L261.65,166.26L262.79,162.98L260.76,159.71L259.97,159.15L256.39,160.49L256.43,159.87L254.51,157.93L250.41,158.56L247.62,158.17L245.67,158.96L244.18,158.28L243.52,159.04L245.49,159.75L243.66,162.06L241.94,162.22L240.65,161.72L239.48,160L238.32,160.87L236.11,160.17L234.76,160.2L231.38,161.46L228.34,163.76L226.77,163.91L224.6,165.32L222.74,169.03L223.13,172.19L222.52,172.48L218.33,170.67L217.86,168.81L218.06,167.2L216.57,164.75L216.19,162.41L214.72,160.18L212.65,159.89L211.26,160.6L209.39,162.62L206.71,160.49L206.39,157.64L203.47,153.91L198.95,153.88L198.54,155.29L191.25,155.31L182.63,151.58L183.12,150.93L176.77,151.5L176.69,149.1L174.8,146.83L173.27,146.54L172.43,145.58L170.26,145.41L170.55,143.51L168.86,139.57L169.56,138.31L168.61,136.82L169.21,134.84L167.49,131.49L168.3,128.51L167.94,126.54L169.94,123.76L170.84,119.32L173.1,116.59L176.54,110.77L178.05,107.18L179.4,102.2L180.63,102.83L184.52,103.31L184.85,100.32L219,97.8L250.65,100.32L253.52,101.74L255.32,101.48L258.17,103.17L259.96,102.73L263.03,103.35L265.98,102.42L272.77,106.71L273.04,108.06L274.03,107.78L274.04,109.21L276.72,111.48L275.93,116.97L274,119.9L272.38,120.91L271.9,121.92L273.35,122.85L276.72,121.19L279.41,120.7L282.8,119.35L283.1,117.29L284.36,116.8L289.02,116.79L290.29,115.46L294.21,112.86ZM102.27,82.38L101.92,83.1L98.25,84.08L98.08,83.48L99.6,82.68ZM177.86,80.89L177.17,81.54L175.41,81.67L177.09,79.88ZM173.74,78.39L174.52,78.45L175,81.71L174.17,82.9L172.83,82.18L172.86,79.98ZM175.6,76.46L176.27,76.82L174.8,78.03L173.92,78.03L174.61,76.27ZM172.73,75.45L172.15,77.29L170.81,75.54ZM133.45,74.08L133.63,75.15L129.36,76.5L127.95,76.7L128.16,75.49L129.87,74.61L130.81,74.74ZM172.99,72.86L174.19,73.42L172.82,74.98L170.95,74.51L170.9,73.29ZM175.16,73.1L175.58,74.68L175.06,75.49L173.3,76.3Z" class="land" id="US" title="United States"/>
+    <path d="M340.94,359.45L340.19,361.46L337.62,363.2L335.58,362.7L334.52,363.12L331.6,361.69L329.93,361.76L328.18,359.99L327.95,357.94L328.46,356.78L327.94,355.46L327.7,353.73L328.37,348.27L330.34,348.01L332.27,349.65L333.26,351.04L333.98,350.43L334.92,351.53L336.76,352.35L339.14,354.15L341.09,356.29L340.25,357.66Z" class="land" id="UY" title="Uruguay"/>
+    <path d="M569.31,106.12L563.78,107.55L561.62,108.89L562.26,110.39L563.73,111.59L565.15,111.15L565.87,112.35L563.84,112.18L560.11,114.44L558.93,113.93L558.95,112.25L556.28,111.31L558.86,109.63L557.64,108.93L555.92,109.21L554.78,108.67L554.45,107.29L551.67,107.77L550.54,109.88L549.12,110.45L549.53,111.75L548.3,111.31L547.24,111.83L545.83,111.16L547.39,109.32L547.69,107.85L549.43,108.39L549.34,106.92L547.37,105.01L547.29,103.7L543.12,101.89L540.98,102.55L539.98,103.37L537.03,104.2L532.86,103.09L532.13,103.5L530.2,102.11L530.97,100.08L531.09,98.66L533.33,96.12L534.1,94.71L532.69,92.69L534.34,91.64L537.99,91.5L540.9,91.98L541.25,92.4L544.4,92.61L545.63,92.39L546.22,93.09L548.91,92.45L549.76,91.1L551.56,90.94L553.21,90.32L556.05,90.21L557.88,91.9L557.84,93.31L560.4,94.11L560.89,95.63L563.14,96.42L565.71,96.02L567.44,97.51L567.87,97.11L570.15,97.7L571.74,98.56L572.64,99.69L571.83,100.27L572.9,102.62L572.58,103.82L570.57,103.78L569.25,104.69Z" class="land" id="UA" title="Ukraine"/>
+    <path d="M568.93,256.71L560.66,256.71L559.76,256.91L558.65,257.86L557.23,257.92L557.62,253.27L558.23,251.02L561.75,247.18L560.33,245.9L560.6,242.66L561.44,241.74L563.19,241.69L564.01,242.54L565.99,241.7L567.75,241.84L569.05,240.38L570.2,242.04L570.36,243.69L571.17,244.77L571.78,247.13L571.31,249.73L570.49,250.32L569.04,253.03Z" class="land" id="UG" title="Uganda"/>
+    <path d="M568.93,256.71L571.27,258.08L579,263.1L579.39,265.06L583.2,268.25L582.05,271.95L582.17,273.37L583.75,275.09L583.21,277.09L583.58,278.63L583.18,279.98L584.33,284.58L586.1,286.31L584.79,287.42L580.7,289.28L579.18,288.91L578.12,290.1L576.62,289.76L575.37,290.23L573.43,289.4L571.2,289.79L570.3,288.24L570.17,284.95L569.65,284.01L565.91,283L563.31,281.89L560.16,279.2L559.03,276.1L557.44,274.27L556.85,272.42L557.17,271.25L556.52,269.16L556.7,267.49L557.55,267.51L560.48,263.81L559.74,262.7L559.86,261.08L560.6,260.89L560.57,258.46L559.76,256.91L560.66,256.71Z" class="land" id="TZ" title="Tanzania"/>
+    <path d="M796.47,182.71L795.53,183.54L793.63,181.04L793.45,179.28L794.76,175.12L796.02,174.36L797.13,175.3L796.98,181.62Z" class="land" id="TW" title="Taiwan"/>
+    <path d="M580.09,123.34L582.49,123.59L583.23,123.2L585.07,124.62L585.96,125.83L586.44,127.86L587.7,127.95L589.06,129L589.2,129.17L587.35,130.02L588.85,133.21L588.5,134.62L589.46,135.13L590.25,137.02L589.1,137.53L588.65,136.58L585.13,136.3L584.19,137.13L583.89,136.6L582.07,137.19L580.02,137.16L576.78,138.47L573.75,137.78L571.94,138.58L569.92,138.09L568.92,141.13L568.3,140.87L567.95,139.63L568.78,138.54L568.34,137.75L567.16,138.73L564.73,138.14L562.64,140.03L560.41,140.49L558.29,138.92L556.52,138.09L554.71,137.89L554.47,139.63L552.5,140.11L551.05,139.36L550.7,138.43L548.32,137.37L546.34,137.41L545.48,135.31L545.78,134.4L544.34,133.71L544.98,131.56L544.03,130.29L542.56,129.74L542.58,128.11L543.85,126.83L545.71,127.08L547.71,126.82L550.25,125.55L550.01,124.25L554.84,124.62L557.22,122.68L559.77,121.79L563.18,121.98L564.62,122.69L566.5,122.83L567.81,124.14L572.6,125.19L575.11,124.63L577.26,125.08ZM546.53,121.94L547.51,123.5L549.35,124.24L548.75,125.04L547.2,124.71L545.57,125.04L545.06,125.93L542.21,126.17L542.01,125.81L543.27,123.71L542.42,122.72L543.07,121.95L544.71,121.6Z" class="land" id="TR" title="Türkiye"/>
+    <path d="M506.77,149.46L506.84,151.88L505.13,152.93L503.36,154.87L503.68,157.01L501.92,158.76L500.55,152.95L498.69,151.47L498.35,150.27L497.18,149.3L496.49,146.64L498.31,144.58L498.65,143.1L498.13,138.89L498.97,137.66L501.73,136.4L504.01,137.84L505.41,137.86L503.95,139.59L504.16,140.96L505.24,141.76L505.57,142.99L504.15,145.18L502.99,146.22L503.26,147.36L504.73,148.42L505.65,148.26Z" class="land" id="TN" title="Tunisia"/>
+    <path d="M313.22,221.88L311.63,222.1L312.07,220.61L313.25,220.2Z" class="land" id="TT" title="Trinidad and Tobago"/>
+    <path d="M13.89,319.88L13.89,319.88L13.89,319.88Z" class="land" id="TO" title="Tonga"/>
+    <path d="M813.88,283.32L813.65,281.54L814.42,280.62L818.35,280.03L819.08,280.83L814.86,282.59Z" class="land" id="TL" title="Timor-Leste"/>
+    <path d="M645,136.37L642.94,135.68L642.62,136.68L640.84,137.05L640.57,139.53L637.35,141.17L637.44,142.34L636.43,143.01L632.78,141.8L631.81,138.59L629.85,138.6L626.54,135.83L624.44,135.46L621.71,134.5L620.97,133.65L619.06,133.55L615.83,134.64L615.23,135.89L613.22,136.39L612.21,131.36L610.07,129.85L610.46,128.2L609.41,128.11L608.54,126.83L609.31,125.5L611.22,126.05L613.16,125.3L611.24,123.34L610.27,121.56L607.12,122.53L608.73,121.2L610.8,120.8L612.99,122.09L615,124.14L616.03,123.95L618.65,124.14L618.13,122.29L620.01,121.25L620.77,119.71L621.51,119.42L623.97,120.91L624.98,120.93L625.86,122.13L626.17,123.71L627.2,124.27L630.88,124.67L633.59,128.52L637.98,131.35L642.11,133.59L644.68,134.3Z" class="land" id="TM" title="Turkmenistan"/>
+    <path d="M12.79,280.41L12.79,280.41L12.79,280.41Z" class="land" id="TK" title="Tokelau"/>
+    <path d="M654.01,127.33L652.9,127.92L651.57,127.45L650.07,128.82L651.13,129.41L653.66,129.44L654.09,129.91L655.62,129.33L656.88,130.34L661.3,129.8L662.39,132.43L664.83,132.73L666.18,136.74L664.45,136.16L663.3,136.74L662.45,135.99L658.78,138.43L657.54,137.07L657.25,134.54L655.17,132.9L653.89,134.57L654.17,135.38L652.34,135.73L652.08,137.13L651.16,136.45L649.17,137.62L648.24,136.93L648.99,134.23L647.85,131.32L645.76,130.44L646.4,129.26L648.32,129.52L648.32,127.51L649.74,127.49L649.4,126.31L652.11,124.88L653.11,125.77L652.41,126.66Z" class="land" id="TJ" title="Tajikistan"/>
+    <path d="M742.66,189.95L743.89,190.67L744.41,192.52L745.77,192.27L746.42,194.16L746.07,198.53L746.65,198.86L748.96,196.57L750.75,197.56L752.22,195.9L753.82,196.22L756.61,199.42L756.73,201.47L757.74,203L759.47,204.44L759.55,208.11L758.84,208.69L757.73,208.43L753.53,208.73L751.47,211.21L752.24,213.94L753.01,214.7L753.71,216.96L753.16,216L750.15,213.88L747.84,213.8L747.87,211.55L745.36,211.8L745.66,215.5L743.97,221.3L744.11,223.13L744.86,224.76L745.72,224.45L747.45,227.72L748.49,231.14L749.71,232.12L751,232.11L752.73,234.06L752.18,235.36L750.52,235.48L749.91,234.06L747.95,233.1L747.35,233.43L746.17,231.36L742.85,227.48L741.92,227.24L742.09,224.52L742.76,221.71L742.79,220.23L744.78,216.72L743.42,213.72L742.88,210.66L740.1,207.22L739.81,206L740.73,205.37L740.71,202.54L739.76,200.44L737.73,198.23L736.55,195.67L737.2,195.28L736.97,192.64L737.61,191.69L739.74,191.66L741.99,189.61Z" class="land" id="TH" title="Thailand"/>
+    <path d="M479.73,219.19L479.41,221.18L480.89,222.31L481.62,225.28L481.69,234.14L480.52,234.54L478.73,232.16L479.02,230.58L478.43,226.52L478.74,224.31L478.02,223.88L478.29,221.56L477.16,220.33L477.13,218.81Z" class="land" id="TG" title="Togo"/>
+    <path d="M538.75,219.42L537.76,219.18L535.67,220.5L535.73,221.15L533.22,224.16L532.07,225.03L528.86,225.38L528.77,226.51L527.04,228.46L524.87,228.61L522.55,229.97L521.45,229.55L519.04,230.05L518.02,226.82L515.89,224.79L514.92,223.27L515.62,222.36L519.12,222.43L517.99,220.27L517.8,216.52L516.23,212.97L515.02,212.66L513.76,210.7L513.3,208.58L515.69,204.29L518.57,200.65L519.05,191.25L519.58,189.99L517.45,186.16L516.79,181.53L519.39,180.11L540.97,192.53L541.37,204.19L539.03,204.43L537.96,207.51L537.2,208.05L537.58,209.37L536.53,210.62L536.89,211.87L535.84,213.56L537.27,213.97L537.88,217.07L538.89,218.09Z" class="land" id="TD" title="Chad"/>
+    <path d="M287.95,185.4L287.95,185.4L287.95,185.4Z" class="land" id="TC" title="Turks and Caicos Islands"/>
+    <path d="M584.19,137.13L582.96,138.73L582.06,138.99L582.19,144.47L581.06,145.85L576.52,148.86L571.85,152.18L569.08,150.87L569.07,148.68L570.64,146.19L570.12,144.96L568.95,144.91L568.09,141.95L568.3,140.87L568.92,141.13L569.92,138.09L571.94,138.58L573.75,137.78L576.78,138.47L580.02,137.16L582.07,137.19L583.89,136.6Z" class="land" id="SY" title="Syria"/>
+    <path d="M627.25,268.25L627.25,268.25L627.25,268.25Z" class="land" id="SC" title="Seychelles"/>
+    <path d="M309.33,197.01L309.63,197.01L309.33,197.01Z" class="land" id="SX" title="Sint Maarten"/>
+    <path d="M560.9,334.95L561.14,337.72L560.63,339.19L558.34,338.58L557.81,336.38L559.55,334.28Z" class="land" id="SZ" title="Eswatini"/>
+    <path d="M528.32,51.62L526.13,51.81L523.01,52.7L522.33,54.35L523.19,55.53L521.88,56.95L518.38,58.7L517.26,59.65L516.05,59.83L515.34,62.89L514.76,63.35L515.28,65.83L516.87,66.14L518.3,67.1L519.37,68.52L517.09,69.91L516.28,71.09L514.6,72.31L514.68,76.27L513.7,78.73L510.95,78.91L509.73,79.88L510.09,80.77L507.8,81.3L505.97,78.98L506.54,77.58L505.43,76.74L503.01,73.22L502.17,70.72L502.7,70.58L503.56,69.85L503.24,68.99L504.92,67.52L505.08,66.54L504.31,64.97L505.52,63.98L503.86,62.95L504.06,61.36L503.72,59.36L503.19,58.55L504.47,56.74L507.24,56.54L507.38,55.3L506.44,54.97L508.02,53L507.94,50.73L509.69,49.75L511.58,48.22L510.89,47.22L513.17,45.4L514.44,45.78L515.2,44.18L518.55,44.73L519.64,42.92L522.67,44.29L524.35,44.64L526.31,45.81L526.17,47.16L527.53,48.89L527.07,49.78ZM520.21,74.04L519.54,75.76L518.18,74.85L519,74.06Z" class="land" id="SE" title="Sweden"/>
+    <path d="M517.2,107.93L515.14,108.85L514.56,111.11L511.02,111.23L510.28,110.96L510.61,110.74L509.7,108.49L510.4,107.87L512.36,108.19L513.52,107.55L515.81,107.39L516.1,106.82Z" class="land" id="SI" title="Slovenia"/>
+    <path d="M530.97,100.08L530.2,102.11L528.54,101.66L526.25,101.74L524.94,102.94L522.32,103.34L522.22,103.99L519.91,104.04L518.38,103.32L517.78,101.52L518.28,100.72L519.64,100.64L520.5,99.52L522.03,98.75L523.46,98.48L524.42,99.71L526.3,99.11L528.73,99.05Z" class="land" id="SK" title="Slovakia"/>
+    <path d="M331.16,236.82L330.33,237.9L330.55,240.9L331.5,242.35L330.91,244.77L329.75,246.3L328.71,245.47L325.67,246.39L325.95,247.82L324.7,247.51L324.1,247.21L322.77,244.56L322.54,243.02L321.87,243.09L320.55,240.53L321.53,237.97L322.56,237.88L322.97,236.23L323.61,234.84L326.38,235.46L326.69,234.94L329.38,234.85L331.46,235.42Z" class="land" id="SR" title="Suriname"/>
+    <path d="M495.31,253.2L495.31,253.2L495.31,253.2Z" class="land" id="ST" title="Sao Tome and Principe"/>
+    <path d="M526.3,109.14L527.69,110.24L527.75,111.06L529.6,112.17L529.4,112.95L532.8,114.9L532.17,115.62L532.64,117.33L533.75,118.15L532.59,119.23L532.43,120.87L530.52,121.07L530.88,119.76L529.06,118.45L527.37,119.27L524.38,117.08L525.06,116.56L524.1,114.7L524.47,112.99L523.61,112.95L523.11,109.68L524.57,108.99Z" class="land" id="RS" title="Serbia"/>
+    <path d="M341.67,106.9L341.67,106.9L341.67,106.9Z" class="land" id="PM" title="Saint Pierre and Miquelon"/>
+    <path d="M589.53,258.88L588.05,256.3L587.97,244.78L590.42,241.14L592.85,240.16L593.45,239.31L596.16,238.1L598.62,238.22L601.24,234.83L606.58,228.57L603.89,228.57L595.83,225.48L594.34,224.24L591.99,220.36L592.65,219.17L593.46,217.61L595.18,219.85L596.66,220.95L598.15,220.93L600.45,219.68L602.48,219.97L604.68,218.63L608.69,218.37L611.89,217.51L613.66,216.09L614.92,216.57L614.54,218.12L614.79,220.25L614.19,221.51L614.09,224.09L610.37,231.72L609.63,234.27L606.84,239.52L601.72,245.84L597.11,249.23L594.78,251.63L590.75,256.62Z" class="land" id="SO" title="Somalia"/>
+    <path d="M507.87,115.94L507.87,115.94L507.87,115.94Z" class="land" id="SM" title="San Marino"/>
+    <path d="M238.15,208.47L240.42,210.24L242.37,210.36L241.98,211.66L241.61,212.34L240.05,212.33L235.97,210.6Z" class="land" id="SV" title="El Salvador"/>
+    <path d="M449.62,227.04L448.62,229.31L446.28,231.98L443.66,230.48L442.6,229.01L441.53,225.28L442.98,224.26L443.68,222.73L447.17,222.37L448.54,224.45Z" class="land" id="SL" title="Sierra Leone"/>
+    <path d="M912.14,286.06L913.17,286.27L913.05,287.43L911.59,286.63ZM907.3,282.58L909.54,283.57L909.47,284.63L907.38,284.2ZM910.33,279.58L911.34,282.71L910.37,282.21L909.88,279.76ZM907.91,280.26L905.56,278.72L906.04,278.29L907.88,279.62Z" class="land" id="SB" title="Solomon Islands"/>
+    <path d="M462.11,303.65L462.11,303.65L462.11,303.65Z" class="land" id="SH" title="Saint Helena"/>
+    <path d="M391.67,422.07L393.56,422.62L395.06,424.13L394.46,424.44Z" class="land" id="GS" title="South Georgia and South Sandwich Islands"/>
+    <path d="M758.26,249.41L758.26,249.41L758.26,249.41Z" class="land" id="SG" title="Singapore"/>
+    <path d="M444.46,207.24L445.14,209.13L445.02,210.92L446.77,213.09L446.75,214.77L444.33,215.01L442.22,214.05L440.49,213.93L436.55,213.91L435.53,214.5L432.47,214.93L432.37,212.71L434.87,212.42L435.76,211.07L432.94,211.07L431.38,207.76L431.45,206.88L433.15,204.01L434.18,201.78L437,201.48L439.16,201.68L440.29,203.04L441.51,203.32L442.94,205.88Z" class="land" id="SN" title="Senegal"/>
+    <path d="M569.02,223.99L569.13,226.74L566.83,227.32L566.26,228.71L568.04,229.59L570.92,232.75L572.49,236.4L569.05,240.38L567.75,241.84L565.99,241.7L564.01,242.54L563.19,241.69L561.44,241.74L560.6,242.66L558.85,241.13L557.43,239.24L556.02,239.86L554.87,239.49L553.43,239.98L551.28,237.6L550.39,235.51L548.84,234.6L548.41,232.83L545.73,230.65L544.27,228.13L542.75,227.65L542.34,226.48L543.36,225.79L544.72,221.38L546.68,220.98L548.76,223.79L552.35,223.55L552.81,224.4L554.95,224.41L558,221.43L560.02,223.11L561.32,222.93L563.15,220.23L564.38,218.99L564.14,216.93L563.4,216.02L565.19,216.01L566.41,215.36L566.13,217.32L566.47,219.64L568.46,221.68Z" class="land" id="SS" title="South Sudan"/>
+    <path d="M574.69,184.67L575.61,187.48L576.17,192.26L576.9,194.65L580.07,197.21L579.2,198.53L577.96,198.93L577.04,200.17L575.97,200.18L575.83,202.57L574.7,206.22L575.08,208.97L574.15,213.76L572.8,214.36L571.58,216.61L571.19,219.59L570.23,219.55L569.46,220.65L569.02,223.99L568.46,221.68L566.47,219.64L566.13,217.32L566.41,215.36L565.19,216.01L563.4,216.02L564.14,216.93L564.38,218.99L563.15,220.23L561.32,222.93L560.02,223.11L558,221.43L554.95,224.41L552.81,224.4L552.35,223.55L548.76,223.79L546.68,220.98L544.72,221.38L543.36,225.79L542.34,226.48L540.69,226.01L540.93,222.86L538.75,219.42L538.89,218.09L537.88,217.07L537.27,213.97L535.84,213.56L536.89,211.87L536.53,210.62L537.58,209.37L537.2,208.05L537.96,207.51L539.03,204.43L541.37,204.19L540.97,192.53L540.9,190.96L543.55,190.94L543.29,184.67Z" class="land" id="SD" title="Sudan"/>
+    <path d="M598.01,162.32L600.39,162.66L601.17,164.1L603.17,164.07L604.71,166.95L607.8,169.46L608.58,171.1L608.17,171.73L610.63,175.88L611.91,176.46L612.8,177.47L612.93,178.12L615.83,181.73L622.65,182.71L622.84,182.45L624.26,184.65L623.1,190.96L615.41,194.1L607.71,195.4L605.49,196.73L603.77,200.01L602.56,200.51L601.71,199.52L598.3,199.36L597.59,199.02L592.39,199.24L592.45,201.34L591.53,202.34L589.99,199L588.45,197.59L586.92,195.1L585.45,191.71L582.26,189.32L580.71,186.83L580.48,183.42L578.51,179.27L575.95,177.45L574.87,175.79L574.68,174.31L568.85,165.67L567.35,165.31L567.9,161.51L570.71,162.03L572.43,159.9L574.24,159.5L575.41,157.9L572.47,154.78L577.47,153.2L577.89,152.79L581.1,153.37L585.79,156.08L593.27,162.02Z" class="land" id="SA" title="Saudi Arabia"/>
+    <path d="M454.69,166.86L454.67,168.03L454.6,172.09L445.87,172.09L445.66,180.04L442.97,181.51L442.89,186.75L432.44,186.77L432.17,188.41L432.59,184.97L433.73,183.61L434.6,181.21L436.34,178.14L437.82,176.64L439.63,171.28L441.86,169.76L442.99,166.87Z" class="land" id="EH" title="Western Sahara"/>
+    <path d="M559.76,256.91L560.57,258.46L560.6,260.89L559.86,261.08L558.17,260.89L558,262.07L555.69,262.08L555.33,261.08L557.23,257.92L558.65,257.86Z" class="land" id="RW" title="Rwanda"/>
+    <path d="M118.77,36.26L120.4,37.07L119.15,37.58L115.26,37.96L114.5,37.78L116.38,36.36ZM838.39,38.21L837.07,37.16L838.24,36.36L840.12,37.78ZM600.37,40.54L598.81,41.06L595.98,39.67L596.84,39.15ZM822.88,41.48L819.19,40.8L819.78,40.33L822.27,40.68ZM580.34,42.52L579.33,43.39L577.48,43.73L576.4,42.91L576.77,41.86L577.91,41.66ZM107.95,43.17L109.23,43.67L110.57,45.03L113,46.55L113.02,48.09L114.76,47.98L116.24,48.58L118.02,48.56L119.12,50.54L116.33,52.12L112.46,52.66L111.29,53.69L108.72,54.63L107.29,55.76L105.95,55.57L105.54,54.82L103.76,54.36L103.44,53.79L104.38,52.53L102.79,52.14L99.73,52.49L99.98,51.26L97.76,51.62L97.62,52.41L94.8,53.64L107.68,43.06ZM843.24,71.83L842.41,70.64L844.66,71.01ZM525.94,81.55L529.74,82.8L529.76,84.22L522.45,83.92L523.16,82.56ZM806.12,84.11L809.58,87.37L811.27,89.41L812,90.99L813.98,92.83L817.27,96.41L820.31,99.35L817.76,99.69L818.69,103.12L819.29,104.14L821.34,105.72L823.25,107.75L821.29,107.32L821.52,109.2L819.94,108.08L819.17,105.97L818.15,104.6L817.86,103.3L815.69,101.06L814.74,98.57L812.68,95.71L811.56,93.58L809.37,92.03L806.24,87.24L807.63,86.92ZM838.45,111.57L837.39,112.58L836.67,111.96ZM651.2,13.49L654.22,14.08L654.36,15.28L649.86,15.54L648.86,15.79L643.8,15.03L645.98,14.1L645.16,13.67L649.4,13.06ZM575.83,13.41L581.65,14.09L578.28,14.43L575.06,14.05ZM589.68,14L588.28,14.9L584.96,14.68L585.05,14.04ZM655.46,15.47L660.72,16.31L661.75,18.43L658.27,18.45L652.23,17.76L648.52,16.93L650.7,15.6ZM667.15,17.48L672.37,18.47L673.43,19.2L671.03,19.76L666.48,19.91L663.67,18.79L664.53,17.26ZM799.7,120.9L798.95,120.18L798.65,119.32L799.71,119.04L799.36,117.39L796.55,112.83L798.18,111.8L800.86,112.46L800.69,111.02L801.05,108.71L799.94,105.48L800.6,104.21L799.05,102.36L798.31,102.2L796.05,103.02L795.25,104.05L791.65,104.28L790.03,102.3L785.25,99.31L782.37,98.49L781.17,98.57L779.45,97.65L779.05,96.63L775.86,93.94L772.03,90.04L769.28,88.13L767.17,87.85L763.6,86.63L760.78,86.81L757.56,87.74L756.83,88.89L758.54,89.55L759.59,90.95L758.86,92.44L758.9,96.12L759.59,97.06L758.05,97.74L757.22,98.74L753.89,97.8L752.28,97.23L750.35,97.42L747.51,96.43L745.59,97.88L745.62,98.43L741.94,99.22L741.02,99.79L736.98,99.28L735.52,99.32L733.73,98.49L733.03,97.49L731.24,97.3L729.52,96.32L726.14,95.83L722.5,96.84L718.67,95.5L717.13,93.18L708.43,91.03L707.35,93.2L707.58,94.29L709.28,95.65L709.5,97.03L707.85,98.08L707.12,97.62L704.26,97.23L703.61,97.53L701.31,97.19L699.74,95.58L693.79,95.17L689.7,97.56L689.95,98.12L688.34,98.94L686.81,98.93L686.27,99.8L685.19,100.04L682.87,98.45L681.98,98.78L679.48,98.28L678.48,97.08L676.48,96.39L675.16,94.92L673.51,94.26L671.79,95.07L669.36,95.03L667.34,93.4L665.83,94.92L660.14,89.33L657.48,87.12L654.21,85.45L653.07,84.36L649.64,86.33L646.99,86.47L647.02,85.84L645.57,84.96L641.25,84.65L641.04,83.51L639.24,81.43L638.12,81.85L635.12,81.18L633.6,81.85L633.51,82.44L629.56,83.31L627.89,83.44L627.41,84.2L625.79,84.14L620.37,85.44L618.9,85.13L618.48,86.4L619.3,87.4L621.36,87.93L621.41,88.42L619.23,88.33L618.87,89.01L619.6,90.4L617.83,91.31L619.06,92.29L621.35,92.92L622.06,93.55L621.92,94.66L620.32,95.26L618.6,94.85L618.45,95.51L616.16,95.17L614.62,94.05L612.6,94.58L610.26,94.19L608.96,95.44L606.12,94.25L605.57,94.91L602.48,92.79L600.68,92.8L599.96,92.2L598.42,92.79L596.33,92.05L595.37,93.37L593.75,93.99L592.47,95.45L592.96,97.22L592.11,97.78L590.02,96.12L589.19,96.44L588.55,99.18L589.22,100L588.82,102.09L590.15,103.5L592.72,104.12L595.38,107.09L594.67,107.73L596.32,108.43L594.1,110.28L592.64,110.7L591.46,114.34L592.75,115.04L593.83,117.16L593.99,118.63L597.39,122.33L595.98,124.29L594.43,123.98L592.07,122.18L589.95,121.21L590.02,120.37L586.87,119.52L585.61,120.08L585.09,119.52L581.49,118.04L579.44,118.06L576.99,117.08L575.4,117.43L571.9,114.75L569.59,113.48L568.5,113.37L567.1,111.66L568.78,111.39L569.17,109.46L569.73,109.18L568.95,107.57L571.9,106.08L569.31,106.12L569.25,104.69L570.57,103.78L572.58,103.82L572.9,102.62L571.83,100.27L572.64,99.69L571.74,98.56L570.15,97.7L567.87,97.11L567.44,97.51L565.71,96.02L563.14,96.42L560.89,95.63L560.4,94.11L557.84,93.31L557.88,91.9L556.05,90.21L553.21,90.32L551.56,90.94L551.03,90.31L550.25,87.67L551.98,87.98L553.16,87.25L550.7,85.11L549.74,84.7L548.87,83.36L547.93,80.65L546.26,79.84L544.63,80.31L544.26,79.57L541.38,78.97L540.28,76.85L540.06,75.55L538.96,74.93L539.72,74.03L538.59,71.45L539.55,69.3L539.44,68.61L541.46,68.31L541.55,67.28L540.42,66.08L538.58,66.3L542.24,63.44L545.17,60.57L545.54,59.68L544.6,58.78L541.92,57.44L542.7,56.52L541.67,55.57L541.38,54.47L540.27,53.91L540.31,50.84L538.12,48.45L539.59,46.9L538.07,45.52L536.04,44.38L536.77,42.96L540.24,40.94L542.41,40.5L544.48,41.03L543.5,41.75L546.28,42.19L550.81,42.51L561.1,46.13L562.4,46.45L563.53,48.84L562.42,49.87L560.05,50.73L558.22,50.91L551.93,50.01L550.35,49.43L545.21,48.6L547.89,50.21L550.74,51.46L550.23,52.74L551.32,53.86L551.73,55.03L553.5,55.53L555.28,56.57L557.71,57.1L558.92,56.51L558.47,55.69L556.77,55.45L555.08,54.24L555.62,53.35L558.21,54.15L562.15,54.99L562.96,53.83L561.55,52.18L564.66,50.75L565.91,49.67L570.09,50.45L570.56,49.26L569.81,48.1L568.62,47.69L568.94,45.69L568.12,44.22L571.98,44.4L574.17,46.09L571.84,46.33L570.85,47.09L573.55,48.77L575.05,48.84L576.99,48.25L576.86,46.8L578.82,46.4L582.31,44.75L585.61,44.1L587.78,43.03L588.89,45.07L590.07,44.95L592.75,43.95L595.08,44.2L598.28,43.01L600.94,44.55L602.44,43.05L600.19,41.45L601.62,40.76L606.61,41.23L618.79,44.75L619.34,43.15L618.09,43.1L616.33,41.74L614.14,41.18L613.45,40.34L613.26,38.44L611.8,38.02L611.82,37.02L614.01,35.99L614.23,33.45L615.12,32.87L618.77,32.83L621.68,33.39L622.18,34.96L621.49,36.34L624.15,38.22L624.63,39.92L626.12,42.8L628.9,44.15L629.05,46.04L628.26,46.79L627.18,49.02L626.17,49.6L623.56,48.79L622.47,49.51L625.17,50.15L628.61,50.41L629.25,49.56L631.55,48.39L631.58,47.26L632.54,46.31L630.85,44.56L630.79,43.68L634.33,43.07L636.66,44.43L636.89,43.27L633.02,42.39L630.8,42.78L628.52,42.49L627.37,41.14L627.57,38.66L623.99,36.6L624.6,35.57L628.07,34.41L629.22,35.4L633.38,34.15L635.27,34.19L638.39,34.94L640.43,35.82L643.37,35.82L640.99,34.56L637.9,33.91L636.32,32.39L635.7,31.17L641.36,30.92L646.95,30.35L645.69,28.37L646.88,27.27L650.89,26.13L656.86,25.49L658.24,24.76L663.09,25.3L668.54,23.97L668.72,22.74L671.36,21.23L672.79,20.99L676.88,21.56L675.74,22.3L681.07,22.9L682.68,23.39L688.54,23.38L692.21,24.2L695.85,25.48L696.68,26.86L694.57,28.23L691.55,29.27L689.71,30.85L688.04,31.03L687.5,32.25L689.94,32.17L693.44,31.41L693.05,30.04L697.43,30.81L701.46,31.13L703.7,30.83L710.08,31.11L710.84,31.98L714.08,32.66L720.88,32.72L721.21,32.12L719.76,31.26L721.34,30.7L724.33,31.29L728.61,31.39L731.61,32.12L734.86,34.36L733.33,34.94L738.55,37.45L742.3,38.43L742.72,38.01L742.21,35.44L746.62,36.77L749.54,36.12L753.12,36.82L754.18,36.29L756.99,35.94L754.64,33.89L758.91,33.32L766.2,33.78L769.09,34.39L772.66,34.37L775.28,34.75L779.34,36.41L781.99,37.01L785.17,38.19L787.63,38.07L791.23,37.51L795.71,37.65L799.11,38.3L801.9,39.56L803.13,40.94L807.83,42.01L808.73,41.3L812.15,41.11L813.22,41.4L818.27,41.69L819.16,41.06L822.02,42.3L824.69,42.8L826.23,43.58L828.02,43.48L828.26,42.9L825.69,41.47L823.81,40.09L828.48,40.46L830.41,40.84L836.06,40.74L838.43,41.31L843.23,41.99L846.94,43.06L859.82,53.64L858.15,54.91L855.49,54.55L856.34,55.35L860.45,56.68L861.97,57.91L864.36,58.83L866.45,60.23L866.61,61.26L861.95,60.51L858.9,61.87L858.1,62.66L856.48,62.96L855.53,63.65L855.72,64.81L853.62,66.58L853.29,67.63L850.11,66.13L847.77,66.19L845.94,66.95L844.09,66.44L842.37,67.54L839.65,67.71L839.39,68.29L840.54,69.82L840.31,72.27L840.89,73.34L842.85,74.24L844.74,74.47L844.63,75.43L846.11,77.02L847.46,77.38L848.83,78.71L846.92,78.62L846.35,79.12L847.4,81.27L849.78,83.06L849.46,83.7L847.24,83.68L846.5,84.72L848.05,87.12L846.27,88.63L847.27,90.33L847.58,91.81L846.31,94.34L844.59,92.82L841.9,89.72L840.12,88.23L833.29,81.3L830.95,77.35L831.5,76.02L831.48,74.15L833.42,72.34L833.38,70.32L834.86,67.39L834.68,66.63L835.82,65.6L837.07,65.22L836.52,64.01L833.23,60.21L831.65,60.61L833.09,62.75L832.1,63.11L831.04,65.68L827.63,64.16L827.21,62.74L825.74,62.95L824.15,62.38L822.41,62.85L820.98,62.72L820.11,63.62L820.56,64.21L820.17,65.61L819.28,66.75L819.19,68.3L822.36,69.65L820.51,70.47L818.71,70.07L818.35,70.86L815.8,70.22L813.76,69.18L811.31,68.99L809.05,68.48L808.78,69.28L805.57,69.91L802.79,69.45L802.21,70.12L800.85,69.5L795.7,69.62L793.98,70.69L793.98,71.42L792.82,72.95L793.2,74.11L792.49,74.47L791.08,76.57L790.7,78.98L787.71,82.49L789.81,83.55L791.91,83.44L793.09,85.48L795.4,86.65L797.52,86.49L798.05,86.04L796.92,84.33L799.34,84.46L805.59,87.7L806.76,90.14L807.89,90.71L807.97,93.55L808.85,95.61L810.83,98.49L812.08,101.75L811.37,103.69L811.01,106.23L811.34,107.8L811.05,110.03L809.12,114.48L808.7,117.11L806.32,119.26L805.18,119.68L803.18,119.02L802.3,118L800.95,117.95ZM606.83,24.55L604.34,25.17L595.75,26.81L594.2,28.09L591.28,28.83L591.53,29.76L589.5,31.68L585.55,31.46L582.77,30.67L584.29,30.18L587.43,26.64L590.32,25.49L597.67,24.56L602.67,23.65L605.29,22.7L607.2,22.88L608.51,23.74ZM746.17,25.55L748.26,25.86L750.58,25.37L753.05,25.46L756.9,26.14L756.12,27.48L752.34,27.61L747.69,28.44L745.33,28.09L742.01,27.01L741.05,25.35L742.73,24.65ZM760.51,26.67L767.36,27.04L769.25,27.72L767.74,28.15L764.66,28.02L759.78,27.1ZM698.29,29.08L697.81,29.84L695.18,29.4L695.42,28.71ZM755.85,30.34L759.06,31.17L759.75,32.05L754.11,31.46L753.78,30.42ZM586.33,31.83L588.63,32.1L587.32,33.97L587.77,35.33L592.93,38.83L587.69,38.59L585.78,38.24L584.31,36.35L581.25,36.48L580.21,34.98L582.05,34.39L583.26,31.86Z" class="land" id="RU" title="Russia"/>
+    <path d="M545.83,111.16L547.24,111.83L548.3,111.31L549.53,111.75L549.32,113.03L548.11,113.3L547.29,114.72L547.34,116.44L543.53,115.12L541.45,115.62L539.8,116.66L534.17,116.03L532.8,114.9L529.4,112.95L529.6,112.17L527.75,111.06L527.69,110.24L526.3,109.14L528.45,108.53L530.79,104.17L532.13,103.5L532.86,103.09L537.03,104.2L539.98,103.37L540.98,102.55L541.88,102.87L542.92,104.44L544.93,106.47L545.54,108.08L545.37,109.55Z" class="land" id="RO" title="Romania"/>
+    <path d="M624.88,320.42L623.75,320.21L623.73,319.05L624.65,319.06Z" class="land" id="RE" title="Reunion"/>
+    <path d="M611.91,176.46L610.63,175.88L610.31,173.82L611.37,171.59L612.19,172.38L612.61,174.76Z" class="land" id="QA" title="Qatar"/>
+    <path d="M79.68,308.96L79.68,308.96L79.68,308.96Z" class="land" id="PF" title="French Polynesia"/>
+    <path d="M323.13,316.73L324.26,319.35L324.18,322.64L327.02,323.35L328.06,322.82L329.91,323.46L331.74,328.76L333.63,328.19L334.72,328.93L334.27,333.74L334.26,336.76L332.69,338.26L332.1,339.53L330.44,339.92L328.48,339.71L324.41,338.64L326.42,333.21L325.71,332.36L321.38,330.21L319.88,329.08L316.75,328.02L314.52,326.21L311.93,323.23L312.51,319.56L312.35,317.98L313.43,315.09L317.97,314L320.4,313.97L322.97,315.64Z" class="land" id="PY" title="Paraguay"/>
+    <path d="M458.63,136.9L457.54,137.45L455.62,137.09L455.1,136.12L454.95,132.73L453.57,132.04L455.83,124.86L455.62,122.03L457.04,121.43L457.73,122.21L460.96,122.02L461.93,123.3L460.12,124.93L460.36,127.01L459.75,128.97L458.71,129.52L459.66,131.49L458.89,132.9L459.25,134.31L458.42,135.63Z" class="land" id="PT" title="Portugal"/>
+    <path d="M798.95,120.18L799.7,120.9L799.13,120.91L798.29,122.74L799.43,125.4L797.1,127.96L795.62,128.76L795.98,130.55L799.22,132.38L798.8,133.37L796.63,133.38L795.97,135.02L794.11,134.73L793.05,135.18L792.01,134.21L790.63,133.93L791.02,132.59L790.46,129.56L787.32,128.06L788.01,126.64L790.12,125.25L791.13,122.52L792.18,123.3L794.69,123.74L793.65,121.88L795.74,121.72L796.14,120.56L797.05,120.37L796.69,118.74Z" class="land" id="KP" title="North Korea"/>
+    <path d="M301.44,195.83L302.75,196.03L301.72,197.31L298.46,197.24L298.72,195.66Z" class="land" id="PR" title="Puerto Rico"/>
+    <path d="M522.45,83.92L529.76,84.22L531.21,84.69L531.56,85.46L532.82,88.17L532.85,89.25L531.49,90.47L532.62,91.12L532.69,92.69L534.1,94.71L533.33,96.12L531.09,98.66L530.97,100.08L528.73,99.05L526.3,99.11L524.42,99.71L523.46,98.48L522.03,98.75L521.3,97.63L519.64,97.35L517.83,96.12L516.78,96.97L515.08,95.42L512.2,94.67L512.6,93.48L511.5,91.74L511.4,89.66L510.18,88.62L510.75,87.41L510.3,86.08L510.14,85.43L514.62,84.42L515.41,83.64L519.39,82.8L520.3,84Z" class="land" id="PL" title="Poland"/>
+    <path d="M890.25,268.45L889.39,266.07L890.77,266.87ZM897.9,274.49L896.23,274.59L895.96,273.3L894.9,272.24L895.58,270.9ZM887.5,267.01L888.81,267.15L888.73,268.37L887.64,269.22L887.92,270.33L886.18,270.94L885.33,272.09L883.09,273.2L880.99,273.25L877.73,271.6L877.63,270.91L882.9,270.88L884.69,270.53L885.79,269.09L886.73,268.84L886.51,267.16ZM856.82,282.09L858.16,261.74L861.45,263.22L864.92,264.3L866.24,265.41L867.48,265.54L870.81,268.66L870.92,270.68L874.01,272.08L875.99,273.32L876.03,274.41L874.05,274.59L874.08,276.65L876.39,278.92L877.32,281.88L879.1,281.95L878.86,283L880.45,284.89L882.49,285.66L881.84,286.85L880,285.96L874.76,285.07L872.25,281.8L870.76,278.83L866.8,277.24L864.2,279.22L862.77,279.57L863.3,281.6L861.25,282.75L860.18,282.25Z" class="land" id="PG" title="Papua New Guinea"/>
+    <path d="M840.12,230.49L840.12,230.49L840.12,230.49Z" class="land" id="PW" title="Palau"/>
+    <path d="M816.46,224.43L817.44,225.92L818.55,230.91L817.31,232.52L816.49,230.65L815.47,232.33L816.35,234.88L815.84,235.87L813.57,234.82L811.98,233.55L811.61,231.71L812.12,230.45L810.1,229.16L809.92,230.41L807.45,229.58L806.73,231.68L806.3,230.55L806.93,228.47L808.44,228.07L809.71,226.36L811.96,227.71L813.24,226.8L813.5,225.52L815.24,224.99L815.02,223.06ZM812.52,222.97L810.8,223.48L811.28,221.88ZM808.79,225.23L807.14,223.92L806.76,222.42L807.75,222.03L807.84,219.53L809.44,219.86L808.64,222.73L809.19,224.31ZM809.33,224.02L809.21,222.41L809.93,220.82L810.63,221.31ZM793.29,227.19L793.32,226.33L795.21,224.35L798.52,219.32L799.08,220.57L797.9,222.11L796.84,222.56L796.1,224.63ZM811.95,218.1L812.9,218L814.14,221.48L812.9,221.78L812.72,219.85L811.75,219.41ZM806.27,217.24L808.08,217.49L807.28,219.72L805.81,220.35L805.1,219.57L805.21,217.16ZM813.29,214.39L814.86,218.76L813.79,218.72L810.74,214.25ZM800.75,211.4L802.1,211.55L803.08,212.5L803.33,214.04L802.67,215.35L800.31,212.09ZM799.28,195.29L801.44,196.3L802.59,195.96L802.56,197.99L803.88,199.97L803.34,202.92L802.03,203.71L801.78,205.62L802.86,207.46L803.42,209.42L805.17,208.76L806.18,208.99L807.41,210.56L808.67,210.14L808.51,211.25L810.15,212.79L810.11,214.26L807.91,212.77L807.35,211.52L805.64,210.06L805.31,211.36L803.43,209.97L802.02,210.9L800.22,209.18L800.71,207.53L798.49,207.1L797.12,202.48L798.66,202.81L797.85,198.36L798.01,195.63Z" class="land" id="PH" title="Philippines"/>
+    <path d="M288.39,266.82L286.14,266.62L285.68,267.18L283.34,267.66L280.58,269.59L279.74,272.64L280.05,273.79L278.43,275.17L277.86,277.2L279.19,279.68L280.85,281.7L280.28,283.01L282.53,283.32L283.15,284.86L285.68,284.75L287.22,283.22L287.48,288.01L290.33,287.83L293.04,292.69L292.34,293.87L292.27,296.39L292.91,298.01L291.79,300.4L292.4,301.26L291.84,302.41L292.53,304.12L293.37,304.47L293.2,305.67L291.75,307.42L292.15,308.38L291.3,309L291.27,310.57L290,311.01L287.34,308.93L286.7,307.71L284.02,305.87L280.23,304.13L276.59,301.81L274.15,299.37L273.06,297.8L273.18,295.86L269.95,290.06L268.76,288.88L268.38,287.47L267.02,285.13L265.2,280.52L263.41,278.08L261.27,274.37L258.29,272.16L259.07,271.58L257.73,268.18L257.84,267.09L260.36,264.17L260.79,265.7L259.99,267.31L262.3,267.5L263.86,269.18L265.53,265.38L265.7,264.3L266.99,262.9L270.16,261.59L271.73,260.25L273.11,258.36L273.92,255.31L273.86,253.91L275.17,254.2L276.68,256.61L278.26,257.48L279.54,259.3L279.67,260.7L281.72,261.17L283.45,260.31L284.42,260.87L285.72,260.51L288.01,262.17L286.28,265.4L287.35,265.5Z" class="land" id="PE" title="Peru"/>
+    <path d="M140.33,330.04L140.33,330.04L140.33,330.04Z" class="land" id="PN" title="Pitcairn Islands"/>
+    <path d="M268.94,226.5L269.28,228.45L267.3,230.97L266.02,228.37L266.9,227.37L264.39,225.44L263.44,225.41L262.53,226.7L260.54,228.32L261.51,229.6L260.47,230.83L259.36,231L258.93,229.46L257.66,229.43L257.13,228.13L254.6,227.55L254.01,228.34L253.75,227.41L254.1,224.03L255.14,223.63L255.9,225.33L258.24,226.12L261.63,224.77L263.18,223.56L267.14,224.69Z" class="land" id="PA" title="Panama"/>
+    <path d="M674.84,142.19L672.33,144.58L670.24,145.31L666.47,144.48L665.68,144.83L666.94,148.44L666.71,149.27L668.89,151.55L670.78,152.3L669.02,154.09L669.76,156.22L668.22,158.11L668.19,159.18L667.18,159.69L666.45,162.54L665.15,163.41L664.35,165.9L661.52,166.63L660.5,165.7L658.75,168.38L658.68,169.54L660.63,170.59L660.62,171.85L662.43,173.89L663.92,177.11L662.61,177.05L660.53,177.82L657.9,177.53L658.02,178.48L656.59,178.82L655.31,178.96L654.21,177.82L653.6,175.99L652.32,175.66L651.29,173.41L646.83,174.64L644.28,174.01L643.75,174.56L638.77,174.59L639.08,171.31L640.43,170.31L642.29,169.98L642.02,168.13L640.97,168.14L640.57,165.77L639.37,164.47L637.3,163.28L636.24,161.46L634.77,159.92L639.22,161.34L642,161.06L643.43,161.39L648.59,160L648.59,156.61L649.73,155.37L650.71,155.64L652.77,153.79L654.55,154.33L655.43,153.38L655.04,151.82L655.35,149.97L657.14,148.87L655.74,147.21L658.67,146.73L658.13,145.22L659.37,143.17L657.67,140.47L658.5,139.23L660.75,138L665.46,137.4L667.57,137.74L669.02,138.57L669.75,140.55L670.68,141.2L673.96,142.25Z" class="land" id="PK" title="Pakistan"/>
+    <path d="M625.22,175.29L626.06,176.89L627.78,178.61L631.45,179.49L635.17,183.97L634.28,186.23L633.15,187.45L632.25,189.67L630.68,190.18L630.48,192.18L630.9,194.03L629.25,194.39L627.95,195.38L627.09,197.38L625.01,197.72L624.1,200.24L621.46,200.35L618.92,201.47L615.41,194.1L623.1,190.96L624.26,184.65L622.84,182.45L622.77,181.41L623.83,177.61L623.7,175.64Z" class="land" id="OM" title="Oman"/>
+    <path d="M906.4,383.07L908.51,382.16L909.85,382.26L908.37,383.77L908.37,384.5L903.25,388.34L901.43,389.22L900.61,391.18L899.43,390.99L896.48,391.94L893.76,394.73L891.37,396.71L887.02,399.38L883.75,399.54L882.96,398.28L880.65,398.29L882.05,396.28L884.38,394.49L889.07,391.77L893.25,390.25L897.25,388.19L899.45,386.76L901.35,384.67L903.34,383.58L904.62,382.03L906.69,380.7ZM918.15,363.2L920.32,364.18L919.62,365.84L919.75,367.52L918.63,369.19L919.82,369.67L921.13,368.04L921.34,369.55L920.71,371.71L923.17,372.79L925.66,371.43L926.73,371.86L922.6,376.4L921.32,376.21L919.64,377.1L919.45,378.06L917.85,379.57L913.64,382.86L911.17,384.1L910.15,383.1L912.76,381.02L913.68,378.93L911.83,377.54L912.29,376.39L914.84,375.28L917.45,372.21L918.6,369.51L917.83,369.5L918.61,367.96L917.81,367.1L917.33,364.05Z" class="land" id="NZ" title="New Zealand"/>
+    <path d="M515.38,15.27L518.13,14.93L526.3,15.46L527.08,16.02L524.53,17.14L521.53,17.61L515.73,17.15L511.64,16.34L510.81,15.68ZM508.03,16.02L511.46,16.76L512.58,17.7L515.12,17.76L517.03,18.65L514.07,18.92L511.85,20.3L509.11,23.73L504.46,22.16L505.37,21.09L502.93,20.29L499.18,18.7L497.22,16.26L500.69,16.31L501.94,16.97L506.34,16.52ZM517.51,18.98L520.62,20.38L522.77,20.59L522.24,21.54L518.87,21.53L517.83,20.55L514.99,19.25Z" class="land" id="SJ" title="Svalbard and Jan Mayen"/>
+    <path d="M928.49,255.19L928.49,255.19L928.49,255.19Z" class="land" id="NR" title="Nauru"/>
+    <path d="M706.67,166.19L706.81,168.5L707.43,170.72L705.46,170.94L704.64,170.33L700.02,169.74L696.44,167.38L694.42,167.76L690.38,166.2L686.62,163.73L685.17,163.16L685.47,160.33L686.77,158.96L689.34,158.45L689.77,159.12L692.68,160.7L694.06,162.05L695.38,161.94L697.37,163.9L698.53,163.91L698.61,164.78L700.08,164.9L702.2,166L702.48,165.51L704.17,166.29Z" class="land" id="NP" title="Nepal"/>
+    <path d="M540.24,40.94L536.77,42.96L536.78,41.24L534.02,40.21L531.32,40.6L530.4,41.29L530.18,43.04L528.71,44.1L526.38,43.53L523.44,43.76L521.6,42.3L519.64,42.92L518.55,44.73L515.2,44.18L514.44,45.78L513.17,45.4L510.89,47.22L511.58,48.22L509.69,49.75L507.94,50.73L508.02,53L506.44,54.97L507.38,55.3L507.24,56.54L504.47,56.74L503.19,58.55L503.72,59.36L504.06,61.36L503.86,62.95L505.52,63.98L504.31,64.97L505.08,66.54L504.92,67.52L503.24,68.99L503.56,69.85L502.7,70.58L501.44,70.16L498.77,70.84L495.64,73.15L493.04,73.5L490.08,72.05L490.31,69.67L488.73,70.03L488.87,66.2L488.43,65.81L488.07,62.97L489.34,61.29L491.09,60.45L493.11,60.47L492.47,59.48L494.81,59.1L495.39,57.87L498.17,57.62L498.15,56.95L501.46,54.08L503.13,53.33L503.28,52.26L504.67,51.03L504.81,49.62L508.02,47.03L508.02,46.19L510.53,45.15L511.62,44.01L514.43,42.6L514.71,41.76L518.18,40.68L520.41,40.66L520.78,39.92L523.3,39.39L524.15,40.11L526.67,38.53L527.01,37.75L529.32,38.14L532.88,37.52L536.04,38.12L540.11,39.65L537.55,40.44L538.08,41.09Z" class="land" id="NO" title="Norway"/>
+    <path d="M26.24,313.33L26.24,313.33L26.24,313.33Z" class="land" id="NU" title="Niue"/>
+    <path d="M254.94,206.66L254.65,208.71L253.34,211.9L253.25,214.75L252.01,218.23L252.53,219.43L251.08,219.86L250.64,219.23L246.91,218.98L244.47,215.55L242.23,213.21L243.14,212.97L244.91,211.92L244.99,210.51L246.62,209.79L247.55,210.26L249.32,208.7L249.97,207.41L250.85,207.7Z" class="land" id="NI" title="Nicaragua"/>
+    <path d="M513.76,210.7L515.02,212.66L515.41,214.84L516.57,215.7L516.42,217.63L514.64,218.73L512.11,224.1L511.79,225.79L510.72,226.7L508.46,232.64L507.39,233.45L505.91,231.49L504.66,231.7L501.76,234.79L500.41,238.71L499.7,239.33L496.63,239.46L493.72,240.16L492.4,239.05L490.43,234.73L488.44,233.53L484.61,233.66L484.55,228.95L484.78,225.28L485.51,225.17L486.93,221.46L487.62,220.4L486.68,217.93L486.97,216.99L487.09,214.38L487.9,213.61L488.43,211.47L490.23,210.52L492.02,210.17L494.42,211.01L496.23,212.91L498.19,211.85L500.78,213.19L503.1,213.5L504.61,212.06L507.9,211.8L510.72,212.61L511.23,211.88Z" class="land" id="NG" title="Nigeria"/>
+    <path d="M913.03,344.58L913.03,344.58L913.03,344.58Z" class="land" id="NF" title="Norfolk Island"/>
+    <path d="M516.79,181.53L517.45,186.16L519.58,189.99L519.05,191.25L518.57,200.65L515.69,204.29L513.3,208.58L513.76,210.7L511.23,211.88L510.72,212.61L507.9,211.8L504.61,212.06L503.1,213.5L500.78,213.19L498.19,211.85L496.23,212.91L494.42,211.01L492.02,210.17L490.23,210.52L488.43,211.47L487.9,213.61L487.09,214.38L486.97,216.99L485.03,214.89L483.66,215.34L483.73,216.36L482.92,215.17L482.87,213.8L481.51,214.05L479.96,212.78L479.93,211.18L478.97,210.7L477.75,208.21L477.89,206.92L479.88,206.68L480.79,205.78L486.68,205.52L487.67,204.27L488.6,200.38L488.54,193.64L492.81,192.58L497.12,188.2L508.81,179.89L512.82,180.95L514.85,182.71Z" class="land" id="NE" title="Niger"/>
+    <path d="M912.54,316.98L914.71,318.63L915.51,320.19L918.13,322.78L917.42,323.68L914.17,321L912.26,317.72Z" class="land" id="NC" title="New Caledonia"/>
+    <path d="M539.58,308.8L541.98,308.3L543.72,308.49L544.56,309.28L542.15,309.86L540.02,311.35L539.32,310.01L533.1,310.93L532.7,322.49L530.07,322.49L529.75,331.23L529.24,342.8L527.26,344.22L524.3,344.12L522.62,343.58L521.69,341.47L520.04,343.32L518.22,341.27L517.3,339.44L516.44,336.08L516.22,332.04L515.42,329.42L515.62,324.7L515.12,323.09L512.92,319.09L512.22,316.79L510.42,312.84L508.65,309.93L508.61,307.57L510.75,307.46L512.24,306.69L514.45,308.01L526.32,308.04L527.44,309.19L534.31,309.93Z" class="land" id="NA" title="Namibia"/>
+    <path d="M598.45,294.17L598.45,294.17L598.45,294.17Z" class="land" id="YT" title="Mayotte"/>
+    <path d="M752.73,234.06L755.22,236.3L756.48,238.41L756.45,241.79L756.74,244.41L757.77,245.51L759.11,248.95L757.51,249.05L754.88,247.78L750.95,244.56L750.93,243.41L749.29,241.18L748.94,239.03L747.35,233.43L747.95,233.1L749.91,234.06L750.52,235.48L752.18,235.36ZM794.79,240.54L793.49,240.02L790.23,239.98L789.4,241.26L789.18,244.09L788.2,244.69L788.41,245.78L787.44,246.54L786.83,248.99L784.34,249.71L781.23,248.7L779.34,250.45L777.09,250.4L775.93,250.88L773.6,248.53L773.52,247.24L774.49,248.21L777.08,248.83L777.65,248.14L777.85,245.96L779.13,244.65L782.66,243.56L784.92,240.31L785.26,239.22L786.8,241L787.08,238.83L788.12,238.26L789.12,237.79L788.8,236.65L789.8,236.27L791.51,233.18L793.63,232.7L794.62,233.34L794.64,235L795.66,234.65L797.34,236.09L799.06,236.65L798.87,237.63L796.35,238.48L797.26,239.94Z" class="land" id="MY" title="Malaysia"/>
+    <path d="M571.2,289.79L570.39,289.83L569.53,291.77L569.94,295.38L571.71,297.06L573.22,299.48L572.78,303.84L571.7,304.16L571.13,305.41L571.38,307.09L569.13,304.28L568.78,303.3L569.64,301.45L569.2,298.66L567.31,299.16L566.22,297.42L564.85,296.16L565.68,294.95L565.89,293.09L566.91,292.65L566.55,289.66L566.7,287.65L567.8,286.7L567.03,284.42L565.91,283L569.65,284.01L570.17,284.95L570.3,288.24Z" class="land" id="MW" title="Malawi"/>
+    <path d="M630.05,317.73L630.05,317.73L630.05,317.73Z" class="land" id="MU" title="Mauritius"/>
+    <path d="M314.54,208.22L314.54,208.22L314.54,208.22Z" class="land" id="MQ" title="Martinique"/>
+    <path d="M311.56,201.18L311.56,201.18L311.56,201.18Z" class="land" id="MS" title="Montserrat"/>
+    <path d="M444.46,207.24L442.94,205.88L441.51,203.32L440.29,203.04L439.16,201.68L437,201.48L434.18,201.78L433.15,204.01L433.18,202.6L434.48,198.65L434.54,195.59L433.46,192.95L434.34,190.23L433.8,188.9L432.17,188.41L432.44,186.77L442.89,186.75L442.97,181.51L445.66,180.04L445.87,172.09L454.6,172.09L454.67,168.03L464.66,175.24L460.02,175.24L462.3,201.72L463.01,202.61L462.58,205.08L452.79,205.08L450.74,205.46L448.73,205.31L448.18,206.17L446.58,204.64L445.56,206.65Z" class="land" id="MR" title="Mauritania"/>
+    <path d="M563.16,337.75L561.14,337.72L560.9,334.95L561.32,330.23L560.35,327.16L559.87,323.76L562.93,320.4L563.32,318.45L564.86,315.81L564.23,313.07L565.07,311.06L565.19,305.89L562.54,305L560.72,303.73L558.59,303.64L558.52,302.53L558.16,300.49L566.22,297.42L567.31,299.16L569.2,298.66L569.64,301.45L568.78,303.3L569.13,304.28L571.38,307.09L571.13,305.41L571.7,304.16L572.78,303.84L573.22,299.48L571.71,297.06L569.94,295.38L569.53,291.77L570.39,289.83L571.2,289.79L573.43,289.4L575.37,290.23L576.62,289.76L578.12,290.1L579.18,288.91L580.7,289.28L584.79,287.42L586.1,286.31L585.85,289.02L586.16,293.11L586.08,298.6L586.54,299.86L585.7,302L583.63,305.02L581.51,306.7L578.97,307.55L576.48,309.11L574.48,311.55L572,313.58L570.02,315.62L569.25,317.48L569.93,318.74L570.53,321.4L570.5,323.74L571.07,325.52L570.35,328.15L570.45,329.32L569.62,330.49L564.72,332.75L562.58,335.09L563.42,335.87Z" class="land" id="MZ" title="Mozambique"/>
+    <path d="M866.99,206.22L866.99,206.22L866.99,206.22Z" class="land" id="MP" title="Northern Mariana Islands"/>
+    <path d="M753.89,97.8L754.2,103.51L755.41,104.3L757.2,103.74L758.95,104.41L759.43,103.38L761.18,103.39L765.42,105.94L766.26,107.61L762.71,107.27L760.9,108.36L759.15,108.58L759.1,110.1L758.24,111.14L755.55,111.43L754.17,113.33L749.61,112.35L749.37,114.5L751.56,116.53L749.79,117.68L749.04,119.44L747.1,120.43L743.97,120.45L740.71,120.95L737.5,122.66L735.87,122.91L735.61,122.23L733.81,122.62L731.93,121.82L728.97,121.17L728.03,120.4L723.52,119.74L722.37,120.08L716.55,119.39L714.61,119.6L712.89,118.1L710.27,114.78L708.63,114.55L705.41,112.86L698.31,111.95L697.41,110.93L697.64,109.36L696.24,106.54L694.04,104.33L691.84,103.33L690.61,103.33L687.39,101.65L686.27,99.8L686.81,98.93L688.34,98.94L689.95,98.12L689.7,97.56L693.79,95.17L699.74,95.58L701.31,97.19L703.61,97.53L704.26,97.23L707.12,97.62L707.85,98.08L709.5,97.03L709.28,95.65L707.58,94.29L707.35,93.2L708.43,91.03L717.13,93.18L718.67,95.5L722.5,96.84L726.14,95.83L729.52,96.32L731.24,97.3L733.03,97.49L733.73,98.49L735.52,99.32L736.98,99.28L741.02,99.79L741.94,99.22L745.62,98.43L745.59,97.88L747.51,96.43L750.35,97.42L752.28,97.23Z" class="land" id="MN" title="Mongolia"/>
+    <path d="M524.38,117.08L527.37,119.27L526.75,120.14L525.72,119.89L524.9,121.31L525.12,122.25L522.96,120.5L522.74,120.1L522.67,118.83Z" class="land" id="ME" title="Montenegro"/>
+    <path d="M744.67,186.02L742.78,188.65L742.66,189.95L741.99,189.61L739.74,191.66L737.61,191.69L736.97,192.64L737.2,195.28L736.55,195.67L737.73,198.23L739.76,200.44L740.71,202.54L740.73,205.37L739.81,206L740.1,207.22L742.88,210.66L743.42,213.72L744.78,216.72L742.79,220.23L742.76,221.71L742,220.19L742.49,217.32L741.56,212.4L740.48,210.61L738.92,207.08L737.76,201.82L737.11,201.86L736.36,200.17L735.09,201.73L732.95,202.97L732.13,204.37L730.9,204.07L729.77,202.6L728.83,203.1L729.25,198.58L727.29,194.42L726.26,194L726.85,192.7L724.87,190.76L723.9,190.71L722.96,189.18L721.76,188.46L721.13,186.88L722.13,186.33L721.82,184.73L722.83,184.65L722.75,182.4L723.28,181.1L722.62,178.3L724.86,178.76L725.69,175.07L725.24,173.93L726.17,171.94L725.8,170.19L727.82,168.24L729.31,167.86L730.64,165.97L730.4,165.09L730.75,164.17L732.48,165.33L733.42,167.19L734.32,167.12L735.22,170.24L735.47,172.33L733.72,174.43L733.44,176.82L734.21,178.69L736.91,178L737.73,180.91L739.05,181.21L739.22,184.26L741.19,184.57L742.29,186.35Z" class="land" id="MM" title="Myanmar"/>
+    <path d="M514.25,141.07L514.25,141.07L514.25,141.07Z" class="land" id="MT" title="Malta"/>
+    <path d="M488.54,193.64L488.6,200.38L487.67,204.27L486.68,205.52L480.79,205.78L479.88,206.68L477.89,206.92L475.28,206.49L472.58,208.25L471.65,209.24L470.73,208.91L468.74,210.8L468.46,212.03L466.46,211.71L465.71,212.53L465.43,214.98L463.11,216.58L463.07,218.53L462.46,220.97L461.08,221.69L460.48,220.03L458.2,221.66L456.71,220.96L455.82,221.79L455.18,220.93L454.73,217.96L453.62,217.06L453.05,214.78L450.95,215.91L449.74,215.37L448.65,216.35L447.97,215.4L446.97,215.99L446.75,214.77L446.77,213.09L445.02,210.92L445.14,209.13L444.46,207.24L445.56,206.65L446.58,204.64L448.18,206.17L448.73,205.31L450.74,205.46L452.79,205.08L462.58,205.08L463.01,202.61L462.3,201.72L460.02,175.24L464.66,175.24L480.34,187.48L480.4,188.38L481.78,189.76L485.81,191.61L485.56,193.61L486.35,194.12Z" class="land" id="ML" title="Mali"/>
+    <path d="M532.43,120.87L534.22,122.72L534.1,123.91L531.71,124.62L530.89,125.37L529.38,125.42L528.1,124.11L528.15,122.24L530.52,121.07Z" class="land" id="MK" title="North Macedonia"/>
+    <path d="M938.61,231.26L938.61,231.26L938.61,231.26Z" class="land" id="MH" title="Marshall Islands"/>
+    <path d="M223.13,172.19L220.76,177.14L219.21,182.7L219.23,185.91L220.07,189.01L221.46,191.35L221.65,193.01L222.62,194.86L224.29,195.03L225.75,196.68L228.51,195.87L230.3,195.75L232.83,194.98L233.17,195.75L234.64,195.26L234.59,194.4L236.39,192.98L237.26,191.22L238.19,187.77L239.73,186.94L244.36,185.87L247.72,186.48L247.36,188.16L245.41,190.62L245.29,192.25L243.91,195.83L242.87,194.97L242.5,195.74L239.93,197.81L235.06,197.8L234.82,199.57L233.72,199.56L236.03,202.28L235.83,203.27L232.38,203.28L230.91,205.63L230.51,208.06L229.18,206.2L226.56,203.33L224.07,202.19L222.39,203.58L219.48,204.59L216.28,203.6L213.82,201.82L211.42,201.24L208.54,199.73L206.21,197.47L202.15,196.2L201.15,194.63L198.67,193.11L197.3,189.73L198.86,187.43L199.15,186.26L198.28,184.7L198.29,182.69L196.08,178.74L193.9,176.43L193.2,174.61L190.94,172.93L191.85,171.11L190.49,168.68L189.29,167.91L189.59,166.2L188.13,165.88L186.31,162.57L185.43,156.98L185.95,155.77L181.92,153.82L181.2,155.84L180.94,158.73L181.29,160.01L182.48,161.47L182.76,162.86L183.96,164.44L183.82,166.33L184.63,167.28L185.02,169.03L185.96,169.85L185.99,172.74L186.87,175.89L186.81,177.7L188.16,177.82L189.27,180L187.56,181.87L186.88,179.61L183.25,175.73L183.76,173.69L183.47,171.4L181.81,169.38L180.67,169.8L178.86,168.24L177.86,166.61L179.78,166.18L180.9,164.44L179.28,161.42L177.85,160.25L177.82,156.95L177.01,154.55L176.77,151.5L183.12,150.93L182.63,151.58L191.25,155.31L198.54,155.29L198.95,153.88L203.47,153.91L206.39,157.64L206.71,160.49L209.39,162.62L211.26,160.6L212.65,159.89L214.72,160.18L216.19,162.41L216.57,164.75L218.06,167.2L217.86,168.81L218.33,170.67L222.52,172.48Z" class="land" id="MX" title="Mexico"/>
+    <path d="M675.81,240.56L675.81,240.56L675.81,240.56Z" class="land" id="MV" title="Maldives"/>
+    <path d="M610.22,292.47L611.19,294.47L611.7,299.68L612.23,301.73L611.39,303.53L610.64,301.95L609.97,302.29L610.29,305.18L609.09,307.54L609.02,309.61L603.71,323.96L602.39,328.39L601.12,331.26L599.83,332.4L598.31,332.66L596.5,333.7L595.48,333.64L592.81,331.92L592.08,329.91L592.39,327.31L591.71,325.28L591.57,322.65L592.36,320.47L593.36,319.59L595.08,315.96L595.31,314.41L594.47,310.83L594.49,308.02L595.8,305.86L596.03,304.33L601.5,302.13L605.25,299.09L605.84,297.26L608.1,295.09L608.51,292.55L609.39,291.36Z" class="land" id="MG" title="Madagascar"/>
+    <path d="M545.83,111.16L545.37,109.55L545.54,108.08L544.93,106.47L542.92,104.44L541.88,102.87L540.98,102.55L543.12,101.89L547.29,103.7L547.37,105.01L549.34,106.92L549.43,108.39L547.69,107.85L547.39,109.32Z" class="land" id="MD" title="Moldova"/>
+    <path d="M495.53,116.41L495.39,116.47L495.53,116.41Z" class="land" id="MC" title="Monaco"/>
+    <path d="M471.67,143.42L472.74,144.53L473.01,149.03L473.44,150.42L474.58,151.71L474.03,152.9L471.02,152.77L469.55,153.7L467.46,154.25L467.43,155.71L466.15,157.28L464.48,158.01L463.21,159.62L458.94,160.66L454.82,163.51L454.69,166.86L442.99,166.87L443.61,166.05L446.13,165.37L447.6,164.57L450.11,162.42L452.31,159.13L451.82,157.22L452.05,154.99L453.29,152.91L453.59,151.38L455.3,149.45L459.69,146.99L461.14,144.45L462.29,141.28L463.63,140.83L464.35,142.28L466.3,143.24L467.93,142.87Z" class="land" id="MA" title="Morocco"/>
+    <path d="M309.63,197.01L309.33,197.01L309.63,197.01Z" class="land" id="MF" title="Saint Martin"/>
+    <path d="M776.89,184.04L777.05,183.95L776.89,184.04Z" class="land" id="MO" title="Macau"/>
+    <path d="M538.96,74.93L540.06,75.55L540.28,76.85L541.38,78.97L540.23,79.98L538.04,80.36L533.89,78.22L532.16,78.61L527.48,78.2L525.24,79.18L525.04,76.98L526.27,74.81L528.07,74.36L530.82,76.55L532.39,75.52L531.99,73.94L533.69,73.38L535.76,74.03L537.11,74.92Z" class="land" id="LV" title="Latvia"/>
+    <path d="M491.78,96.9L492.69,97.87L492.38,98.92L491.06,98.66L490.92,97.51Z" class="land" id="LU" title="Luxembourg"/>
+    <path d="M538.04,80.36L537.35,82.31L536.66,82.56L536.18,84.3L534.52,85.36L531.56,85.46L531.21,84.69L529.76,84.22L529.74,82.8L525.94,81.55L525.24,79.18L527.48,78.2L532.16,78.61L533.89,78.22Z" class="land" id="LT" title="Lithuania"/>
+    <path d="M549.54,344.24L551.68,343.21L553.51,345.37L552.6,347.42L550.73,348.14L549.65,349.7L548.09,348.67L547.36,346.62Z" class="land" id="LS" title="Lesotho"/>
+    <path d="M692.49,222.89L694.54,224.28L696.49,227.21L698.02,230.79L697.51,233.49L695.1,234.88L693.38,234.34L692.66,232.22L692.37,229.86L692.52,225.75L692.95,224.41Z" class="land" id="LK" title="Sri Lanka"/>
+    <path d="M500.38,106.23L500.23,105.57L500.38,106.23Z" class="land" id="LI" title="Liechtenstein"/>
+    <path d="M314.21,210.33L314.21,210.33L314.21,210.33Z" class="land" id="LC" title="Saint Lucia"/>
+    <path d="M542.03,154.27L541.33,155.28L541.76,157.03L541.21,159.06L542.09,162.06L543.29,184.67L543.55,190.94L540.9,190.96L540.97,192.53L519.39,180.11L516.79,181.53L514.85,182.71L512.82,180.95L508.81,179.89L507.54,177.38L504.24,176.51L503.52,174.18L502.03,171.86L503.07,170.34L502.72,167.89L503.13,166.45L502.85,162.73L502.37,160.84L501.39,159.12L501.92,158.76L503.68,157.01L503.36,154.87L505.13,152.93L506.84,151.88L506.77,149.46L508.79,150.48L511.35,150.3L516.27,151.95L517.19,154.26L518.86,155.5L522.04,156.07L524.25,157.03L526.25,158.56L528.23,157.94L529.26,156.08L528.56,153.76L529,152.49L530.22,151.36L532.75,150.23L534.17,150.29L536.54,151.23L537.13,152.51L540.76,153.13Z" class="land" id="LY" title="Libya"/>
+    <path d="M454.44,229.94L454.94,231.46L454.11,233.23L456.03,234.08L457.2,235.31L456.94,239.97L455.01,239.23L452.66,237.77L449.59,234.57L446.28,231.98L448.62,229.31L449.62,227.04L451.67,227.48L451.81,230.3L453.35,230.87Z" class="land" id="LR" title="Liberia"/>
+    <path d="M569.07,148.68L567.23,149.77L568.95,144.91L570.12,144.96L570.64,146.19Z" class="land" id="LB" title="Lebanon"/>
+    <path d="M746.82,183.47L749.45,186.01L750.25,188.14L751.76,188.75L752.73,187.99L754.3,188.91L755.55,190.89L754.76,192.17L753.36,191.96L753.17,193.02L755.62,194.7L761.27,200.51L762.01,202.06L764.06,203.37L763.64,204.29L765.08,205.84L764.95,207.56L763.23,208.79L762.28,207.96L760.97,208.7L760.93,210.01L758.84,208.69L759.55,208.11L759.47,204.44L757.74,203L756.73,201.47L756.61,199.42L753.82,196.22L752.22,195.9L750.75,197.56L748.96,196.57L746.65,198.86L746.07,198.53L746.42,194.16L745.77,192.27L744.41,192.52L743.89,190.67L742.66,189.95L742.78,188.65L744.67,186.02L745.09,187.1L746.4,187.33L746.15,185.36L745.3,183.86Z" class="land" id="LA" title="Lao People's Democratic Republic"/>
+    <path d="M603.17,164.07L601.17,164.1L600.39,162.66L598.01,162.32L599.21,159.6L601.43,159.53L601.55,160.69Z" class="land" id="KW" title="Kuwait"/>
+    <path d="M530.52,121.07L528.15,122.24L526.75,120.14L527.37,119.27L529.06,118.45L530.88,119.76Z" class="land" id="XK" title="Kosovo"/>
+    <path d="M799.22,132.38L803.43,136.61L805.7,140.77L805.77,143.17L804.08,143.43L804.18,144.15L802.23,143.89L799.63,145.34L798.37,143.26L798.71,141.33L797.41,139.11L796.08,137.87L797.01,136.86L795.97,135.02L796.63,133.38L798.8,133.37Z" class="land" id="KR" title="South Korea"/>
+    <path d="M310.4,199.61L310.4,199.61L310.4,199.61Z" class="land" id="KN" title="Saint Kitts and Nevis"/>
+    <path d="M52.18,247.78L52.18,247.78L52.18,247.78Z" class="land" id="KI" title="Kiribati"/>
+    <path d="M758.1,221.01L755.64,220.41L755.49,218.71L754.53,219.44L753.71,216.96L753.01,214.7L752.24,213.94L751.47,211.21L753.53,208.73L757.73,208.43L758.84,208.69L760.93,210.01L760.97,208.7L762.28,207.96L763.23,208.79L764.95,207.56L764.67,209.38L765.67,211.53L765.77,214.9L762.98,216.2L762.87,217.04L761.57,217.18L762.61,219.13L760.53,219.36Z" class="land" id="KH" title="Cambodia"/>
+    <path d="M675.28,121.25L675.44,121.74L673.39,122.52L671.46,123.8L671.13,124.72L667.99,125.01L667.59,126.67L666.2,127.13L665.23,126.19L661.73,127.94L661.3,129.8L656.88,130.34L655.62,129.33L654.09,129.91L653.66,129.44L651.13,129.41L650.07,128.82L651.57,127.45L652.9,127.92L654.01,127.33L655.91,127.6L658.94,125.62L657.74,125.36L655.15,123.67L654.42,124.53L651.03,123.18L652.37,121.07L652.73,119.56L654.04,119.29L656.81,120.1L658.18,120L658.16,118.73L659.55,117.99L661.91,119.03L666.52,118.83L672.18,119.49L673.26,120.42Z" class="land" id="KG" title="Kyrgyzstan"/>
+    <path d="M590.42,241.14L587.97,244.78L588.05,256.3L589.53,258.88L588.08,259.68L587.12,261.52L585.97,261.98L585.67,263.74L583.93,267.58L583.2,268.25L579.39,265.06L579,263.1L571.27,258.08L568.93,256.71L569.04,253.03L570.49,250.32L571.31,249.73L571.78,247.13L571.17,244.77L570.36,243.69L570.2,242.04L569.05,240.38L572.49,236.4L573.78,236.87L573.85,238.54L574.73,239.66L576.96,239.78L580.17,242.17L583.98,242.77L584.91,241.54L587.38,240.22L588.63,241.25Z" class="land" id="KE" title="Kenya"/>
+    <path d="M685.19,100.04L683.93,100.27L684.01,101.73L682.27,102.17L682.27,103.6L683.34,105.62L681.72,106.92L677.49,105.83L677.2,106.3L677.18,110.95L677.96,112.17L675.63,111.59L672.19,112.53L673.42,113.33L673.81,115.34L675.78,118.24L674.73,119.78L675.28,121.25L673.26,120.42L672.18,119.49L666.52,118.83L661.91,119.03L659.55,117.99L658.16,118.73L658.18,120L656.81,120.1L654.04,119.29L652.73,119.56L652.37,121.07L648.43,123.81L647.06,126.03L645.76,124.34L643.02,124.51L641.59,121.86L640.38,121.83L639.84,118.77L639.19,119.12L638.1,117.77L636.33,116.52L635.33,117.03L632.24,116.79L629.36,117.21L626.28,114.42L619.44,110.84L613.58,112.57L616.03,123.95L615,124.14L612.99,122.09L610.8,120.8L608.73,121.2L607.12,122.53L606.78,119.48L604.83,119.02L601.55,115.04L600.25,114.63L600.26,113.71L601.35,113.7L602.24,111.45L604.92,111.32L605.85,108.88L605.61,107.41L604.8,106.54L603.13,106.89L600.51,106.06L596.32,108.43L594.67,107.73L595.38,107.09L592.72,104.12L590.15,103.5L588.82,102.09L589.22,100L588.55,99.18L589.19,96.44L590.02,96.12L592.11,97.78L592.96,97.22L592.47,95.45L593.75,93.99L595.37,93.37L596.33,92.05L598.42,92.79L599.96,92.2L600.68,92.8L602.48,92.79L605.57,94.91L606.12,94.25L608.96,95.44L610.26,94.19L612.6,94.58L614.62,94.05L616.16,95.17L618.45,95.51L618.6,94.85L620.32,95.26L621.92,94.66L622.06,93.55L621.35,92.92L619.06,92.29L617.83,91.31L619.6,90.4L618.87,89.01L619.23,88.33L621.41,88.42L621.36,87.93L619.3,87.4L618.48,86.4L618.9,85.13L620.37,85.44L625.79,84.14L627.41,84.2L627.89,83.44L629.56,83.31L633.51,82.44L633.6,81.85L635.12,81.18L638.12,81.85L639.24,81.43L641.04,83.51L641.25,84.65L645.57,84.96L647.02,85.84L646.99,86.47L649.64,86.33L653.07,84.36L654.21,85.45L657.48,87.12L660.14,89.33L665.83,94.92L667.34,93.4L669.36,95.03L671.79,95.07L673.51,94.26L675.16,94.92L676.48,96.39L678.48,97.08L679.48,98.28L681.98,98.78L682.87,98.45Z" class="land" id="KZ" title="Kazakhstan"/>
+    <path d="M827.22,123.8L829,126.17L831.48,128.56L832.41,130.85L832.38,133.07L831.58,133.27L831.69,134.49L833.15,137.46L832.98,139.03L834.68,141.47L834.13,142.91L832.97,143.88L831.99,142.46L831.15,142.87L831.23,144.69L829.69,143.47L829.34,145.01L825.75,144.36L825.02,144.76L826.28,145.87L825.13,146.33L824.83,148.27L823.65,148.29L821.85,145.98L822.31,145.32L820.34,144.48L816.84,145.94L814.63,146.18L814.7,147.34L813.57,146.73L811.56,146.97L811.28,145.66L812.15,145.59L814.78,142.14L818.02,142.05L820.19,141.4L821.79,142.17L822.72,138.28L824.31,138.19L826.16,136.78L826.7,134.82L827.57,133.89L827.25,129.75L825.19,126.21L825.7,125.44L827.72,125.32ZM828.99,115.28L832.73,116.37L834.36,118.19L831.48,119.1L830.94,120.54L831.16,121.84L826.78,120.04L825.04,120.78L823.43,120.11L823.49,120.93L824.79,121.48L824.89,123.34L823.83,123.16L823.57,122.11L821.83,119.83L823.08,118.07L824.37,118.12L823.83,115.58L822.95,113.42L821.69,112.07L821.92,110.98L825.01,113.11ZM812.66,148.14L813.64,147.98L815.6,150.53L815.26,151.32L815.57,155.06L813.89,155.77L812.76,155.41L811.87,152.9L812.43,151.23L809,149.29L811.77,147.29ZM820,146.08L821.51,147.45L820.77,149.26L819.05,148.43L818.34,148.9L818.16,150.53L816.84,150.3L815.81,148.42L816.3,146.91L818.31,146.84L819.15,145.76Z" class="land" id="JP" title="Japan"/>
+    <path d="M577.89,152.79L577.47,153.2L572.47,154.78L575.41,157.9L574.24,159.5L572.43,159.9L570.71,162.03L567.9,161.51L567.91,160.88L568.59,154.82L568.58,151.94L569.08,150.87L571.85,152.18L576.52,148.86Z" class="land" id="JO" title="Jordan"/>
+    <path d="M472.51,99.59L472.51,99.59L472.51,99.59Z" class="land" id="JE" title="Jersey"/>
+    <path d="M271.84,195.79L274.16,196.75L270.29,197.61L269.3,195.82Z" class="land" id="JM" title="Jamaica"/>
+    <path d="M501.23,125.32L501.7,126.52L501.24,130.68L499.96,130.45L499.56,131.47L498.37,130.56L498.4,127.16L497.67,126.04L500.33,124.33ZM516.44,133.64L515.36,136.03L515.92,137.42L515.51,138.45L513.95,138.1L508.6,134.9L510.85,133.77L511.71,134.33ZM510.4,107.87L509.7,108.49L510.61,110.74L509.33,110.17L507.12,111.18L507.8,112.65L507.17,113.41L507.61,114.95L510.57,116.97L511.81,119.7L514.8,122.05L516.76,122.03L516.97,123.6L519.75,124.76L521.94,126.03L523.37,127.75L522.39,128.27L521.79,127.2L519.43,126.65L518.54,128.52L520.09,130.01L520.31,131.21L518.82,132.09L518.84,133.05L517.69,134.51L516.85,134.52L517.35,132.1L517.9,131.96L516.43,128.11L514.54,127.33L514.01,125.99L512.34,125.5L511.36,124.22L509.76,124.2L508.59,123.49L503.65,118.94L501.89,115.58L498.71,114.33L497.09,115.89L495.67,116.36L496.09,115.38L494.33,114.77L494.45,113.42L493.44,112.19L494.69,111.31L494.32,109.7L496.67,109.42L497.77,108.71L499.01,109.99L499.68,108.59L501.33,108.36L502.51,106.81L504.4,106.48L506.6,106.6L507.2,107.31ZM507.87,115.94L507.87,115.94L507.87,115.94Z" class="land" id="IT" title="Italy"/>
+    <path d="M569.08,150.87L568.58,151.94L567.61,151.5L567.12,152.68L567.27,154.43L568.59,154.82L567.91,160.88L567.75,161.13L565.57,155.67L566.06,154.49L567.23,149.77L569.07,148.68Z" class="land" id="IL" title="Israel"/>
+    <path d="M444.61,50.46L446.33,51.03L446.13,51.75L448.48,52.49L447.82,54.2L445.18,55.76L442.91,56.27L441.59,56.95L439.02,57.38L437.12,58.23L433.85,57.81L430.58,56.01L430.45,55.16L429.09,53.75L430.72,52.47L428.85,52.23L426.02,52.49L427.3,50.9L430.21,49.92L432.35,51.42L432.33,52.67L434.29,51.85L434.41,51L437.78,50.63L442.04,50.73L443.76,49.69Z" class="land" id="IS" title="Iceland"/>
+    <path d="M590.25,137.02L592.26,140.56L593.25,141.12L594.6,143.34L593.59,144.38L593.22,146.98L595.44,149.31L595.46,150.17L598.91,151.85L600.34,153.83L600.27,156.32L601.13,156.36L601.34,158.01L602.91,159.6L601.43,159.53L599.21,159.6L598.01,162.32L593.27,162.02L585.79,156.08L581.1,153.37L577.89,152.79L576.52,148.86L581.06,145.85L582.19,144.47L582.06,138.99L582.96,138.73L584.19,137.13L585.13,136.3L588.65,136.58L589.1,137.53Z" class="land" id="IQ" title="Iraq"/>
+    <path d="M592.83,131.58L593.75,131.49L597.12,129.06L598.1,131.27L597.64,131.77L599.27,133.04L599.95,132.97L600.87,135.37L603.65,136.19L606.48,138.27L609.25,138.65L613.69,137.62L613.22,136.39L615.23,135.89L615.83,134.64L619.06,133.55L620.97,133.65L621.71,134.5L624.44,135.46L626.54,135.83L629.85,138.6L631.81,138.59L632.78,141.8L632.76,144.2L631.67,146.59L631.99,148.03L633.1,148.45L632.38,149.6L633.54,152.4L634,154.81L636.13,155.13L636.73,156.86L634.77,159.92L636.24,161.46L637.3,163.28L639.37,164.47L640.57,165.77L640.97,168.14L642.02,168.13L642.29,169.98L640.43,170.31L639.08,171.31L638.77,174.59L638.35,174.9L633.07,173.71L628.65,173.17L627.39,172.73L626.04,169.22L624.28,168.3L622.53,169L620.72,170.32L617.55,169.79L614.68,167.91L614.01,166.98L611.81,166.26L610.7,165.36L608.57,161.31L606.53,158.82L605.49,159.39L603.81,159.1L602.91,159.6L601.34,158.01L601.13,156.36L600.27,156.32L600.34,153.83L598.91,151.85L595.46,150.17L595.44,149.31L593.22,146.98L593.59,144.38L594.6,143.34L593.25,141.12L592.26,140.56L590.25,137.02L589.46,135.13L588.5,134.62L588.85,133.21L587.35,130.02L589.2,129.17L591.17,131.18Z" class="land" id="IR" title="Iran"/>
+    <path d="M462.96,85.02L463.3,88.47L461.98,90.68L459.72,90.95L456.64,92.49L453.01,91.63L454.04,90.83L455.71,87.96L454.6,87.08L454.27,84.46L457.44,84.25L457.17,83.26L458.35,81.89L460.73,81.29L460.76,82.05L458.62,84.05L460.34,84.92Z" class="land" id="IE" title="Ireland"/>
+    <path d="M672.72,276.64L672.72,276.64L672.72,276.64Z" class="land" id="IO" title="British Indian Ocean Territory"/>
+    <path d="M686.77,158.96L685.47,160.33L685.17,163.16L686.62,163.73L690.38,166.2L694.42,167.76L696.44,167.38L700.02,169.74L704.64,170.33L705.46,170.94L707.43,170.72L706.81,168.5L706.67,166.19L707.86,165.49L709.06,167.93L709.19,169.05L711.72,169.87L713.12,169.27L714.23,169.64L717.46,169.38L717.4,168.01L715.91,166.53L718.47,165.94L719.44,163.92L721.1,163.25L722.6,161.64L724.86,162.46L726.16,161.22L727.49,162.47L728.87,164.62L730.4,165.09L730.64,165.97L729.31,167.86L727.82,168.24L725.8,170.19L726.17,171.94L725.24,173.93L725.69,175.07L724.86,178.76L722.62,178.3L723.28,181.1L722.75,182.4L722.83,184.65L721.82,184.73L720.03,179.36L718.77,181.58L717.9,181.19L717.18,179.44L717.48,178.08L718.76,177.75L719.34,175.55L718.64,174.69L714.43,174.73L712.7,174.26L712.34,172.26L708.47,170.91L707.83,172.43L708.98,173.41L708.8,176.84L710.48,177.64L710.35,179.39L710.94,180.14L712.46,184.37L712.68,185.75L710.58,185.85L709.68,185.21L707.59,186.23L707.08,187.06L707.64,188.74L706.15,191.2L704.38,191.91L702.48,193.69L701.05,196.31L696.85,200.06L696.77,201.74L694.15,202.67L693.62,204.26L691.8,204.41L691.36,206.41L691.77,209.11L692.63,211.77L692.5,213.88L691.68,216.07L692,221.29L690.8,221.34L689.86,223.29L689.9,224.59L687.85,225.77L687.57,227.36L686.16,228.32L684.63,227.29L682.72,224.02L682.69,222.55L680.72,218.04L679.15,215.86L677.77,212.66L676.36,208.22L675.04,206.4L674.9,205.39L673.49,203.33L671.03,195.08L670.08,191.48L670.37,189.18L669.03,185.61L668.91,183.78L667.64,185.21L668.33,186.13L667.85,187.31L665.38,188.62L662.87,187.5L659.49,184.04L662.42,182.86L662.46,181.61L661,182.27L658.12,180.92L656.59,178.82L658.02,178.48L657.9,177.53L660.53,177.82L662.61,177.05L663.92,177.11L662.43,173.89L660.62,171.85L660.63,170.59L658.68,169.54L658.75,168.38L660.5,165.7L661.52,166.63L664.35,165.9L665.15,163.41L666.45,162.54L667.18,159.69L668.19,159.18L668.22,158.11L669.76,156.22L669.02,154.09L670.78,152.3L668.89,151.55L666.71,149.27L666.94,148.44L665.68,144.83L666.47,144.48L670.24,145.31L672.33,144.58L674.84,142.19L676.69,144.83L678.57,145.78L678.84,148.46L679.83,149.32L680.6,151.61L678.46,151.55L680.44,155.38L683.47,156.66L684.39,157.69Z" class="land" id="IN" title="India"/>
+    <path d="M467.14,84.73L467.14,84.73L467.14,84.73Z" class="land" id="IM" title="Isle of Man"/>
+    <path d="M737.74,237.23L740.33,237.21L741.61,238.32L742.77,240.78L746.7,243.63L748.72,246.52L750.31,246.52L751.51,248.28L752.34,248.51L754.22,251.14L756.95,252.08L757.78,253.43L756.82,254.18L757.6,256.35L759.32,256.82L760.09,261.04L762.06,261.02L763.76,263.29L763.17,264.87L763.13,269.24L762.84,271.33L761.6,270.93L760.85,271.54L759.69,270.84L759.53,272.04L757.57,269.46L754.19,266.56L753.14,264.83L751.69,263.48L749.78,260.28L749.82,259.62L748.37,256.16L746.46,253.26L745.28,252.48L743.63,247.63L741.27,246.2L740.94,244.68L739.21,242.4L737.77,241.65L735.11,238.69L734.29,236.18L735.36,236.04ZM800.31,282.9L802.32,284.97L801.19,285.77L799.09,284.14L797.72,283.93L798.08,282.93ZM813.88,283.32L811.96,285.32L810.36,285.93L809.76,284.75L811.15,282.79L813.65,281.54ZM791.44,280.51L790.65,281.5L789.92,279.96L790.89,279.23ZM807.98,280.51L804.86,281.41L803.19,281.52L799.95,280.78L800.31,279.99L802.22,279.35L804.38,280.4L805.82,280.02ZM795.83,279.59L797.83,279.65L797.77,280.94L792.44,282.03L791.73,281.74L791.98,280.26L793.98,279.93L795.54,278.98ZM788.34,279.08L788.97,279.87L787.61,281.09L785.72,278.97ZM819.05,277.55L818.09,278.44L816.43,278.02ZM850.5,279.45L848.22,279.41L849.25,277.47L851.37,276.69L851.89,277.64ZM831.15,278.59L831.11,276.94L832.28,276.84ZM784.25,275.79L781.32,275.9L781.65,275.15L784.64,275.07ZM840.19,273.72L838.82,274.74L839.25,272.89ZM766.99,272.36L769.44,273.17L770.37,274.81L775.06,275.3L775.99,273.81L780.76,275.23L781.32,277.19L782.51,277.71L784.74,277.44L785.69,278.27L785.86,281L782.39,279.49L780.82,279.87L775.3,279.06L773.82,278.25L770.37,277.55L769.57,277.96L766.49,276.94L764.74,276.76L764.51,275.63L761.76,274.78L763.5,272.07L765.5,272.64ZM840.9,271.42L840.83,272.87L839.95,273.38L839.81,271.44ZM808.32,270.05L807.65,268.48L808.57,268.02ZM819.99,263.23L820.93,264.94L819.44,265.53L818.19,264.85L817.73,263.49ZM827.83,262.54L829.5,262.92L830.74,264.74L830.56,265.64L828.02,263.98L824.16,264.26L823.28,263.53L823.62,262.54ZM769.61,262.95L767.99,263.61L768.18,261.6L769.28,261.7ZM814.98,258.91L813.47,259.85L813.39,258.85ZM843.37,258.55L845.33,258.75L845.3,259.39ZM763.85,258.8L764.67,261.28L765.5,262.03L765.12,263.13L763.66,262.41L763.12,260.4L761.37,259.96L762.61,258.35ZM823.59,258.77L821.99,258.98L822.23,257.74ZM745.25,259.14L743.75,257.32L744.48,256.44L745.54,258.66ZM843.16,255.61L844.54,255.85L844.38,257.08ZM858.16,261.74L856.82,282.09L854.32,278.91L851.4,279.05L852.18,277.3L851.35,276.25L851.76,275.02L850.73,273.41L849.89,270.66L847.37,268.97L844.43,267.74L842.33,267.49L839.59,265.45L838.31,264.1L837.13,266.28L836.37,266.38L835.88,263.88L834.82,262.88L837.15,261.2L838.27,261.54L839.15,260.15L836.54,260.68L834.78,260.59L833.8,258.45L832.09,257.93L832.01,256.25L835.71,254.7L838,255.85L839.35,255.9L840.1,257.84L839.77,260.44L842.05,264L843.26,264.03L845.8,260.68L847.03,260.45L847.82,259.33L849.68,258.21L854.98,260.92ZM740.72,249L741.95,250.53L741.81,251.61L740.53,250.62ZM814.8,250.47L813.56,252.11L811.74,252.62L809.92,252.06L802.54,252.17L801.63,254.54L801.85,255.61L803.37,257.86L804.36,257.97L805.69,256.25L809.4,255.94L808.34,257.79L806.19,259.4L805.19,259.66L806.51,260.87L807.93,263.58L807.49,264.9L809.12,266.42L809.14,267.17L807.25,267.63L806.42,268.73L805.3,267.9L805.72,266.37L803.88,264.69L804.33,262.18L803.26,261.92L802.14,263.12L802.57,265.17L801.98,270.9L800.35,271.38L799.47,270.54L800.34,266.19L799.85,264.44L798.7,264.64L798.2,262.22L799.71,259.61L799.7,257.98L800.98,255.09L801.08,252.83L802.31,250.54L802.98,251.02L804.04,249.55L805.88,250.24L809.4,250.92L811.98,250.96L813.13,250.38L815.04,248.26L815.71,248.88ZM822.48,250.93L824.33,248.83L825.04,248.66L825.1,250.12L824.01,250.84L825.08,252.45L823.17,252.1L822.91,252.64L823.34,255.78L822.38,254.33L821.63,249.66L822.17,247.81L823.2,248.26ZM794.79,240.54L795,242.21L793.75,242.35L796.29,246.33L795.77,247.42L798.84,250.51L795.5,251.3L794.9,252.84L795,255.99L792.26,258.18L792.24,260.77L790.48,264.82L787.01,266.61L786.66,264.5L785.45,263.83L784.66,264.38L783.96,263.53L780.6,263.96L779.32,264.62L779.37,263.13L775.09,262.72L774.6,257.95L773.99,256.74L772.3,255.12L772.57,253.48L771.72,252.46L772.05,248.9L773.52,247.24L773.6,248.53L775.93,250.88L777.09,250.4L779.34,250.45L781.23,248.7L784.34,249.71L786.83,248.99L787.44,246.54L788.41,245.78L788.2,244.69L789.18,244.09L789.4,241.26L790.23,239.98L793.49,240.02Z" class="land" id="ID" title="Indonesia"/>
+    <path d="M530.2,102.11L532.13,103.5L530.79,104.17L528.45,108.53L526.3,109.14L524.57,108.99L523.11,109.68L520.87,110.18L519.23,109.48L517.2,107.93L516.1,106.82L516.94,106.38L516.82,105.28L518.38,103.32L519.91,104.04L522.22,103.99L522.32,103.34L524.94,102.94L526.25,101.74L528.54,101.66Z" class="land" id="HU" title="Hungary"/>
+    <path d="M286.86,191.83L286.98,193.68L286.31,197.1L285.6,196.51L282.08,196.44L280.68,197.09L279.36,196.14L279.98,195.14L283.73,195.86L284.98,195.11L283.89,193.86L284.31,192.7L283.38,191.25Z" class="land" id="HT" title="Haiti"/>
+    <path d="M523.11,109.68L523.61,112.95L522.72,112.31L517.51,111.88L516.97,112.52L515.71,112L515.67,113.27L516.94,114.97L520.64,118.6L520.56,118.93L518.79,117.52L516.38,116.7L514.26,114.85L513.46,112.3L512.27,111.5L511.34,113.06L510.47,112.22L510.28,110.96L511.02,111.23L514.56,111.11L515.14,108.85L517.2,107.93L519.23,109.48L520.87,110.18ZM520.77,119.06L522.74,120.1L522.96,120.5Z" class="land" id="HR" title="Croatia"/>
+    <path d="M254.94,206.66L250.85,207.7L249.97,207.41L249.32,208.7L247.55,210.26L246.62,209.79L244.99,210.51L244.91,211.92L243.14,212.97L241.98,211.66L242.37,210.36L240.42,210.24L238.15,208.47L238.68,207.06L241.63,204.35L243.32,203.78L246.65,204.18L248.25,203.49L250.41,203.53L252.26,204.06L253.4,205.95Z" class="land" id="HN" title="Honduras"/>
+    <path d="M648.48,419.31L648.48,419.31L648.48,419.31Z" class="land" id="HM" title="Heard Island and McDonald Islands"/>
+    <path d="M778.1,183.05L778.74,182.96L778.1,183.05Z" class="land" id="HK" title="Hong Kong"/>
+    <path d="M322.97,236.23L322.56,237.88L321.53,237.97L320.55,240.53L321.87,243.09L322.54,243.02L322.77,244.56L324.1,247.21L324.7,247.51L322.98,247.28L321.69,248.25L319.67,248.61L319.2,249.56L317.26,249.28L315.85,247.64L315.24,245.17L315.66,242.36L316.5,241.28L315.77,239.58L315.02,239.47L315.39,237.69L313.37,237.31L311.72,235.11L312.41,234.15L312.41,232.64L314.46,231.86L313.65,230.13L316.14,227.6L315.67,226.84L317.81,228.33L319.3,229.98L319.64,231.57L320.95,232.36L323.03,234.51Z" class="land" id="GY" title="Guyana"/>
+    <path d="M865.27,212.09L865.27,212.09L865.27,212.09Z" class="land" id="GU" title="Guam"/>
+    <path d="M337.83,240.88L336.9,242L334.93,246.19L334.21,246.75L332.05,246.21L331.06,246.95L329.75,246.3L330.91,244.77L331.5,242.35L330.55,240.9L330.33,237.9L331.16,236.82L332.02,235.5L334.55,236.62L336.16,238.13Z" class="land" id="GF" title="French Guiana"/>
+    <path d="M239.93,197.81L238.99,203.83L239.91,203.84L241.63,204.35L238.68,207.06L238.15,208.47L235.97,210.6L233.22,210.01L230.51,208.06L230.91,205.63L232.38,203.28L235.83,203.27L236.03,202.28L233.72,199.56L234.82,199.57L235.06,197.8Z" class="land" id="GT" title="Guatemala"/>
+    <path d="M426.02,37.96L425.95,38.66L420.79,39.18L421.41,38.03ZM369.98,40.52L371.24,40.88L370.79,41.72L367.56,42.34L367.39,41.67L365.43,41.35L365.93,39.95L368.95,39.79ZM425.36,8.54L432.1,9.06L434.39,9.84L439.4,10.39L432.61,11.57L439.42,11.44L439.55,12.2L446.43,12.75L449.59,11.91L455.53,12.29L456.65,12.76L451.07,14.15L446.91,14.56L446.56,15.38L441.92,15.25L440.41,16.25L441.92,16.52L442.07,17.71L438.31,19.07L438.19,20.56L439.13,21.84L442.64,22.21L442.15,23.25L437.57,22.99L435.65,23.74L436.11,24.42L438.88,24.6L439.83,25.72L439.78,27.02L437.77,26.81L439.87,28.88L439.52,29.37L436.01,29.8L437.39,30.46L436.97,31.36L433.58,31.92L433.72,32.82L432.86,34.86L429.5,33.89L428.28,34.04L433.24,35.97L433.67,36.52L433.74,38.99L430.05,39.19L429.16,38.92L428.25,37.38L425.52,37.28L423.44,37.89L421.5,37.77L419.5,39.12L420.53,39.32L423.14,39.13L430.22,40.07L430.29,40.68L423.08,43.81L416.88,44.88L415.6,44.85L413.17,45.52L410.96,44.65L410.4,45.89L408.39,46.68L405.86,49.11L404.57,49.9L400.5,51.55L397.44,52.2L392.74,52.3L393.4,52.89L390.81,54.05L391.5,55.25L390.32,56.22L390.17,57.34L385.88,60.56L385.21,61.73L385.45,62.56L384.55,63.46L383.33,65.64L381.39,68.03L379.74,68.04L377.04,67.24L375.89,66.07L376.34,64.71L374.22,65.5L372.21,65.46L370.11,64.2L369.57,63.31L369.54,61.51L368.08,60.83L368.35,59.84L366.64,57.57L366.91,56.84L366.01,55.43L366.34,53.4L364.64,49.96L366.29,48.84L364.82,48.01L366.22,46.82L366.15,46.12L368.03,44.05L371.84,43.71L374.51,40.54L371.06,40.22L367.85,39.27L367.96,38.23L371.38,38.57L372.92,39.22L374.23,37.83L370.57,36.94L370.19,36.1L367.47,36.8L365.85,36.32L367.01,34.88L366.81,34L368.97,32.93L367.03,31.19L367.74,30.34L366.59,29.53L367.82,28.76L364.27,26.64L364.81,25.89L359.94,24.69L356.2,24.31L349.22,25.21L344.86,24.33L345.61,23.47L342.95,23.03L343.29,22.3L346.58,21.61L341.21,19.9L342.5,19.19L349.38,18.38L352.58,17.79L355.41,17.75L358.89,15.81L355.26,15.65L355.53,14.91L364.04,13.21L366.73,13.37L368.11,12.09L373.07,11.39L380.54,10.87L383.94,10.93L386.7,11.79L390.98,10.76L396.59,11.92L399.1,10.84L395.89,9.7L402.01,9.12L420.13,8.48Z" class="land" id="GL" title="Greenland"/>
+    <path d="M311.65,216L311.65,216L311.65,216Z" class="land" id="GD" title="Grenada"/>
+    <path d="M537.86,142.06L540.09,142.41L542.76,143.3L540.41,143.95L539.5,143.24L537.18,142.82ZM542.01,125.81L539.62,124.97L537.85,125.23L536.25,127.38L533.6,126.53L533.62,127.96L534.54,129.23L534.8,131.11L535.61,132.26L537.5,133.47L535.63,134.46L535.7,136.42L534.69,136.23L535.61,138.17L534.43,138.16L531.78,137.21L531.65,135.77L530.49,134.59L532.11,133.3L534.64,134.39L533.58,132.96L530.31,133.13L529.33,131.17L527.24,128.98L528.78,127.71L529.38,125.42L530.89,125.37L531.71,124.62L534.1,123.91L536.87,123.31L539.91,124.2L542.06,123.76L542.42,122.72L543.27,123.71ZM535.95,131.33L537.73,132.23L536.95,133.08L535.57,131.82Z" class="land" id="GR" title="Greece"/>
+    <path d="M503.23,250.35L502.68,250.02L503.81,247.55L503.79,246.37L504.28,246.8L507.92,246.8L507.94,250.45Z" class="land" id="GQ" title="Equatorial Guinea"/>
+    <path d="M436.89,219.36L435.96,218.49L435.69,216.9L433.99,216.3L432.47,214.93L435.53,214.5L436.55,213.91L440.49,213.93L440.44,216.87L437.88,217.58Z" class="land" id="GW" title="Guinea-Bissau"/>
+    <path d="M432.37,212.71L432.94,211.07L435.76,211.07L434.87,212.42Z" class="land" id="GM" title="Gambia"/>
+    <path d="M313.61,202.78L313.61,202.78L313.61,202.78Z" class="land" id="GP" title="Guadeloupe"/>
+    <path d="M446.75,214.77L446.97,215.99L447.97,215.4L448.65,216.35L449.74,215.37L450.95,215.91L453.05,214.78L453.62,217.06L454.73,217.96L455.18,220.93L455.82,221.79L455.41,223.88L456.06,224.13L456.24,227.1L455.12,229.95L454.44,229.94L453.35,230.87L451.81,230.3L451.67,227.48L449.62,227.04L448.54,224.45L447.17,222.37L443.68,222.73L442.98,224.26L441.53,225.28L440.45,222.77L438.51,221.52L437.6,219.39L436.89,219.36L437.88,217.58L440.44,216.87L440.49,213.93L442.22,214.05L444.33,215.01Z" class="land" id="GN" title="Guinea"/>
+    <path d="M477.13,218.81L477.16,220.33L478.29,221.56L478.02,223.88L478.74,224.31L478.43,226.52L479.02,230.58L478.73,232.16L480.52,234.54L479.87,235.41L478.01,235.58L475.16,237.24L471.91,238.69L469.16,237.54L469.77,237.37L468.68,233.73L468.59,232.29L469.79,228.77L470.56,227.91L469.92,225.09L470.06,223.93L469.71,219.18L475.43,219.21Z" class="land" id="GH" title="Ghana"/>
+    <path d="M471.35,98.8L471.35,98.8L471.35,98.8Z" class="land" id="GG" title="Guernsey"/>
+    <path d="M592.07,122.18L591.58,122.91L592.83,123.89L592.57,124.74L589.46,123.56L588.85,124.05L585.07,124.62L583.23,123.2L582.49,123.59L580.09,123.34L580.5,121.94L579.49,119.8L575.4,117.43L576.99,117.08L579.44,118.06L581.49,118.04L585.09,119.52L585.61,120.08L586.87,119.52L590.02,120.37L589.95,121.21Z" class="land" id="GE" title="Georgia"/>
+    <path d="M513.23,246.82L513.18,249.7L515.63,249.29L516.32,251.04L514.83,252.98L514.77,254.21L516.44,255.51L516.18,259.49L515.37,261.29L514.55,260.34L513.69,261.07L512.41,260.81L511.88,259.62L510.9,259.61L510.94,260.86L508.58,261.07L508.48,262.45L509.55,263.95L507.37,265.82L505.26,263L503.31,260.98L502.35,259.28L501.15,255.79L502.44,254.68L503.23,250.35L507.94,250.45L507.92,246.8L507.97,246.39L513.03,246.52Z" class="land" id="GA" title="Gabon"/>
+    <path d="M491.06,98.66L492.38,98.92L493.34,99.81L496.69,100.38L495.47,103.15L495.59,104.59L494.14,105.41L491.95,108.15L493.64,108.19L494.32,109.7L494.69,111.31L493.44,112.19L494.45,113.42L494.33,114.77L496.09,115.38L495.67,116.36L495.53,116.41L495.39,116.47L493.27,118.21L492.34,118.51L489.73,117.36L488.88,117.58L487.25,116.9L485.32,118.14L484.82,119L485.23,120.5L482.32,120.74L481.52,120.28L480.83,119.99L477.21,119.7L474.15,118.55L472.91,117.47L473.67,116.99L474.73,110.07L474.54,108.51L473,107.89L472.45,106.29L469.73,104.28L466.97,103.88L466.23,103.08L466.81,102.22L466.04,101.7L469.61,100.78L470.88,101.71L473.88,101.39L472.91,98.22L474.33,98.23L474.61,99.12L476.92,99.4L477.76,98.16L480.26,97.27L480.98,96.38L481.04,95.03L483.25,93.95L484.01,95.11L487.18,96.52L488.85,97.91ZM500.64,119.34L500.89,121.44L500.07,123.76L499.11,123.12L498.78,120.13Z" class="land" id="FR" title="France"/>
+    <path d="M904.22,232.27L904.22,232.27L904.22,232.27Z" class="land" id="FM" title="Federated States of Micronesia"/>
+    <path d="M462.89,61.52L462.89,61.52L462.89,61.52Z" class="land" id="FO" title="Faroe Islands"/>
+    <path d="M339.03,413.72L340.12,414.44L341.18,414.06L341.77,415.04L339.29,416.43L337.9,415.69L338.89,414.97ZM335.82,414.3L338.18,414.19L337.12,415.82Z" class="land" id="FK" title="Falkland Islands"/>
+    <path d="M952.32,307.96L952.78,310.18L950.45,310.73L949.2,310.17L950.48,308.24ZM957.82,304.18L956.94,305.05L957.2,305.99L954.62,306.48L954.29,305.63Z" class="land" id="FJ" title="Fiji"/>
+    <path d="M536.77,42.96L536.04,44.38L538.07,45.52L539.59,46.9L538.12,48.45L540.31,50.84L540.27,53.91L541.38,54.47L541.67,55.57L542.7,56.52L541.92,57.44L544.6,58.78L545.54,59.68L545.17,60.57L542.24,63.44L538.58,66.3L533.95,66.87L529.82,67.92L527.72,67.6L527.14,66.8L524.53,66.12L524.23,65.07L524.54,63.31L523.63,62.19L523.07,60.41L525.22,58.14L527.2,56.87L529.62,54.37L531.26,53.8L530.99,52.51L528.32,51.62L527.07,49.78L527.53,48.89L526.17,47.16L526.31,45.81L524.35,44.64L522.67,44.29L519.64,42.92L521.6,42.3L523.44,43.76L526.38,43.53L528.71,44.1L530.18,43.04L530.4,41.29L531.32,40.6L534.02,40.21L536.78,41.24Z" class="land" id="FI" title="Finland"/>
+    <path d="M591.01,214.58L589.48,217.33L589.64,219.23L592.65,219.17L591.99,220.36L594.34,224.24L595.83,225.48L603.89,228.57L606.58,228.57L601.24,234.83L598.62,238.22L596.16,238.1L593.45,239.31L592.85,240.16L590.42,241.14L588.63,241.25L587.38,240.22L584.91,241.54L583.98,242.77L580.17,242.17L576.96,239.78L574.73,239.66L573.85,238.54L573.78,236.87L572.49,236.4L570.92,232.75L568.04,229.59L566.26,228.71L566.83,227.32L569.13,226.74L569.02,223.99L569.46,220.65L570.23,219.55L571.19,219.59L571.58,216.61L572.8,214.36L574.15,213.76L575.08,208.97L577.02,208.35L577.9,209.3L578.64,207.1L580.36,208.44L581.85,207.8L584.95,208.42L586.46,209.32L589.27,212.33Z" class="land" id="ET" title="Ethiopia"/>
+    <path d="M539.55,69.3L538.59,71.45L539.72,74.03L538.96,74.93L537.11,74.92L535.76,74.03L533.69,73.38L531.99,73.94L532.26,72.54L530.56,72.52L529.86,71.67L529.62,70.12L531.48,69.33L533.92,68.85L537.26,69.39ZM527.88,71.77L529.45,72.17L527.09,73.12L526.74,72.19Z" class="land" id="EE" title="Estonia"/>
+    <path d="M472.91,117.47L474.15,118.55L477.21,119.7L480.83,119.99L481.52,120.28L482.32,120.74L485.23,120.5L485.34,122.02L482.47,124.06L479.87,124.76L476.5,129.58L476.8,131.01L477.82,131.96L475.69,133.86L475.24,135.64L473.97,135.71L471.98,138.17L466.28,138.35L464.23,139.27L463.06,140.52L462.02,140.01L460.92,137.61L459.95,136.86L458.63,136.9L458.42,135.63L459.25,134.31L458.89,132.9L459.66,131.49L458.71,129.52L459.75,128.97L460.36,127.01L460.12,124.93L461.93,123.3L460.96,122.02L457.73,122.21L457.04,121.43L455.62,122.03L455.87,120.99L454.6,118.81L455.53,117.7L458.46,116.37L459.51,116.89L463.42,116.93L466.21,117.45L468.47,117.13L469.84,117.58ZM485.16,128.73L485.95,129.02L484.99,130.26L483.23,129.28ZM434.85,164.58L433.97,165.75L433.36,164.71Z" class="land" id="ES" title="Spain"/>
+    <path d="M580.07,197.21L580.98,199.02L582.26,203.75L582.88,204.97L583.84,205.16L584.82,206.59L587.48,207.83L588.87,209.83L590.5,211.06L592.08,213.33L592.96,213.82L591.8,214.86L591.01,214.58L589.27,212.33L586.46,209.32L584.95,208.42L581.85,207.8L580.36,208.44L578.64,207.1L577.9,209.3L577.02,208.35L575.08,208.97L574.7,206.22L575.83,202.57L575.97,200.18L577.04,200.17L577.96,198.93L579.2,198.53Z" class="land" id="ER" title="Eritrea"/>
+    <path d="M462.96,85.02L460.34,84.92L458.62,84.05L460.76,82.05L463.27,81.68L464.72,83.8ZM470.35,72.08L468.35,73.68L469.65,74.41L472.64,74.43L473.3,75.03L471.28,78.46L470.08,79.15L472.42,79.67L473.53,80.65L474.34,82.99L475.77,83.79L478.61,88.35L481.17,88.99L480.96,90.98L479.55,91.82L478.92,93.08L480.64,93.15L479.57,94.47L477.8,94.96L473.74,95.01L471.3,95.4L469.28,95.35L468.34,96.57L467.45,96.08L464.68,96.52L467.47,93.68L469.94,93.63L467.04,92.02L465.82,92.36L465.41,91.25L467.07,90.65L468.03,89.62L467.77,87.6L470.21,86.98L470.55,86.07L468.22,82.97L465.52,82.74L466.51,81.09L464.54,79.22L465.07,77.88L463.84,77.62L464.75,75.79L464.19,75.2L465.34,72.88L466.76,72.09Z" class="land" id="GB" title="United Kingdom"/>
+    <path d="M565.41,155.31L565.57,155.67L567.75,161.13L567.37,161.78L566.82,165.73L566.42,166.52L563.69,163.99L562.08,160.99L561.98,162.65L564.63,166.1L566.01,170.03L567.81,173.05L569.74,176.87L570.96,178.16L570.83,180.12L571.4,181.68L572.87,182.68L574.69,184.67L543.29,184.67L542.09,162.06L541.21,159.06L541.76,157.03L541.33,155.28L542.03,154.27L543.95,154.38L547.49,155.14L552.32,156.86L555.58,154.89L557.6,154.48L560.07,156.04L564.1,155.92Z" class="land" id="EG" title="Egypt"/>
+    <path d="M230.66,253.5L231.94,255.93L231.66,256.52L230.4,254.47ZM273.86,253.91L273.92,255.31L273.11,258.36L271.73,260.25L270.16,261.59L266.99,262.9L265.7,264.3L265.53,265.38L263.86,269.18L262.3,267.5L259.99,267.31L260.79,265.7L260.36,264.17L261.43,263.24L261.92,261.64L259.97,261.79L258.57,260.42L259.08,260.07L258.69,256.95L259.63,256.23L259.82,254.73L260.76,253.6L260.89,251.12L264.11,249.81L264.22,249.03L267.97,251.59L268.09,252.25L270.59,252.84L271.09,252.17Z" class="land" id="EC" title="Ecuador"/>
+    <path d="M498.97,137.66L498.13,138.89L498.65,143.1L498.31,144.58L496.49,146.64L497.18,149.3L498.35,150.27L498.69,151.47L500.55,152.95L501.92,158.76L501.39,159.12L502.37,160.84L502.85,162.73L503.13,166.45L502.72,167.89L503.07,170.34L502.03,171.86L503.52,174.18L504.24,176.51L507.54,177.38L508.81,179.89L497.12,188.2L492.81,192.58L488.54,193.64L486.35,194.12L485.56,193.61L485.81,191.61L481.78,189.76L480.4,188.38L480.34,187.48L464.66,175.24L454.67,168.03L454.69,166.86L454.82,163.51L458.94,160.66L463.21,159.62L464.48,158.01L466.15,157.28L467.43,155.71L467.46,154.25L469.55,153.7L471.02,152.77L474.03,152.9L474.58,151.71L473.44,150.42L473.01,149.03L472.74,144.53L471.67,143.42L472.45,143.45L474.98,141.65L477.43,140.92L478.62,139.78L480.49,138.97L483.87,138.72L486.85,137.79L489.33,137.79L490.44,138.48L493.68,137.2L494.8,137.72Z" class="land" id="DZ" title="Algeria"/>
+    <path d="M286.31,197.1L286.98,193.68L286.86,191.83L289.12,191.21L291.21,192.09L292.13,193.15L294.8,194.39L295.54,195.54L294.64,196.53L293.97,195.94L291.76,195.83L290.6,196.44L288.36,196.37L287.17,198.34Z" class="land" id="DO" title="Dominican Republic"/>
+    <path d="M499.68,82.84L497.21,82.61L497.02,81.09L495.89,80.56L495.83,77.61L496.79,76.14L498.89,75.79L499.76,74.78L501.07,75.16L500.53,79.78L499.24,80.87ZM505.99,80.02L504.01,81.77L503.17,81.72L502.37,80.2L505.13,79.04ZM501.63,80.53L502.03,81.93L500.2,81.84L499.85,80.81Z" class="land" id="DK" title="Denmark"/>
+    <path d="M313.5,205.86L313.5,205.86L313.5,205.86Z" class="land" id="DM" title="Dominica"/>
+    <path d="M593.46,217.61L592.65,219.17L589.64,219.23L589.48,217.33L591.01,214.58L591.8,214.86L592.96,213.82L593.81,215.44L592.23,216.86Z" class="land" id="DJ" title="Djibouti"/>
+    <path d="M499.68,82.84L503.65,85.44L506.26,83.9L507.32,84.06L510.3,86.08L510.75,87.41L510.18,88.62L511.4,89.66L511.5,91.74L512.6,93.48L512.2,94.67L511.15,94.55L506.74,96.21L506.37,97.14L507.32,98.9L510.26,101.01L509.36,102.14L507.98,102.85L507.76,104.35L504.46,105.1L502.36,104.74L502.11,105.44L500.19,104.8L497.98,104.06L495.59,104.59L495.47,103.15L496.69,100.38L493.34,99.81L492.38,98.92L492.69,97.87L491.78,96.9L492.35,96.31L491.44,95L491.84,92.78L491.25,91.95L493.09,91.51L493.73,90.1L494.01,87.41L494.17,86.23L497.09,86.6L497.88,85.77L497.92,83.69L497.21,82.61Z" class="land" id="DE" title="Germany"/>
+    <path d="M512.2,94.67L515.08,95.42L516.78,96.97L517.83,96.12L519.64,97.35L521.3,97.63L522.03,98.75L520.5,99.52L519.64,100.64L518.28,100.72L517.78,101.52L512.97,100.35L512.38,101.52L510.26,101.01L507.32,98.9L506.37,97.14L506.74,96.21L511.15,94.55Z" class="land" id="CZ" title="Czechia"/>
+    <path d="M564.78,141.88L563.55,142.83L563.93,143.78L561.23,145.08L559.53,143.89L560.98,142.52L562.31,142.69Z" class="land" id="CY" title="Cyprus"/>
+    <path d="M261.27,192.99L261.27,192.99L261.27,192.99Z" class="land" id="KY" title="Cayman Islands"/>
+    <path d="M761.57,286.4L761.57,286.4L761.57,286.4Z" class="land" id="CX" title="Christmas Island"/>
+    <path d="M292.77,215.85L292.77,215.85L292.77,215.85Z" class="land" id="CW" title="Curaçao"/>
+    <path d="M259.06,186.01L258.23,186.41L257.79,185.32L258.81,185ZM261.73,181L264.83,181.19L266.26,181.7L268.36,183.44L269.66,183.51L271.62,184.97L272.58,185.06L274.58,186.91L276.95,187.45L277.01,188.64L278.99,188.9L280.44,190.69L278.08,191.26L275.35,190.98L271.17,191.4L272.67,190L272.77,188.92L270.77,188.7L269.6,187.63L269.41,186.18L267.75,186.03L264.74,184.46L261.32,184.03L261.32,182.52L259.12,182.49L257.21,183.96L254.64,184.42L255.67,182.56L257.89,181.62Z" class="land" id="CU" title="Cuba"/>
+    <path d="M252.53,219.43L252.95,220.84L255.14,223.63L254.1,224.03L253.75,227.41L254.01,228.34L253.34,226.72L251.81,226.64L252.15,225.32L249.52,223.41L248.28,223.61L246.97,222.61L246.53,221.06L246.91,218.98L250.64,219.23L251.08,219.86Z" class="land" id="CR" title="Costa Rica"/>
+    <path d="M414.62,206.61L414.62,206.61L414.62,206.61Z" class="land" id="CV" title="Cape Verde"/>
+    <path d="M594,290.81L594,290.81L594,290.81Z" class="land" id="KM" title="Comoros"/>
+    <path d="M285.84,216.47L284.08,217.08L281.94,219.68L280.9,222.96L279.86,224.72L281.34,225.09L282.25,227.37L282.05,230.27L282.97,231.39L288.31,231.88L289.99,234.4L294.27,233.91L295.37,234.74L294.26,237.1L294.11,239.49L294.59,241.5L295.51,242.9L294.07,244.53L295.73,246.1L296.6,249.75L295.34,247.06L293.1,248.2L288.58,248.24L288.55,250.27L290.41,250.88L288,251.77L287.95,254.01L289.05,255.08L289.78,257.31L288.39,266.82L287.35,265.5L286.28,265.4L288.01,262.17L285.72,260.51L284.42,260.87L283.45,260.31L281.72,261.17L279.67,260.7L279.54,259.3L278.26,257.48L276.68,256.61L275.17,254.2L273.86,253.91L271.09,252.17L270.59,252.84L268.09,252.25L267.97,251.59L264.22,249.03L265,248.03L264.91,246.37L267.5,244.58L268.92,241.5L268.23,240.88L268.67,238.81L268.43,236.64L268.88,235.5L268.66,233.24L267.3,230.97L269.28,228.45L268.94,226.5L270.26,228.28L270.25,226.62L273.75,224.02L273.8,221.69L274.49,220.39L276.21,218.83L277.23,219.2L278.37,218.1L280.36,218.24L283.28,216.39L284.9,214.72L286.09,214.99Z" class="land" id="CO" title="Colombia"/>
+    <path d="M54.76,320.13L54.76,320.13L54.76,320.13Z" class="land" id="CK" title="Cook Islands"/>
+    <path d="M527.58,242.7L527.26,244.43L526.14,247.28L525.69,250.08L525.29,255.29L522.92,257.41L521.12,260.39L520.92,264.41L517.21,268.73L516.21,268.68L516.08,267.02L513.52,268.7L512.6,268.07L512.09,267.47L510.75,268.02L509.75,269.22L509.11,267.85L507.37,265.82L509.55,263.95L508.48,262.45L508.58,261.07L510.94,260.86L510.9,259.61L511.88,259.62L512.41,260.81L513.69,261.07L514.55,260.34L515.37,261.29L516.18,259.49L516.44,255.51L514.77,254.21L514.83,252.98L516.32,251.04L515.63,249.29L513.18,249.7L513.23,246.82L516.45,246.84L519.84,247.59L520.71,248.34L521.04,246.48L522.34,242.52L524.41,242.06Z" class="land" id="CG" title="Republic of Congo"/>
+    <path d="M551.28,237.6L553.43,239.98L554.87,239.49L556.02,239.86L557.43,239.24L558.85,241.13L560.6,242.66L560.33,245.9L561.75,247.18L558.23,251.02L557.62,253.27L557.23,257.92L555.33,261.08L555.69,262.08L556.25,263.12L556.23,265.8L556.7,267.49L556.52,269.16L557.17,271.25L556.85,272.42L557.44,274.27L559.03,276.1L560.16,279.2L555.35,280.05L553.76,282.43L554.34,284.32L554.3,286.95L553.48,289.5L553.78,290.53L555.3,292.21L556.27,292.47L557.28,291.6L557.16,295.48L555.07,295.4L553.39,292.62L551.2,291.73L549.94,289.91L549.66,290.8L547.18,290.77L545.39,289.93L544.97,288.74L543.17,289.36L541.72,287.58L541.36,288.03L537.94,288.16L537.27,287.02L537.02,284.98L536.02,283.19L536.3,280.76L535.95,276.42L532.87,276.33L532.54,275.2L529.96,275.92L529.42,278.49L527.57,278.39L524.56,278.83L522.38,273.81L521.33,271.92L512.57,271.91L510.8,272.29L510.27,271.58L511.05,271.39L511.11,269.67L512.6,268.07L513.52,268.7L516.08,267.02L516.21,268.68L517.21,268.73L520.92,264.41L521.12,260.39L522.92,257.41L525.29,255.29L525.69,250.08L526.14,247.28L527.26,244.43L527.58,242.7L527.45,240.27L528.79,238.28L529.95,237.55L531.91,238.48L532.82,239.62L537.86,240.65L538.75,239.05L540.53,239L542.96,237.96L545.47,237.87L546.2,236.97L549.71,237.75Z" class="land" id="CD" title="Democratic Republic of Congo"/>
+    <path d="M519.04,230.05L518.41,230.86L516.75,235.24L517.02,238.99L517.87,239.95L518.17,241.61L520.71,244.48L521.04,246.48L520.71,248.34L519.84,247.59L516.45,246.84L513.23,246.82L513.03,246.52L507.97,246.39L507.92,246.8L504.28,246.8L503.79,246.37L503.99,243.23L502.76,241.31L501.61,240.79L500.41,238.71L501.76,234.79L504.66,231.7L505.91,231.49L507.39,233.45L508.46,232.64L510.72,226.7L511.79,225.79L512.11,224.1L514.64,218.73L516.42,217.63L516.57,215.7L515.41,214.84L515.02,212.66L516.23,212.97L517.8,216.52L517.99,220.27L519.12,222.43L515.62,222.36L514.92,223.27L515.89,224.79L518.02,226.82Z" class="land" id="CM" title="Cameroon"/>
+    <path d="M462.46,220.97L463.6,221.54L464.87,223.2L468.64,222.63L470.06,223.93L469.92,225.09L470.56,227.91L469.79,228.77L468.59,232.29L468.68,233.73L469.77,237.37L469.16,237.54L466.42,237.22L462.29,237.66L456.94,239.97L457.2,235.31L456.03,234.08L454.11,233.23L454.94,231.46L454.44,229.94L455.12,229.95L456.24,227.1L456.06,224.13L455.41,223.88L455.82,221.79L456.71,220.96L458.2,221.66L460.48,220.03L461.08,221.69Z" class="land" id="CI" title="Côte d'Ivoire"/>
+    <path d="M771.38,190.97L771.9,192.03L770.99,193.55L770.9,194.88L768.69,196.54L766.35,195.54L765.91,193.02L768.1,190.99ZM798.95,120.18L796.69,118.74L797.05,120.37L796.14,120.56L795.74,121.72L793.65,121.88L794.69,123.74L792.18,123.3L791.13,122.52L790.12,125.25L788.01,126.64L787.32,128.06L785.12,128.82L783.11,130.06L782.05,131.62L781.7,129.95L780.71,129.2L781.4,126.39L779.95,125.45L778.17,125.26L777.34,127.36L775.56,128.38L774.81,130.68L772.03,130.78L772.1,132.38L773.79,133.76L776.29,134.2L777.18,136.43L778.68,137.08L781.1,134.85L783.8,136.02L786.27,136.13L786.65,137.63L785.15,137.59L783.2,138.73L781.7,141.04L780.54,143.71L781.95,145.06L783.82,145.87L786.95,149.98L787.28,151.1L788.98,152.01L789.39,153.63L788.77,154.07L790.73,155.32L791.7,156.59L789.78,157.72L790.45,158.53L792.87,159.81L792.89,161.82L793.41,164.62L792.17,164.86L791.08,168.62L790.38,173.36L789.32,174.52L788.6,176.54L787.32,176.4L787.52,177.59L784.3,180.95L784.28,181.68L781.87,182.4L781.01,182.09L778.74,182.96L778.1,183.05L776.82,181.95L777.05,183.95L776.89,184.04L775.7,184.28L774.8,185.36L773.06,185.13L772.34,186.04L770.24,186.59L768.93,187.68L770.07,189.32L769.19,190.12L767.59,188.06L767.97,186.29L765.93,186.47L765.5,185.83L763.59,185.62L762.77,186.21L761.07,185.89L759.19,184.66L758.44,183.42L758.85,182.21L756.28,181.76L754.52,180.43L752.54,182.45L749.68,182.26L749.09,183.23L747.63,182.33L746.82,183.47L745.3,183.86L746.15,185.36L746.4,187.33L745.09,187.1L744.67,186.02L742.29,186.35L741.19,184.57L739.22,184.26L739.05,181.21L737.73,180.91L736.91,178L734.21,178.69L733.44,176.82L733.72,174.43L735.47,172.33L735.22,170.24L734.32,167.12L733.42,167.19L732.48,165.33L730.75,164.17L730.4,165.09L728.87,164.62L727.49,162.47L726.16,161.22L724.86,162.46L722.6,161.64L721.1,163.25L719.44,163.92L718.47,165.94L715.91,166.53L715.71,165.93L712.37,165.52L711.25,164.8L710.23,165.44L709.06,167.93L707.86,165.49L706.67,166.19L704.17,166.29L702.48,165.51L702.2,166L700.08,164.9L698.61,164.78L698.53,163.91L697.37,163.9L695.38,161.94L694.06,162.05L692.68,160.7L689.77,159.12L689.34,158.45L686.77,158.96L684.39,157.69L683.47,156.66L680.44,155.38L678.46,151.55L680.6,151.61L679.83,149.32L678.84,148.46L678.57,145.78L676.69,144.83L674.84,142.19L673.96,142.25L670.68,141.2L669.75,140.55L669.02,138.57L667.57,137.74L665.46,137.4L666.18,136.74L664.83,132.73L662.39,132.43L661.3,129.8L661.73,127.94L665.23,126.19L666.2,127.13L667.59,126.67L667.99,125.01L671.13,124.72L671.46,123.8L673.39,122.52L675.44,121.74L675.28,121.25L674.73,119.78L675.78,118.24L673.81,115.34L673.42,113.33L672.19,112.53L675.63,111.59L677.96,112.17L677.18,110.95L677.2,106.3L677.49,105.83L681.72,106.92L683.34,105.62L682.27,103.6L682.27,102.17L684.01,101.73L683.93,100.27L685.19,100.04L686.27,99.8L687.39,101.65L690.61,103.33L691.84,103.33L694.04,104.33L696.24,106.54L697.64,109.36L697.41,110.93L698.31,111.95L705.41,112.86L708.63,114.55L710.27,114.78L712.89,118.1L714.61,119.6L716.55,119.39L722.37,120.08L723.52,119.74L728.03,120.4L728.97,121.17L731.93,121.82L733.81,122.62L735.61,122.23L735.87,122.91L737.5,122.66L740.71,120.95L743.97,120.45L747.1,120.43L749.04,119.44L749.79,117.68L751.56,116.53L749.37,114.5L749.61,112.35L754.17,113.33L755.55,111.43L758.24,111.14L759.1,110.1L759.15,108.58L760.9,108.36L762.71,107.27L766.26,107.61L765.42,105.94L761.18,103.39L759.43,103.38L758.95,104.41L757.2,103.74L755.41,104.3L754.2,103.51L753.89,97.8L757.22,98.74L758.05,97.74L759.59,97.06L758.9,96.12L758.86,92.44L759.59,90.95L758.54,89.55L756.83,88.89L757.56,87.74L760.78,86.81L763.6,86.63L767.17,87.85L769.28,88.13L772.03,90.04L775.86,93.94L779.05,96.63L779.45,97.65L781.17,98.57L782.37,98.49L785.25,99.31L790.03,102.3L791.65,104.28L795.25,104.05L796.05,103.02L798.31,102.2L799.05,102.36L800.6,104.21L799.94,105.48L801.05,108.71L800.69,111.02L800.86,112.46L798.18,111.8L796.55,112.83L799.36,117.39L799.71,119.04L798.65,119.32Z" class="land" id="CN" title="China"/>
+    <path d="M323.6,425.28L321.4,425.48L321.01,424.62L323.04,424.76ZM317.33,424.59L319.28,424.88L320.95,425.58L321.21,426.36L318.57,426.14L316.95,425.26ZM308.34,420.33L310.36,421.3L307.97,421.71L306.51,420.17ZM317.44,417.86L319.67,424.4L317.77,424.41L317.06,423.98L315.39,424.27L313.02,423.71L313.96,422.87L313.54,421.53L314.84,420.15L313.73,418.98L314.88,418.1ZM300.08,407.31L300.73,409.86L298.85,409.43L298.33,407.11L298.87,405.96ZM299.29,405.62L298.48,405.72L297.29,404.24L298.44,404.2ZM299.44,393.93L298.2,393.5L298.5,392.55L299.78,393.21ZM297.27,392.74L296.75,393.04L297.95,394.97L297.24,395.61L295.35,393.52L295.47,392.98ZM296.23,389.49L294.73,389.23L294.24,384.67L295.58,384.99L296.21,386.76L295.53,387.13L296.7,388.22ZM300.16,325.08L300.73,325.64L300.23,328.89L298.04,330.02L297.41,331.42L297.99,332.22L297.6,333.46L298.4,335.56L298.13,336.71L298.99,338.32L297.74,338.71L297.27,341.14L296.27,342.68L295.79,345.55L296.54,348.8L296.06,349.06L295.62,352.62L297.23,355.46L298.1,357.97L298.75,358.37L299.13,360.97L298.34,362.57L298.28,364.43L298.94,366.74L297.61,368.19L298.22,372.08L299.48,375.13L298.48,375.91L298.24,377.94L298.85,380.12L298.55,381.24L299.38,384.22L300.1,385.46L299.39,386.24L299.92,388.39L301.88,391.3L301.93,392.7L303.47,392.88L303.01,394.54L303.82,395.32L303.25,396.84L304.23,399.46L304.31,401.37L303.49,403.43L304.35,404.93L304.16,406.23L302.67,408.63L303.4,410.27L304.86,412.12L306.24,411.73L307.11,412.64L307.46,414.54L309.07,415.88L313.67,415.94L317.57,416.98L315.56,416.53L315.03,417.17L312.52,418.21L313.13,421.22L312.54,421.53L310.24,420.78L311.47,419.22L311.13,418.2L309.17,419.66L307.78,419.63L304.88,417.82L305.39,416.03L304.05,415.27L303.74,413.91L301.29,413.1L300.22,411.95L301.27,409.81L299.84,405.63L298.19,402.9L298.68,400.67L294.7,399.56L296.03,398.17L295.41,397.3L297.51,396.97L297.47,395.89L298.72,396.09L298.71,394.54L300.01,393.78L299.92,392.86L298.21,392.04L298.39,390.37L297.76,386.25L298.2,385.25L296.56,383.89L295.52,384.68L293.84,382.57L293.73,379.33L294.16,376.65L291.89,371.88L291.66,370.28L292.62,370.21L292.99,365.25L293.67,363.71L293.6,360.78L294.14,359.17L293.58,357.42L294.05,356.05L292.61,351.36L292.1,348.72L292.63,346.57L291.7,344.29L292.27,342.57L292.64,336.12L292.21,334.4L292.62,332.47L292.04,330.81L291.89,328.1L291.38,325.82L291.91,325.16L292.01,320.9L291.43,318.49L291.22,315.6L290,311.01L291.27,310.57L291.3,309L292.15,308.38L293.43,310.09L294.06,312.97L295.56,314.43L295.04,315.33L295.17,317.65L296.93,320.3L298.36,325.08Z" class="land" id="CL" title="Chile"/>
+    <path d="M500.19,104.8L500.23,105.57L500.38,106.23L502.51,106.81L501.33,108.36L499.68,108.59L499.01,109.99L497.77,108.71L496.67,109.42L494.32,109.7L493.64,108.19L491.95,108.15L494.14,105.41L495.59,104.59L497.98,104.06Z" class="land" id="CH" title="Switzerland"/>
+    <path d="M737.21,291.68L737.21,291.68L737.21,291.68Z" class="land" id="CC" title="Cocos (Keeling) Islands"/>
+    <path d="M269.02,32.81L266.97,31.39L270.34,30.67L271.31,31.71ZM321.11,30.95L325.45,31.34L326.63,32.4L326.02,33.06L323.29,32.87L319.78,33.23L318.15,31.64L318.65,30.78ZM302.81,37.73L306.57,37.51L307.63,36.12L305.79,35.2L307.65,34.09L307.64,33.18L309.81,31.76L315.11,30.76L317.41,31L318.23,33.26L316.06,34.63L321.36,34.05L323.19,33.31L327.71,33.93L327.93,34.91L329.76,35.89L333.63,36.42L334.77,37.49L334.75,38.44L337.59,38.37L340.31,40.28L340.75,42.26L338.25,42.91L337.05,44.21L338.84,44.81L340.06,45.79L343.4,46.18L343.93,47.44L347.81,48.32L348.8,49.32L346.66,50.99L344.8,52.07L343.2,52.33L342.64,53.5L340.01,53.36L339.15,51.73L339.64,51.06L337.5,50.33L335.71,50.99L333.33,51.25L334.79,52.5L335.26,53.57L338.09,54.84L338.67,56.5L338.16,58.62L336.96,58.62L335.91,60.15L334.69,59.36L331.13,59.1L333.23,61.31L332.79,62.53L330.54,61.73L327.27,61.02L326.67,60.07L325.2,60.02L323.34,59.24L320.4,55.41L318.44,54.73L316.97,55.32L313.14,55.91L311.03,55.56L311.18,53.99L312.86,53.38L313.52,52.58L316.39,53.2L321.62,52.33L320.57,50.71L324.3,49.11L326.7,47.69L325.75,44.97L323.64,43.79L323.47,43.06L320,43.83L322.16,42.17L319.89,41.29L317.5,38.85L316.44,39.4L317.11,40.25L315.82,40.65L312.46,40.13L309.96,40.79L301.93,39.99L301.74,39.32L298.9,39.71L297.43,39L297.31,37.58L299.79,37.88L300.56,37.22L298.27,37.01L297.08,36.48L297.51,35.3L300.98,32.43L305.17,30.78L310.43,30.56L305.85,32.94L305.18,35.76L306.53,36.84ZM281.51,30.22L282.74,30.76L286.13,30.36L286.84,30.92L284.54,31.88L284.77,33.53L284.14,35.6L279.03,36.97L278.14,36.8L276.8,34.78L274.87,34.36L273.84,33.16L278.23,33.19L279.32,32.3L277.63,31.51L279.44,30.57ZM295.28,29.68L296.79,30.15L300.26,30.41L294.77,33.24L292.44,33.11L289.64,35.09L287.33,35.1L288.03,33.16L289.58,30.85L291.37,30.02ZM243.26,29.8L247.89,29.5L250.39,31.04L250.1,31.49L241.42,33.41L237.9,34.62L235.38,36.44L229.28,37.44L228.99,36L226.59,34.81L229.24,33.66L230.73,32.41L234.48,30.66L234.16,29.21L241.2,28.75ZM296.19,27.52L295.54,28.35L293.22,28.47L290.48,27.34L293.05,26.28L295.58,26.12ZM281.46,25.09L278.83,25.71L277.75,24.69L281.35,24.45ZM291.05,24L289.75,26.23L288.13,27.3L283.2,27.57L283.09,26.58L279.79,26.32L282.93,25.15L282.2,24.44L286.24,23.65ZM269.93,24.99L274.63,25.75L272.69,27.11L269.62,27.77L266.67,27.43L261.63,28.48L258.06,29.04L256.15,29L255.85,27.37L253.1,27.66L250.2,26.92L254.04,24.95L256.9,24.07L259.57,24.04L261.84,24.64L263.47,26.23L267.17,26.34L267.87,25.87L266.98,24.12L271.15,23.35ZM298.44,22.93L300.82,23.67L303.66,23.48L304.47,25L307.41,26.32L311.5,26.35L316.17,25.57L319.6,25.54L323.76,26.48L323.13,27.88L321.15,28.62L318,28.89L305.15,28.84L302.48,28.71L298.82,28.1L299.02,26.64L300.37,25.51L299.62,24.27L295.28,24.49L293.56,23.43L296.2,22.57ZM259.23,21.86L256.1,23.65L249.13,24.59L247.18,25.47L243.8,25.05L245.4,24.06L252.4,21.99ZM298,20.84L301.99,20.97L301.04,21.59L296.41,21.57ZM270.63,20.12L271.56,20.46L269.72,21.47L265.98,21.9L264.15,21.46L265.05,20.56ZM273.17,18.85L273.2,19.58L266.36,19.41L272.34,18.61ZM298.22,19.13L300.28,19.56L299.16,20.37L295.2,20.81L294.18,19.36ZM286.62,17.34L292,19.01L291.22,20.69L288.63,20.61L288.39,19.91L285.7,19.5L285.16,18.58L282.05,17.98L283.03,17.32ZM311.92,13.37L312.94,14.52L317.85,15L317.35,16.56L320.1,16.86L319.85,17.58L316.05,18.28L311.35,19.91L307.85,20.01L304.49,19.45L301.91,17.4L302.36,16.58L300.76,15.52L303.47,14.95L303.22,14.31L305.51,13.65ZM355.7,9.57L365.57,9.97L368.79,10.64L366.85,11.49L362.07,12.12L359.69,13.05L349.78,14.94L346.44,16.34L338.74,17.1L336.18,18.04L339.07,18.68L335.2,20.34L331.07,20.48L330.22,21.49L327.22,22.34L328.91,22.77L328.24,23.75L322.99,24.7L322.65,23.89L317.37,24.03L314.71,24.39L306.6,23.94L307.37,23.13L309.99,22.47L313.05,22.24L311.73,21.02L314.09,20.61L313.63,19.95L316.19,18.57L321.2,18.11L321.02,16.67L319.05,16.16L320.23,15.11L324.75,15.31L332.02,14.66L326.32,14.26L322.48,14.67L316.53,14.06L315.5,13.29L318.07,12.52L316.16,11.83L323.83,11.2L332.65,10.38L337.33,9.72L355.05,9.38ZM329.3,109.64L329.86,110.28L330.95,108.84L332.47,108.98L330.81,110.53L328.57,110.78L328.35,109.65L330.54,107.02L331.81,107.11L330.75,108.94ZM323.17,108.03L327.17,107.97L325.05,109.47L323.39,108.76ZM295.45,112.54L298.65,111.24L300.16,109.44L303.78,107.53L307.49,106.3L312.32,102.5L316.27,100.74L319.89,99.65L323.06,99.71L324.19,100.53L323.88,101.66L321.01,103.28L319.56,102.77L319.75,104.27L322.09,104.18L320.07,106.09L320.88,106.74L321.22,108.73L323.84,110.23L325.7,110.63L327.18,109.88L328.16,110.43L328.31,111.82L321.69,114.14L320.46,113.94L318.51,116.05L316.13,117L315.38,116.22L315.89,114.5L317.29,113.29L320.63,111.76L319.85,110.62L317.12,111.86L314.58,112.34L314.05,112.03L312.91,110.39L314.06,106.15L313.1,105.31L311.71,105.78L310.95,104.98L308.42,107.29L307,109.76L304.96,111.74L303.94,111.66L303.23,112.53ZM330.2,100.01L329.19,100.06L326.26,99.08L325.41,97.44L328.21,98.16L330.32,99.44ZM177.28,95.33L180.75,96.31L181.18,99L182.37,99.62L182.47,101.57L181.82,102.33L179.65,101.52L177.78,100.02L178.08,99.46L176.64,99.02L177.13,97.64L176.11,97.63L174.7,95.42L175.98,94.67ZM347.21,92.63L345.74,94.52L343.12,97.08L345.24,97.38L344.64,98.54L346.56,99.48L347.69,98.81L349.13,98.96L349.82,99.87L348.91,100.87L349.25,102.64L350.49,103.25L349.69,104.4L350.87,104.72L349.27,107.38L346.74,106.77L347.84,105.22L345.46,105.22L342.4,104.35L340.57,104.64L337.33,104.33L335.37,104.65L335.01,103.75L336.94,102.35L337.14,101.52L339.57,98.65L341.62,95.86L343.97,93.42L345.91,92.54ZM289.36,89.01L287.04,88.38L287.3,87.7L288.98,87.64ZM171.24,84.9L173.15,85.32L171,87.46L169.38,87.33L169.61,85.94ZM297.81,78.61L296.79,79.72L294.97,79.59L296.28,78.67ZM304.55,61L304.5,62.09L303.09,63.25L302.17,62.67L303.42,61.2ZM299.99,59.49L299.32,60.33L296.73,61.57L295.17,61.71L295.19,60.82L296.95,59.62ZM297.15,53.11L300.12,53.54L302.33,54.8L302.14,56.52L304.14,56.33L304.81,57.24L302.78,58.07L300.26,57.39L300.39,56.78L298.44,56.3L297.52,57.1L294.83,58.5L292.71,58.97L293.02,57.53L289.87,57.49L292.59,56.2L292.99,55.02L295.62,51.89L297.28,51.64ZM320.98,44.82L321.94,45.06L321.03,46.92L319.32,47.61L316.74,47.65L316.73,46.47L318.65,45.06ZM278.42,41.32L280.21,42.1L280.38,43.72L278.43,44.42L276.35,44.23L273.27,43.38L272.95,42.93ZM295.45,112.54L294.21,112.86L290.29,115.46L289.02,116.79L284.36,116.8L283.1,117.29L282.8,119.35L279.41,120.7L276.72,121.19L273.35,122.85L271.9,121.92L272.38,120.91L274,119.9L275.93,116.97L276.72,111.48L274.04,109.21L274.03,107.78L273.04,108.06L272.77,106.71L265.98,102.42L263.03,103.35L259.96,102.73L258.17,103.17L255.32,101.48L253.52,101.74L250.65,100.32L219,97.8L184.85,100.32L184.34,98.9L183.14,98.83L182.22,97.84L181.68,95.82L178.95,95.66L179.11,94.5L178.02,94.64L177.01,93.79L177.76,92.81L177.37,90.77L179.27,88.68L178.75,87.53L177.57,87.08L176.65,87.5L175.79,86.1L177.27,84.88L176.96,84.03L180.75,81.04L180.86,79.71L180.53,78.71L178.55,77.07L178.28,71.53L177.07,69.86L177.03,68.41L174.73,68.95L173.13,70.25L170.65,70.96L171.04,70.03L169.49,67.58L165.99,66.97L189.52,41.29L192.89,41.65L194.1,42.61L196.32,43.31L198.12,43.24L199.5,42.19L201.02,41.78L204.98,41.87L212.17,40L214.23,41.13L217.92,39.79L219.23,39.75L219.08,41.08L219.78,41.91L223.45,40.4L224.39,42.02L226.58,40.87L230.45,41.27L231.27,41.9L233.82,42.33L234.93,42.9L238.69,43.4L239.84,43.09L241.67,43.92L238.4,46.17L243.72,46.53L246.94,46.24L249.28,45.74L249.64,46.4L251.51,46.78L252.37,48.36L253.32,45.28L254.14,44.05L259.17,43.23L259.78,44.46L261.51,45.6L263.16,45.37L264.2,46.19L266.34,46.51L268.89,46.11L271.4,46.42L273.1,46.15L274.4,44.83L276.61,44.47L278.63,45.26L276.86,46.88L277.45,47.85L278.67,47.66L278.68,46.39L284.23,44.23L284.77,43.32L284.56,41.81L281.6,40.82L281.23,40.05L282.53,38.95L282.37,38.26L283.51,37.05L287.09,35.42L288.62,35.77L290.44,37.08L289.65,38.14L291.34,39.91L288.12,41.13L291.33,42.25L291.33,43.38L294.9,42.31L296.24,43.52L296.05,44.6L294.75,44.91L294.21,46.31L295.21,47.88L297.26,46.98L299.35,45.49L300.69,44L303.19,42.82L302.36,42.4L303.1,40.78L308.75,41.19L308.34,41.8L310.51,42.7L309.91,43.93L306.96,44.49L307.27,46.05L308.13,47.13L307.14,48.18L303.96,49.49L299.48,50.6L297.72,49.54L295.5,49.64L295.94,51.02L292.26,52.85L290.81,52.86L287.99,51.26L287.37,51.69L288.69,52.87L292.58,53.28L291.46,54.3L288.7,56.07L287.25,56.55L284.02,56.63L284.01,57.12L280.7,57.95L281.71,58.38L280.8,59.51L279.32,59.91L277.37,59.86L273.28,62.99L271.84,63.62L268.52,66.64L267.48,67.96L265.98,70.96L266.64,71.5L268.96,71.38L268.63,76.44L271.54,75.77L272.69,75.81L275.87,76.9L277.31,78.02L277.91,79.22L281.31,80.39L282.57,81.48L285.24,81.4L288.08,81.89L288.47,82.87L287.44,84.23L287.4,85.82L286.06,88.37L286.96,89.95L286.65,90.36L288.36,91.97L288.54,93.25L289.6,93.72L290.86,92.53L292.26,92.04L294,90.49L293.89,89.36L294.44,84.99L294.2,83.22L298.93,81.63L302.82,79.07L304.3,75.94L304.03,73.51L301.84,71.6L304.42,69.59L306.28,67.7L306.02,65.59L307.18,63.74L307.2,61.86L307.68,61.16L309.49,60.55L314.8,61.64L317.45,60.88L319.91,62.92L320.65,64.53L323.05,64.79L324.01,65.86L323.4,66.72L322.34,69.7L322.96,70.98L324.03,70.96L325.78,72.95L328.3,71.98L331.15,70.37L333.89,67.1L334.87,67.06L336.28,71.09L337.2,72.2L337.34,73.65L338.14,73.97L337.77,75.36L338.57,76.44L337.55,78.24L340.08,81.56L342.12,81.88L342.33,82.8L343.7,82.72L345.25,83.59L343.34,84.24L344.87,84.8L345.21,85.73L346.72,85.98L347.8,87.62L346.96,90.31L347.15,90.83L343.59,92.87L339.85,93.36L337.87,94.91L335.27,96.49L332.36,96.65L329.08,96.35L320.06,96.62L318.8,97.28L317.17,99.24L314.87,99.7L312.98,100.82L310.27,103.04L309.71,103.85L305.46,107.03L303.89,107.36L300.78,108.82L297.56,111.49ZM250.02,33.65L252.27,33.39L254.4,32.64L256.74,33.34L261.38,33.75L265.07,31.77L267.23,32.11L268.5,33.15L267.87,36.63L266.76,37.49L267.33,38.38L271.94,40.3L271.42,41.12L269.02,40.79L267.08,41.52L268.71,41.94L268.22,42.95L264.5,43.52L261.84,42.8L259.7,42.59L259.2,41.85L256.72,43.01L253.14,43.65L247.82,44.23L243.97,44.36L244.29,42.5L239.01,41.89L239.23,40.11L244.86,39.55L248.64,39.78L250.17,39.2L247.37,38.56L242.62,38.84L239.49,38.72L238.7,38.05L240.22,37.35L239.3,35.98L239.84,35.21L241.93,34.49L242.24,33.8L244.55,33.04L251.54,31.66L251.44,32.96Z" class="land" id="CA" title="Canada"/>
+    <path d="M538.75,219.42L540.93,222.86L540.69,226.01L542.34,226.48L542.75,227.65L544.27,228.13L545.73,230.65L548.41,232.83L548.84,234.6L550.39,235.51L551.28,237.6L549.71,237.75L546.2,236.97L545.47,237.87L542.96,237.96L540.53,239L538.75,239.05L537.86,240.65L532.82,239.62L531.91,238.48L529.95,237.55L528.79,238.28L527.45,240.27L527.58,242.7L524.41,242.06L522.34,242.52L521.04,246.48L520.71,244.48L518.17,241.61L517.87,239.95L517.02,238.99L516.75,235.24L518.41,230.86L519.04,230.05L521.45,229.55L522.55,229.97L524.87,228.61L527.04,228.46L528.77,226.51L528.86,225.38L532.07,225.03L533.22,224.16L535.73,221.15L535.67,220.5L537.76,219.18Z" class="land" id="CF" title="Central African Republic"/>
+    <path d="M491.44,95L492.35,96.31L491.78,96.9L490.92,97.51L491.06,98.66L488.85,97.91L487.18,96.52L484.01,95.11L483.25,93.95L485.18,93.11L486.48,93.62L487.24,93.08L487.88,92.82L491.02,93.87Z" class="land" id="BE" title="Belgium"/>
+    <path d="M544.56,309.28L546.77,314.76L549.48,316.67L549.59,317.71L550.69,317.88L550.53,319.55L551.45,321.15L554.03,321.9L554.83,323.1L551.7,324.68L550.8,325.87L548.76,327.29L547.83,329.54L545.32,331.14L544.31,333.84L542.09,334.5L539.89,333.82L538.3,332.77L537.25,333.37L536.53,335.3L533.82,337.77L531.45,337.75L531.21,336.48L531.72,334.81L530.67,332.03L529.75,331.23L530.07,322.49L532.7,322.49L533.1,310.93L539.32,310.01L540.02,311.35L542.15,309.86Z" class="land" id="BW" title="Botswana"/>
+    <path d="M715.91,166.53L717.4,168.01L717.46,169.38L714.23,169.64L713.12,169.27L711.72,169.87L709.19,169.05L709.06,167.93L710.23,165.44L711.25,164.8L712.37,165.52L715.71,165.93Z" class="land" id="BT" title="Bhutan"/>
+    <path d="M785.26,239.22L788.12,238.26L787.08,238.83L786.8,241Z" class="land" id="BN" title="Brunei"/>
+    <path d="M317.82,212.65L317.82,212.65L317.82,212.65Z" class="land" id="BB" title="Barbados"/>
+    <path d="M337.25,258.06L338.02,255.61L339.06,255.66L338.75,256.77ZM343.2,254.29L344.58,254.09L346.57,254.68L345.1,258.21L343.32,258.93L340.84,259.17L340.15,257.45L340.45,254.43L341.52,253.94ZM324.7,247.51L325.95,247.82L325.67,246.39L328.71,245.47L329.75,246.3L331.06,246.95L332.05,246.21L334.21,246.75L334.93,246.19L336.9,242L337.83,240.88L339,240.78L339.42,243.32L340.97,247.86L342.33,248.39L342.47,249.94L339.99,253.04L338.73,253.84L337.6,255.96L336.95,258.54L339.72,257.06L340.35,259.08L341.13,259.88L344.07,258.99L344.94,259.3L347.29,255.88L349.23,255.54L350.81,256.01L356.66,259.03L357.61,261.5L361.31,261.28L363.18,262.3L365.7,262.76L367.97,262.32L369.35,262.52L373.4,265.2L374.57,266.76L376.96,268.94L378.55,269.51L381.36,269.61L382.23,270.98L383.48,276.37L383.45,278.5L382.18,282.44L379.45,286.37L378.03,287.42L376.15,291.43L374.76,293.76L373.29,293.57L372.58,296.09L373.04,297.48L372.81,299.43L373.47,303.23L372.82,307.78L373.05,309L372.21,309.9L371.66,311.94L371.89,313.94L370.31,318L369.34,319.06L368.72,322.76L367.24,323.47L366.51,325.47L362.6,325.78L361.69,325.36L359.7,325.81L357.8,327.8L356.38,328.14L354.16,329.53L351.74,331.92L350.25,334.5L350.2,337.29L350.69,338.85L350.82,341.61L350.54,343.19L348.38,345.67L347.36,349.02L345.12,348.82L344.62,350.99L343.45,352.03L343.39,354.5L342.49,357.55L340.94,359.45L340.25,357.66L341.09,356.29L339.14,354.15L336.76,352.35L334.92,351.53L333.98,350.43L333.26,351.04L332.27,349.65L330.34,348.01L328.37,348.27L329.84,346.4L332.39,342.02L334.46,339.96L336.88,338.61L336.98,335.79L336.2,334.04L334.27,333.74L334.72,328.93L333.63,328.19L331.74,328.76L329.91,323.46L328.06,322.82L327.02,323.35L324.18,322.64L324.26,319.35L323.13,316.73L323.08,315.41L324.15,310.8L323.26,308.4L321.69,307.52L321.08,304.68L316.7,304.5L315.98,299.32L315.24,296.72L313.65,295.78L311.75,295.89L310.63,294.67L309.03,294.24L308.15,293.21L304.47,292.49L302.85,291.04L301.64,288.75L301.36,283.95L297.81,284.78L293.51,288.04L290.33,287.83L287.48,288.01L287.22,283.22L285.68,284.75L283.15,284.86L282.53,283.32L280.28,283.01L280.85,281.7L279.19,279.68L277.86,277.2L278.43,275.17L280.05,273.79L279.74,272.64L280.58,269.59L283.34,267.66L285.68,267.18L286.14,266.62L288.39,266.82L289.78,257.31L289.05,255.08L287.95,254.01L288,251.77L290.41,250.88L288.55,250.27L288.58,248.24L293.1,248.2L295.34,247.06L296.6,249.75L297.8,251.01L299.82,250.5L300.69,250.86L304.07,248.52L304.29,247.62L306.04,246.63L304.61,245.91L303.86,242.36L302.95,241.38L306.39,241.31L307.25,242.34L307.97,241.02L309.48,240.76L312.62,239.4L313.72,237.96L313.37,237.31L315.39,237.69L315.02,239.47L315.77,239.58L316.5,241.28L315.66,242.36L315.24,245.17L315.85,247.64L317.26,249.28L319.2,249.56L319.67,248.61L321.69,248.25L322.98,247.28Z" class="land" id="BR" title="Brazil"/>
+    <path d="M323.13,316.73L322.97,315.64L320.4,313.97L317.97,314L313.43,315.09L312.35,317.98L312.51,319.56L311.93,323.23L311.34,322.49L308.37,322.72L307.58,324.89L306.77,323.21L303.64,322.81L302.68,321.98L301.2,323.17L300.16,325.08L298.36,325.08L296.93,320.3L295.17,317.65L295.04,315.33L295.56,314.43L294.06,312.97L293.43,310.09L292.15,308.38L291.75,307.42L293.2,305.67L293.37,304.47L292.53,304.12L291.84,302.41L292.4,301.26L291.79,300.4L292.91,298.01L292.27,296.39L292.34,293.87L293.04,292.69L290.33,287.83L293.51,288.04L297.81,284.78L301.36,283.95L301.64,288.75L302.85,291.04L304.47,292.49L308.15,293.21L309.03,294.24L310.63,294.67L311.75,295.89L313.65,295.78L315.24,296.72L315.98,299.32L316.7,304.5L321.08,304.68L321.69,307.52L323.26,308.4L324.15,310.8L323.08,315.41Z" class="land" id="BO" title="Bolivia"/>
+    <path d="M311.09,152.26L311.09,152.26L311.09,152.26Z" class="land" id="BM" title="Bermuda"/>
+    <path d="M239.91,203.84L238.99,203.83L239.93,197.81L242.5,195.74L242.89,196.84L242.22,198.45L241.73,201.52Z" class="land" id="BZ" title="Belize"/>
+    <path d="M541.38,78.97L544.26,79.57L544.63,80.31L546.26,79.84L547.93,80.65L548.87,83.36L549.74,84.7L550.7,85.11L553.16,87.25L551.98,87.98L550.25,87.67L551.03,90.31L551.56,90.94L549.76,91.1L548.91,92.45L546.22,93.09L545.63,92.39L544.4,92.61L541.25,92.4L540.9,91.98L537.99,91.5L534.34,91.64L532.69,92.69L532.62,91.12L531.49,90.47L532.85,89.25L532.82,88.17L531.56,85.46L534.52,85.36L536.18,84.3L536.66,82.56L537.35,82.31L538.04,80.36L540.23,79.98Z" class="land" id="BY" title="Belarus"/>
+    <path d="M310.05,197.61L310.05,197.61L310.05,197.61Z" class="land" id="BL" title="Saint Barthelemy"/>
+    <path d="M273.25,176.14L272.26,177.46L271.82,176L272.71,174.77ZM275.22,172.38L275.22,172.38L275.22,172.38Z" class="land" id="BS" title="Bahamas"/>
+    <path d="M609.75,172.44L609.75,172.44L609.75,172.44Z" class="land" id="BH" title="Bahrain"/>
+    <path d="M523.61,112.95L524.47,112.99L524.1,114.7L525.06,116.56L524.38,117.08L522.67,118.83L522.74,120.1L520.77,119.06L520.56,118.93L520.64,118.6L516.94,114.97L515.67,113.27L515.71,112L516.97,112.52L517.51,111.88L522.72,112.31Z" class="land" id="BA" title="Bosnia and Herzegovina"/>
+    <path d="M547.34,116.44L547.17,117.53L545.92,118.16L545.96,119.51L545.06,120.39L546.53,121.94L544.71,121.6L543.07,121.95L542.42,122.72L542.06,123.76L539.91,124.2L536.87,123.31L534.1,123.91L534.22,122.72L532.43,120.87L532.59,119.23L533.75,118.15L532.64,117.33L532.17,115.62L532.8,114.9L534.17,116.03L539.8,116.66L541.45,115.62L543.53,115.12Z" class="land" id="BG" title="Bulgaria"/>
+    <path d="M721.82,184.73L722.13,186.33L721.13,186.88L721.76,188.46L719.21,183.07L718.31,182.15L717.19,182.78L716.1,181.22L715.76,182.29L716.43,183.85L715.52,185.23L714.52,184.71L713.12,185.53L712.46,184.37L710.94,180.14L710.35,179.39L710.48,177.64L708.8,176.84L708.98,173.41L707.83,172.43L708.47,170.91L712.34,172.26L712.7,174.26L714.43,174.73L718.64,174.69L719.34,175.55L718.76,177.75L717.48,178.08L717.18,179.44L717.9,181.19L718.77,181.58L720.03,179.36Z" class="land" id="BD" title="Bangladesh"/>
+    <path d="M477.89,206.92L477.75,208.21L478.97,210.7L479.93,211.18L479.96,212.78L481.51,214.05L482.87,213.8L482.92,215.17L483.73,216.36L482.63,217.86L481.14,217.77L479.73,219.19L477.13,218.81L475.43,219.21L469.71,219.18L470.06,223.93L468.64,222.63L464.87,223.2L463.6,221.54L462.46,220.97L463.07,218.53L463.11,216.58L465.43,214.98L465.71,212.53L466.46,211.71L468.46,212.03L468.74,210.8L470.73,208.91L471.65,209.24L472.58,208.25L475.28,206.49Z" class="land" id="BF" title="Burkina Faso"/>
+    <path d="M486.97,216.99L486.68,217.93L487.62,220.4L486.93,221.46L485.51,225.17L484.78,225.28L484.55,228.95L484.61,233.66L481.69,234.14L481.62,225.28L480.89,222.31L479.41,221.18L479.73,219.19L481.14,217.77L482.63,217.86L483.73,216.36L483.66,215.34L485.03,214.89Z" class="land" id="BJ" title="Benin"/>
+    <path d="M559.86,261.08L559.74,262.7L560.48,263.81L557.55,267.51L556.7,267.49L556.23,265.8L556.25,263.12L555.69,262.08L558,262.07L558.17,260.89Z" class="land" id="BI" title="Burundi"/>
+    <path d="M597.39,122.33L599.47,124.88L601.08,126.25L599.95,130.78L599.95,132.97L599.27,133.04L597.64,131.77L598.1,131.27L597.12,129.06L593.75,131.49L593.76,130.57L591.52,128.45L591.78,127.35L590.11,126.08L590.53,125.43L588.85,124.05L589.46,123.56L592.57,124.74L592.83,123.89L591.58,122.91L592.07,122.18L594.43,123.98L595.98,124.29ZM592.83,131.58L591.17,131.18L589.2,129.17L589.06,129L589.68,128.81L591.71,130.02Z" class="land" id="AZ" title="Azerbaijan"/>
+    <path d="M517.78,101.52L518.38,103.32L516.82,105.28L516.94,106.38L516.1,106.82L515.81,107.39L513.52,107.55L512.36,108.19L510.4,107.87L507.2,107.31L506.6,106.6L504.4,106.48L502.51,106.81L500.38,106.23L500.23,105.57L500.19,104.8L502.11,105.44L502.36,104.74L504.46,105.1L507.76,104.35L507.98,102.85L509.36,102.14L510.26,101.01L512.38,101.52L512.97,100.35Z" class="land" id="AT" title="Austria"/>
+    <path d="M837.62,381.53L840.17,382.71L843.26,382.2L844.9,381.51L845.43,382.03L843.6,385.43L841.75,387.09L840.87,388.9L839.92,388.09L837.35,390.32L835.42,390.11L835.26,387L836.07,385.37L836.32,382.14ZM826.34,365.73L825.52,366.78L823.82,366.65L823.9,365.76L825.87,365.27ZM843.5,296.77L843.74,298.3L842.35,298.1ZM828.18,289.16L829.99,288.58L830.62,289.35L828.86,290.88ZM861.67,290.97L861.34,292.07L861.97,293.12L862.08,298.48L864.06,298.11L865.86,300.34L865.38,304.93L866.47,308.78L865.8,310.79L866.43,313.31L868.7,314.26L869.66,315.8L871.58,317.12L871.15,318.03L872.1,319.74L872.31,323.88L873.53,323.01L874.99,324.31L874.41,327.08L876.5,329.42L877.95,333.29L878.06,334.97L876.63,338.84L876.66,342.13L876.03,344.07L874.86,345.44L872.5,349.45L871.18,352.19L868.66,355.35L866.36,356.81L863.35,360.36L862.29,361.2L860.36,363.97L858.16,366.03L856.08,369.2L854.98,371.34L852.97,372.2L850.32,372.29L847.54,373.51L845.51,374.9L842.83,375.64L842.83,374.91L840.7,373.48L836.95,375.39L835.18,374.24L833.22,373.67L832.33,373.96L830.82,372.91L829.82,370.46L830.82,368.63L830.81,366.85L830.06,365.57L828,365.33L829.6,363.48L829.63,360.8L827.37,363.86L825.19,364.16L826.9,363.14L828.12,360.77L829.96,358.94L830.22,357.75L829.18,357.73L828.12,359.1L825.57,360.36L822.43,363.22L822.54,359.97L822.23,358.15L821.17,357.64L821.73,355.7L820.39,354.55L818.61,353.83L817.16,353.99L814.97,352.38L809.09,353.04L804.3,354.8L800.66,354.91L795.16,357.53L793.16,359.75L791.86,360.23L789.16,360.24L787.44,359.72L783.31,360.18L781.85,361.42L780.32,361.77L777.82,363.37L776.29,363.72L773.7,363.37L770.65,361.07L771.73,359.14L773.48,357.72L775.01,353.01L774.51,350.22L775.21,345.89L774.89,343.09L774.32,341.63L774.57,339.32L774.03,336.84L774.92,336.12L774.64,333.9L775.9,335.99L776.24,334.61L775.2,330.16L776.81,326.95L777.14,324.5L778.32,322.3L779.17,323.57L780.83,321.66L782.57,320.9L786.4,318.26L788.21,318.47L792.06,317.03L793.16,316.19L794.41,316.33L798.07,315.16L800.04,313.4L802.67,309.83L802.82,307.77L805.44,305.02L806.37,308.31L807.37,306.37L806.8,305.19L809.9,304.01L809.56,302.89L812.19,299.62L813.68,298.6L814.54,298.93L814.96,297.74L816.16,297.89L817.25,296.58L819.1,297.99L820.25,299.74L823.53,300.31L824.39,299.86L823.58,298.61L825.18,296.04L826.43,295.2L826.34,294.11L828.47,292.76L829.01,291.71L832.55,291.86L833.67,289.57L837.65,291.14L838.98,291.07L840.19,291.81L841.85,290.82L842.42,292.44L843.85,290.98L844.78,292.21L843.55,294.26L841.62,295.2L841.1,297.86L839.52,299.76L839.74,300.52L842.61,303.32L844.88,304.38L846.04,305.9L847.97,306.47L848.35,307.82L850.21,308.99L852.51,308.09L854.01,305.68L856,300.69L856.24,296.75L857.41,292.65L858.4,290.79L859.37,287.82L860.24,287.07L861.02,288.94L860.91,290.56Z" class="land" id="AU" title="Australia"/>
+    <path d="M641.99,407.19L643.5,407.92L642.49,408.83L640.93,408.21Z" class="land" id="TF" title="French Southern and Antarctic Lands"/>
+    <path d="M368.63,492.09L367.98,493.39L361.02,492.97L357.33,492.18L363.61,492.16L365.03,491.09L368.01,491.07ZM185.89,490.91L180.34,490.68L174.54,489.83L174.1,488.47L177.75,488.88L183.22,490.01ZM348.23,490.63L345.18,490.1L346.55,488.84L351.44,487.64L352.87,487.69L349.46,489.58ZM393.41,488.67L396.2,488.69L398.26,490.18L397.96,491.76L388.18,492.74L387.29,493.04L379.46,493.23L379.81,491.75L381.91,491.65L384.69,490.18L383.74,489.74L383.91,488.2L385.41,486.91L389.37,486.29L391.9,486.52L395.52,487.46L395.57,488.18ZM240.8,476.46L241.92,477.05L241.22,477.92L237.73,477.93L237.26,476.99L235.61,476.27ZM228.3,475.27L232.28,476.65L233.46,477.6L226.74,475.86ZM330.48,474.8L330.8,476.1L327.77,475.39L328.05,474.09ZM297.44,475.01L295.43,473.59L297.12,473.55ZM281.33,471.76L283.66,471.6L286.58,472.16L286.65,473.47L281.91,473.39L277.83,472.69L273.44,472.33L273.41,471.95L280,471.38ZM328.25,468.44L327.65,469.2L323.97,469.74L323.04,469.24L325.58,468.38ZM324.37,466.06L325.29,467.25L323.39,467.03ZM333.73,464.64L335.54,465.68L339.4,469.02L340.85,471.53L339.87,473.36L333.79,473.7L331.99,473.03L335.43,472.11L332.29,471.11L330.01,472.38L326.71,471.67L326.45,470.99L328.33,470.39L331.49,470.41L333.8,469.36L333.46,468.19L334.71,467.73L331.09,466.7L329.67,463.98L332.45,463.58ZM335.8,460.06L334.89,460.75L333.43,459.87L334.23,458.25L336.02,459.18ZM209.57,506.52L209.57,506.52L186.83,504.21L169.33,500.01L184.54,500.34L201.33,500.94L212.61,501.4L210.96,500.79L198.34,500.32L192.37,499.05L187.9,499.06L183.33,498.4L172.11,497.36L175.79,497.25L183.57,497.98L193.29,498.17L200.66,498.57L201.85,497.79L205.08,497.51L207.14,496.48L202.03,495.46L202.42,494.97L195.39,494.18L195.68,493.85L209.83,493.29L203.39,492.11L206.49,491.5L205.71,490.84L196.64,489.65L189.9,489.02L186.4,488.27L188.83,487.72L186.95,487.24L183.38,487.26L179.61,486.28L178.01,484.81L184.34,484.74L187.86,485.42L191.18,485.45L196.17,486.32L200.91,484.6L200.32,483.83L196.33,483.09L197.12,482.27L200.9,480.96L203.08,480.78L205.25,481.27L207.37,480.09L210.99,479.75L213.23,479.91L214.29,478.8L218.4,479.2L220.93,478.99L225.65,479.3L228.94,478.87L236.79,479L244.68,478.71L246.63,478.03L253.11,478.21L252.65,477.05L255.38,477.3L256.61,479.52L260.51,479.05L259.12,477.75L262.26,477.99L263.04,478.85L261.74,479.9L266.09,480.02L271.56,480.42L274.39,479.85L280.59,479.88L282.49,480.61L286.81,480.04L280.15,478.29L278.31,477.13L275.97,476.78L276.12,476.11L279.2,476.46L281.49,476.37L280.39,475.57L275,475.36L274.85,474.51L283.63,474.63L287.83,475.33L291.59,475.34L295.3,475L298.16,475.36L298.78,474.49L302.73,474.19L302.93,475.13L305.87,475.44L307.7,475.08L310.17,475.82L316.25,476.71L317.77,476.42L317.18,475.35L318.21,474.4L320.26,474.77L323.18,475.96L326.1,475.71L326.08,476.62L329.43,476.16L332.06,476.32L333.79,475.68L341.41,474.81L343.33,474.12L344.02,472.22L342.03,470.76L339.74,467.89L338.17,466.83L336.8,465.28L339.5,465.23L340,464.56L338.77,463.77L339.23,462.11L338.22,461.54L338.53,460.2L336.59,459.95L336.38,459.09L338.12,457.72L339.4,457.77L339.13,456.44L341.73,454.85L341.36,453.82L343.99,452.66L345.83,452.24L346.9,450.78L349.53,450.08L350.62,449.33L353.49,448.43L354.43,448.83L354.43,448.83L352.15,449.92L351.44,451.65L349.21,451.77L347.46,453.28L346.08,453.42L345.54,454.24L345.78,455.63L347.19,456.87L343.22,456.82L342.98,457.85L341.88,458.26L342.2,459.61L340.92,459.66L341.48,461.82L343.67,463.27L347.03,463.63L347.07,464.25L349.77,465.68L351.4,467.1L352.31,469.14L354.53,469.83L354.6,470.86L356.19,472.17L357.96,474.56L356.49,475.73L357.71,476.1L358.5,478.27L356.17,478.34L353.51,479.58L355.18,480.68L350.15,482.05L345.02,482.87L343.96,483.61L340.87,483.84L334,483.43L330.42,483.55L333.26,485.09L335.22,485.56L340.18,485.83L339.91,486.55L337.45,487.21L325.87,486.21L324.54,486.53L333,487.81L332.73,488.52L328.37,488.7L322.02,487.63L322.77,488.59L329.45,489.71L336.29,489.84L337.21,491.13L341.27,493.08L345.47,493.33L350.4,493.2L361.4,494.6L363.08,495.31L360.46,495.95L366.67,496.63L370.09,498.19L373.9,498.41L376.65,497.24L381.63,495.98L391.2,495.36L399.99,496.12L402.9,494.13L407.28,493.25L410.27,493.64L413.3,492.76L423.83,491.72L433.04,491.48L431.01,490.81L422.29,490.45L421.31,489.47L416.41,489.62L410.05,488.59L409.91,487.88L413.05,485.44L416.66,484.81L422.09,482.92L427.35,481.92L430.69,481.45L439.77,480.9L443.57,477.91L446.77,478.09L446.48,476.94L444.87,476.18L446.51,474.79L449.04,474.86L448.97,473.86L451.15,474L454.45,473.05L455.61,470.83L457.39,469.47L458.74,469.85L460,471.14L461.85,470.81L461.43,469.24L465.31,468.65L466.03,469.02L465.36,470.28L471.66,470.23L475.51,470.3L476.22,471.24L478.99,469.92L482.58,469.14L487.65,468.5L494.58,468.02L495.88,467.26L498,468.11L500.95,468.79L503.56,467.34L505.34,467.68L509.37,467.63L514,468.2L516.26,467.55L516.18,469.14L519.84,468.99L521.36,467.46L523.71,468.9L525.56,467.84L527.26,469.12L529.64,469.49L532.19,469.16L538.18,467.57L541.02,467.37L543.68,466.78L544.66,465.79L544.13,464.33L545.51,463.31L547.71,463.35L549.22,465.82L553.92,466.04L556.36,466.8L558.52,465.27L559.18,464.05L562.09,463.01L564.9,462.41L565.93,461.8L570,461.21L570.71,460.85L575.3,460.32L578.28,460.92L578.94,459.37L580.3,458.62L582.95,459.19L583.02,457.28L586.68,456.12L590.6,455.68L593.24,455.84L594.68,456.28L597.24,457.73L595.53,458.19L596.16,458.93L597.75,458.82L599.83,459.4L600.63,460.09L603.3,459.82L607.59,460.53L609.86,460.15L619.01,461.17L621.45,460.78L621.7,462.71L620.42,463.44L619.97,464.75L618.31,465.13L618.03,466.43L616.23,466.35L613.82,467.5L614.99,467.89L617.63,467.91L616.08,469.49L613.93,470.41L611.92,471.99L609.61,474.41L611.56,474.76L613.21,473.31L615.65,472.95L620.11,471.02L622.63,468.63L624.79,467.82L625.33,467.03L628.1,466.1L630.91,466.5L632.32,465.66L636.99,464.32L640.01,462.21L641.4,461.79L647.7,460.64L650.51,460.41L653.72,459.09L656.21,459.22L661.54,458.21L665.08,458.3L670.58,457.45L674.24,457.94L676.4,457.43L677.65,457.78L683.64,457.34L685.64,457.83L689.36,457.04L691.34,455.93L694.03,455.7L696.49,456.03L704.09,457.8L706.29,458.53L709.49,457.49L710.98,456.28L716.17,455.52L717.19,455.88L717.62,457.05L719.25,457.59L718.19,458.86L715.13,459.35L714.72,459.97L721.16,458.91L724.06,459L725.51,459.78L731.03,459.03L733,458.4L737.31,457.72L738.4,457.99L741.84,457.06L743.22,457.42L743.77,458.92L747.33,458.89L749.74,457.34L752.94,456.59L754.69,456.71L758.45,456.29L761.06,456.97L762.36,456.41L763.73,456.86L766.72,457.17L770.45,458.01L774.55,458.26L775.97,458.78L777.46,458.45L779.21,459.16L776.07,460.92L780.75,460.46L781.6,461.38L781.05,462.46L783.6,462.72L789.21,462.5L789.36,463.32L792.03,463.76L795.59,462.59L796.56,464.2L799.75,464.96L801.43,464.69L803.82,465.52L803.33,466.71L803.97,467.61L803.19,468.95L807.33,467.58L807.72,468.41L810.19,468.12L814.21,468.52L815.65,468.9L815.67,469.87L818.21,471.03L813.92,473.85L812.29,474.67L807.53,475.4L799.67,477.15L798.83,478.56L794.65,478.58L791.55,479.98L789.73,480.11L789.82,481.65L786.65,483.82L785.2,486.89L787.02,487.84L783.53,488.19L773.62,489.56L769.09,492.27L765.9,494.32L770.29,497.46L769.88,498.23L785.07,499.76L785.3,500.01L767.79,504.21L745.05,506.52L745.05,506.52L745.04,506.52L477.31,506.52L209.58,506.52Z" class="land" id="AQ" title="Antarctica"/>
+    <path d="M20.36,298.48L20.36,298.48L20.36,298.48Z" class="land" id="AS" title="American Samoa"/>
+    <path d="M593.75,131.49L592.83,131.58L591.71,130.02L589.68,128.81L589.06,129L587.7,127.95L586.44,127.86L585.96,125.83L585.07,124.62L588.85,124.05L590.53,125.43L590.11,126.08L591.78,127.35L591.52,128.45L593.76,130.57Z" class="land" id="AM" title="Armenia"/>
+    <path d="M311.93,323.23L314.52,326.21L316.75,328.02L319.88,329.08L321.38,330.21L325.71,332.36L326.42,333.21L324.41,338.64L328.48,339.71L330.44,339.92L332.1,339.53L332.69,338.26L334.26,336.76L334.27,333.74L336.2,334.04L336.98,335.79L336.88,338.61L334.46,339.96L332.39,342.02L329.84,346.4L328.37,348.27L327.7,353.73L327.94,355.46L328.27,356.99L327.67,359.21L328.89,362.41L331.65,364L332.28,367L333.87,367.89L334.17,369.22L332.68,373.09L331.31,374.19L327.42,375.45L324.31,375.93L321.87,375.7L321.34,376.42L322.2,377.12L321.97,378.75L322.39,381.86L321.14,382.54L319.15,382.66L316.23,381.62L315.58,381.82L316.57,385.22L318.5,386.66L320.51,386.57L320.57,387.81L319.53,387.99L318,386.96L317.25,387.67L318.94,388.6L317.3,390.37L317.78,392.99L317.54,394.63L316.16,394.5L314.57,395.4L313.69,397.59L314,398.74L316.48,400.77L318.43,401.04L319.27,401.81L319.62,403.63L317.31,405.72L316.33,407.61L316.68,409.46L314.45,411.05L314.31,412.76L315.47,414.82L317.57,416.98L313.67,415.94L309.07,415.88L307.46,414.54L307.11,412.64L306.24,411.73L304.86,412.12L303.4,410.27L302.67,408.63L304.16,406.23L304.35,404.93L303.49,403.43L304.31,401.37L304.23,399.46L303.25,396.84L303.82,395.32L303.01,394.54L303.47,392.88L301.93,392.7L301.88,391.3L299.92,388.39L299.39,386.24L300.1,385.46L299.38,384.22L298.55,381.24L298.85,380.12L298.24,377.94L298.48,375.91L299.48,375.13L298.22,372.08L297.61,368.19L298.94,366.74L298.28,364.43L298.34,362.57L299.13,360.97L298.75,358.37L298.1,357.97L297.23,355.46L295.62,352.62L296.06,349.06L296.54,348.8L295.79,345.55L296.27,342.68L297.27,341.14L297.74,338.71L298.99,338.32L298.13,336.71L298.4,335.56L297.6,333.46L297.99,332.22L297.41,331.42L298.04,330.02L300.23,328.89L300.73,325.64L300.16,325.08L301.2,323.17L302.68,321.98L303.64,322.81L306.77,323.21L307.58,324.89L308.37,322.72L311.34,322.49ZM319.67,424.4L317.44,417.86L319.81,420.58L321.96,422.02L327.29,424.47L324.78,424.92L323.7,424.61Z" class="land" id="AR" title="Argentina"/>
+    <path d="M625.22,175.29L623.7,175.64L623.83,177.61L622.77,181.41L622.84,182.45L622.65,182.71L615.83,181.73L612.93,178.12L612.8,177.47L613.79,178.41L615.68,177.88L618.98,178.13L620.24,177.49L620.97,175.82L623.74,172.72L624.01,171.88Z" class="land" id="AE" title="United Arab Emirates"/>
+    <path d="M481.52,120.28L480.83,119.99L481.52,120.28Z" class="land" id="AD" title="Andorra"/>
+    <path d="M521.43,66.82L521.43,66.82L521.43,66.82Z" class="land" id="AX" title="Aland Islands"/>
+    <path d="M526.75,120.14L528.15,122.24L528.1,124.11L529.38,125.42L528.78,127.71L527.24,128.98L525.61,127.19L525.47,123.63L525.12,122.25L524.9,121.31L525.72,119.89Z" class="land" id="AL" title="Albania"/>
+    <path d="M309.7,196.53L309.7,196.53L309.7,196.53Z" class="land" id="AI" title="Anguilla"/>
+    <path d="M510.27,271.58L509.75,269.22L510.75,268.02L512.09,267.47L512.6,268.07L511.11,269.67L511.05,271.39ZM541.72,287.58L541.68,292.44L541.24,294.25L536.24,294.25L536.01,303.51L536.4,305.53L539.58,308.8L534.31,309.93L527.44,309.19L526.32,308.04L514.45,308.01L512.24,306.69L510.75,307.46L508.61,307.57L508.7,303.13L509.29,302.5L510.94,295.62L512.13,293.55L513.31,292.74L514.32,290.53L514.52,288.15L512.85,283.92L512.31,281.87L513.35,279.75L510.5,272.63L512.57,271.91L521.33,271.92L522.38,273.81L524.56,278.83L527.57,278.39L529.42,278.49L529.96,275.92L532.54,275.2L532.87,276.33L535.95,276.42L536.3,280.76L536.02,283.19L537.02,284.98L537.27,287.02L537.94,288.16L541.36,288.03Z" class="land" id="AO" title="Angola"/>
+    <path d="M666.18,136.74L665.46,137.4L660.75,138L658.5,139.23L657.67,140.47L659.37,143.17L658.13,145.22L658.67,146.73L655.74,147.21L657.14,148.87L655.35,149.97L655.04,151.82L655.43,153.38L654.55,154.33L652.77,153.79L650.71,155.64L649.73,155.37L648.59,156.61L648.59,160L643.43,161.39L642,161.06L639.22,161.34L634.77,159.92L636.73,156.86L636.13,155.13L634,154.81L633.54,152.4L632.38,149.6L633.1,148.45L631.99,148.03L631.67,146.59L632.76,144.2L632.78,141.8L636.43,143.01L637.44,142.34L637.35,141.17L640.57,139.53L640.84,137.05L642.62,136.68L642.94,135.68L645,136.37L648.24,136.93L649.17,137.62L651.16,136.45L652.08,137.13L652.34,135.73L654.17,135.38L653.89,134.57L655.17,132.9L657.25,134.54L657.54,137.07L658.78,138.43L662.45,135.99L663.3,136.74L664.45,136.16Z" class="land" id="AF" title="Afghanistan"/>
+    <path d="M312.79,200.25L312.79,200.25L312.79,200.25Z" class="land" id="AG" title="Antigua and Barbuda"/>
+    <path d="M289.78,214.62L289.78,214.62L289.78,214.62Z" class="land" id="AW" title="Aruba"/>
+  </g>
+</svg>
+                </div>
+
+                <!-- Data table -->
+                <div class="lna-table-wrap">
+                    <table class="lna-table">
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Coordinates</th>
+                                <th>Local Time</th>
+                                <th>Ping (ms)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>New York</td>
+                                <td class="lna-td-muted">United States</td>
+                                <td class="lna-td-muted lna-td-mono">40.71° N, 74.00° W</td>
+                                <td class="lna-td-mono">09:42 EST</td>
+                                <td class="lna-td-mono">14</td>
+                                <td><span class="lna-td-dot ok">Online</span></td>
+                            </tr>
+                            <tr>
+                                <td>London</td>
+                                <td class="lna-td-muted">United Kingdom</td>
+                                <td class="lna-td-muted lna-td-mono">51.50° N, 0.12° W</td>
+                                <td class="lna-td-mono">14:42 GMT</td>
+                                <td class="lna-td-mono">8</td>
+                                <td><span class="lna-td-dot ok">Online</span></td>
+                            </tr>
+                            <tr>
+                                <td>Tokyo</td>
+                                <td class="lna-td-muted">Japan</td>
+                                <td class="lna-td-muted lna-td-mono">35.68° N, 139.69° E</td>
+                                <td class="lna-td-mono">23:42 JST</td>
+                                <td class="lna-td-mono">82</td>
+                                <td><span class="lna-td-dot warn">Latency</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sydney</td>
+                                <td class="lna-td-muted">Australia</td>
+                                <td class="lna-td-muted lna-td-mono">33.86° S, 151.20° E</td>
+                                <td class="lna-td-mono">01:42 AEDT</td>
+                                <td class="lna-td-mono">143</td>
+                                <td><span class="lna-td-dot warn">Latency</span></td>
+                            </tr>
+                            <tr>
+                                <td>São Paulo</td>
+                                <td class="lna-td-muted">Brazil</td>
+                                <td class="lna-td-muted lna-td-mono">23.55° S, 46.63° W</td>
+                                <td class="lna-td-mono">11:42 BRT</td>
+                                <td class="lna-td-mono">—</td>
+                                <td><span class="lna-td-dot danger">Offline</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Danger Zone ── -->
+        <div class="sc-section lna-mb-lg">
+            <div class="sc-section-head">
+                <h2 class="lna-section-label">Danger Zone</h2>
+                <code>.lna-danger-zone</code>
+            </div>
+            <div class="lna-card lna-glass lna-danger-zone">
+                <h3 class="lna-heading">Destructive Actions</h3>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4>Delete Account</h4>
+                        <p>Permanently removes all your data. Cannot be undone.</p>
+                    </div>
+                    <button class="lna-btn lna-btn-danger lna-glass">Delete</button>
+                </div>
+                <div class="lna-pref-row">
+                    <div class="lna-pref-info">
+                        <h4>Export Data</h4>
+                        <p>Download all your data as a JSON archive.</p>
+                    </div>
+                    <button class="lna-btn lna-glass">Export</button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /lna-container -->
+
+    <!-- ── Page footer ── -->
+    <footer style="
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 28px 40px 36px;
+        border-top: 1px solid var(--lna-glass-border);
+        transition: border-color var(--lna-speed) ease;
+    ">
+        <p style="font-size:11px; color:var(--lna-text-sub); letter-spacing:1px; line-height:2;">
+            LUNAG.CSS · v1.0 &nbsp;·&nbsp;
+            <a href="https://github.com/Plu101" target="_blank" rel="noopener"
+               style="color:var(--lna-text-muted);text-decoration:none;transition:color var(--lna-speed)"
+               onmouseover="this.style.color='var(--lna-accent-soft)'"
+               onmouseout="this.style.color='var(--lna-text-muted)'">
+                <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle">code</span>
+                @Plu101
+            </a>
+        </p>
+        <p style="font-size:10px; color:var(--lna-text-sub); opacity:0.5; letter-spacing:0.5px; margin-top:4px;">
+            // static showcase page · html only · not intended for production use
+        </p>
+    </footer>
+
+</div><!-- /lna-scene -->
+
+<!-- Notification toast (added by JS) -->
+<div class="lna-notification" id="toast"></div>
+
+<script>
+/* ============================================================
+   Theme switcher
+   ============================================================ */
+const THEMES = ['lna-candlelight', 'lna-coffee', 'lna-moon'];
+
+document.querySelectorAll('input[name="lna-theme"]').forEach(radio => {
+    radio.addEventListener('change', () => applyTheme(radio.value));
+});
+
+function applyTheme(value) {
+    THEMES.forEach(t => document.body.classList.remove(t));
+    if (value !== 'default') document.body.classList.add(value);
+    // Sync candlelight toggle in preferences panel
+    const candleToggle = document.getElementById('toggle-candle');
+    if (candleToggle) candleToggle.checked = (value === 'lna-candlelight');
+}
+
+/* Candlelight preference toggle inside the panel also switches theme */
+document.getElementById('toggle-candle').addEventListener('change', function () {
+    const radio = document.getElementById(this.checked ? 'th-candle' : 'th-default');
+    if (radio) { radio.checked = true; applyTheme(radio.value); }
+});
+
+/* ============================================================
+   Sepia intensity slider (candlelight)
+   ============================================================ */
+const sepiaSlider = document.getElementById('sepia-slider');
+const sepiaValue  = document.getElementById('sepia-value');
+sepiaSlider.addEventListener('input', () => {
+    const v = sepiaSlider.value / 100;
+    document.body.style.setProperty('--lna-sepia', v);
+    sepiaValue.textContent = sepiaSlider.value + '%';
+});
+
+/* ============================================================
+   Demo slider display
+   ============================================================ */
+const demoSlider = document.getElementById('demo-slider');
+const demoVal    = document.getElementById('demo-slider-val');
+demoSlider.addEventListener('input', () => demoVal.textContent = demoSlider.value + '%');
+
+/* ============================================================
+   Progress bar animation on load
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.lna-progress-fill[data-width]').forEach(el => {
+        setTimeout(() => el.style.width = el.dataset.width + '%', 200);
+    });
+});
+
+/* ============================================================
+   Password strength meter
+   ============================================================ */
+document.getElementById('pw-input').addEventListener('input', function () {
+    const v = this.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const pct   = (score / 4) * 100;
+    const texts = ['Too short', 'Weak', 'Fair', 'Good', 'Strong'];
+    document.getElementById('strength-fill').style.width = pct + '%';
+    document.getElementById('strength-text').textContent = texts[score] || 'Too short';
+});
+
+/* ============================================================
+   Toast notification demo
+   ============================================================ */
+document.getElementById('show-toast-btn').addEventListener('click', () => {
+    showToast('luna glass notification — looking crisp ✦', 'info');
+});
+
+function showToast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'lna-notification ' + type;
+    el.classList.add('show');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+/* ============================================================
+   Moonlit theme — Stars & Shooting Stars
+   ============================================================ */
+(function () {
+    const STAR_COUNT = 160;
+    const starsLayer = document.getElementById('lna-stars-layer');
+
+    /* ── Generate static star field ── */
+    function buildStars() {
+        starsLayer.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < STAR_COUNT; i++) {
+            const s = document.createElement('div');
+            s.className = 'lna-star';
+            const size  = Math.random() < 0.12 ? (Math.random() * 2 + 2) : (Math.random() * 1.5 + 0.6); // px
+            const dur   = (Math.random() * 4 + 2).toFixed(2);   // 2–6 s
+            const del   = (Math.random() * 6).toFixed(2);        // stagger
+            const minO  = (Math.random() * 0.15 + 0.08).toFixed(2);
+            const maxO  = (Math.random() * 0.45 + 0.45).toFixed(2);
+            const top   = (Math.random() * 92).toFixed(2);
+            const left  = (Math.random() * 98).toFixed(2);
+            // keep stars away from moon corner occupation zone
+            s.style.cssText = `
+                width:${size}px; height:${size}px;
+                top:${top}%; left:${left}%;
+                --tw-dur:${dur}s; --tw-del:${del}s;
+                --tw-min:${minO}; --tw-max:${maxO};
+            `;
+            frag.appendChild(s);
+        }
+        starsLayer.appendChild(frag);
+    }
+
+    /* ── Shooting star factory ── */
+    const METEOR_COLORS = [
+        '#ffffff',   // white / rocky
+        '#e8f4ff',   // cool white
+        '#a8d8ff',   // iron-blue
+        '#7ecfff',   // blue
+        '#a0ffb8',   // copper-green
+        '#c8ffda',   // pale green
+    ];
+
+    function fireMeteor() {
+        // Start from random point in the upper portion of the screen
+        const startX = Math.random() * window.innerWidth  * 0.85;
+        const startY = Math.random() * window.innerHeight * 0.45;
+
+        // Angle: 20–50 degrees downward from horizontal
+        const angleDeg = Math.random() * 30 + 20;
+        const angleRad = angleDeg * (Math.PI / 180);
+        const travel   = Math.random() * 260 + 160;  // px along its axis
+        const color    = METEOR_COLORS[Math.floor(Math.random() * METEOR_COLORS.length)];
+        const tailLen  = Math.random() * 90 + 55;     // visible tail length
+        const dur      = (Math.random() * 0.55 + 0.65).toFixed(2);
+
+        const el = document.createElement('div');
+        el.className = 'lna-shooting-star';
+        el.style.cssText = `
+            left:${startX}px;
+            top:${startY}px;
+            width:${tailLen}px;
+            background: linear-gradient(90deg, transparent 0%, ${color}cc 60%, ${color} 100%);
+            box-shadow: 0 0 6px 1px ${color}88;
+            rotate: ${angleDeg}deg;
+            --sh-dur:${dur}s;
+            --sh-travel:${travel}px;
+        `;
+        document.body.appendChild(el);
+
+        setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 80);
+    }
+
+    /* Schedule sporadic meteors — only when moon theme is active */
+    function scheduleMeteor() {
+        if (!document.body.classList.contains('lna-moon')) return;
+        fireMeteor();
+        // Next meteor: 8–22 seconds
+        const next = Math.random() * 14000 + 8000;
+        setTimeout(scheduleMeteor, next);
+    }
+
+    /* Hook into theme switcher */
+    const origApply = window.applyTheme;
+    window.applyTheme = function (value) {
+        origApply(value);
+        if (value === 'lna-moon') {
+            buildStars();
+            // Delay first meteor slightly so the theme transition settles
+            setTimeout(scheduleMeteor, 2000 + Math.random() * 4000);
+        }
+    };
+
+    /* Pre-build if moon is already active on load */
+    if (document.body.classList.contains('lna-moon')) {
+        buildStars();
+        setTimeout(scheduleMeteor, 3000);
+    }
+}());
+</script>
+</body>
+</html>

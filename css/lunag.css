@@ -1,0 +1,1079 @@
+/* ============================================================
+   Author: @Plu101
+   LUNAG.CSS — CSS Style Library for Glassmorphism UI
+   A dark, moody twist on modern glassmorphism design.
+   Toned-down · Simple · Reusable · Customizable.
+
+   Built on a foundation of layered backdrop-filter glass,
+   ambient scene radials, and SVG-noise grain textures.
+   Four built-in themes: Default · Candlelight · Coffee · Moon.
+
+   ──────────────────────────────────────────────────────────
+   Special Credits
+   ──────────────────────────────────────────────────────────
+   Grainy Gradients technique (SVG feTurbulence noise)
+     Jimmy Chion — https://css-tricks.com/grainy-gradients/
+
+   CSS.Glass — glassmorphism generator & reference
+     @miketromba — https://github.com/miketromba/css.glass
+
+   ──────────────────────────────────────────────────────────
+   MIT License
+   ──────────────────────────────────────────────────────────
+   Copyright (c) 2026 Plu101
+
+   Permission is hereby granted, free of charge, to any person
+   obtaining a copy of this software and associated
+   documentation files (the "Software"), to deal in the
+   Software without restriction, including without limitation
+   the rights to use, copy, modify, merge, publish, distribute,
+   sublicense, and/or sell copies of the Software, and to
+   permit persons to whom the Software is furnished to do so,
+   subject to the following conditions:
+
+   The above copyright notice and this permission notice shall
+   be included in all copies or substantial portions of the
+   Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+   KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+   WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+   PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+   OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+   OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+
+/* ============================================================
+   CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+    /* Colours */
+    --lna-bg-base:       #0a0a0a;
+    --lna-bg-surface:    #111111;
+    --lna-text:          #e0e0e0;
+    --lna-text-muted:    #888888;
+    --lna-text-sub:      #6b6d73;
+    --lna-accent:        #4a5662;
+    --lna-accent-soft:   #8a9bae;
+
+    /* Glass surface */
+    --lna-glass-bg:      rgba(255, 255, 255, 0.05);
+    --lna-glass-border:  rgba(255, 255, 255, 0.10);
+    --lna-glass-blur:    10px;
+    --lna-glass-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --lna-glass-shine:   inset 0 1px 0 0 rgba(255, 255, 255, 0.10);
+
+    /* Zone / status colours */
+    --lna-danger-bg:         rgba(200, 50,  50,  0.04);
+    --lna-danger-border:     rgba(200, 50,  50,  0.20);
+    --lna-danger-text:       rgba(200, 95,  95,  0.90);
+    --lna-danger-divider:    rgba(200, 50,  50,  0.15);
+
+    --lna-warning-bg:        rgba(180, 140, 50,  0.04);
+    --lna-warning-border:    rgba(180, 140, 50,  0.20);
+    --lna-warning-text:      rgba(180, 140, 50,  0.90);
+    --lna-warning-divider:   rgba(180, 140, 50,  0.15);
+
+    --lna-success-bg:        rgba(60,  160, 80,  0.04);
+    --lna-success-border:    rgba(60,  160, 80,  0.20);
+    --lna-success-text:      rgba(60,  160, 80,  0.90);
+    --lna-success-divider:   rgba(60,  160, 80,  0.15);
+
+    /* Layout */
+    --lna-radius: 4px;
+    --lna-gap:    20px;
+    --lna-pad:    20px;
+    --lna-speed:  0.3s;
+
+    /* Candlelight sepia intensity — can be set via JS */
+    --lna-sepia: 0.22;
+}
+
+/* Candlelight theme */
+body.lna-candlelight {
+    --lna-glass-bg:      rgba(255, 235, 180, 0.04);
+    --lna-glass-border:  rgba(255, 200, 100, 0.10);
+    --lna-glass-shine:   inset 0 1px 0 0 rgba(255, 235, 180, 0.12);
+    filter: sepia(var(--lna-sepia)) saturate(0.95);
+    transition: filter 0.5s ease;
+}
+
+/* Coffee theme */
+body.lna-coffee {
+    filter: sepia(0.08);
+}
+
+/* Moon theme */
+body.lna-moon {
+    --lna-bg-base:       #030a14;
+    --lna-bg-surface:    #071525;
+    --lna-text:          #dce8f5;
+    --lna-text-muted:    #6a8ba4;
+    --lna-text-sub:      #445a6e;
+    --lna-accent:        #2a4a6a;
+    --lna-accent-soft:   #7aadcc;
+    --lna-glass-bg:      rgba(160, 200, 240, 0.05);
+    --lna-glass-border:  rgba(160, 200, 240, 0.12);
+    --lna-glass-shine:   inset 0 1px 0 0 rgba(200, 220, 255, 0.12);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: "Fira Code", monospace;
+    font-size: 14px;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-variation-settings: "wdth" 100;
+    background-color: var(--lna-bg-base);
+    color: var(--lna-text);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.5s ease, color 0.4s ease;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    body { -webkit-text-stroke: 0.001px; }
+}
+
+::selection {
+    color: rgb(64, 132, 171);
+    background-color: #64788c4b;
+    text-shadow: 1px 1px 0 rgba(33, 40, 45, 0.6);
+}
+
+/* ============================================================
+   SCENE — Background canvas all content sits within.
+   Glass panels blur whatever is behind them through
+   backdrop-filter, so the coffee / candlelight layers
+   bleed through all panels automatically.
+   ============================================================ */
+.lna-scene {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--lna-bg-base) 0%, var(--lna-bg-surface) 100%);
+    position: relative;
+    transition: background 0.5s ease;
+}
+
+/* Ambient radial layer — sits below all content */
+.lna-scene::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 22% 50%, rgba(100, 120, 140, 0.08) 0%, transparent 52%),
+        radial-gradient(circle at 80% 48%, rgba(150, 170, 190, 0.07) 0%, transparent 52%);
+    transition: background 0.6s ease, filter 0.6s ease;
+}
+
+/* Candlelight: warm moving radials */
+body.lna-candlelight .lna-scene::before {
+    background:
+        /* Primary visible light source (the "candle" base) */
+        radial-gradient(ellipse 80% 60% at 50% 115%, rgba(255, 235, 160, 0.28) 0%, rgba(255, 165, 45, 0.12) 40%, transparent 70%),
+        /* Ambient scattered lights */
+        radial-gradient(circle at 25% 60%, rgba(255, 165, 45, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 75% 35%, rgba(255, 140, 30, 0.05) 0%, transparent 45%);
+    animation: lna-flicker 9s ease-in-out infinite;
+}
+
+/* Soft warm overlay on top of everything */
+body.lna-candlelight .lna-scene::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 165, 50, 0.03);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    z-index: 9997;
+    animation: lna-flicker 9s ease-in-out infinite reverse;
+}
+
+@keyframes lna-flicker {
+    0%,  100% { opacity: 1; }
+    20%        { opacity: 0.93; }
+    45%        { opacity: 0.86; }
+    52%        { opacity: 0.91; }
+    58%        { opacity: 0.82; }
+    65%        { opacity: 0.96; }
+    82%        { opacity: 0.89; }
+}
+
+/*
+   Coffee spill: organic blurred blobs behind glass panels.
+   The backdrop-filter on .lna-glass blurs these shapes so they
+   read as frosted glass shot through with coffee stains.
+*/
+body.lna-coffee .lna-scene::before {
+    background:
+        radial-gradient(ellipse 68% 42% at 17% 26%, rgba(101, 54, 0, 0.44) 0%, transparent 70%),
+        radial-gradient(ellipse 44% 68% at 83% 70%, rgba(122, 64, 15, 0.37) 0%, transparent 70%),
+        radial-gradient(ellipse 88% 36% at 50% 88%, rgba(80, 38, 5, 0.30) 0%, transparent 72%),
+        radial-gradient(ellipse 36% 54% at 76% 17%, rgba(92, 50, 8, 0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 32% at 36% 56%, rgba(110, 58, 10, 0.19) 0%, transparent 62%);
+    filter: blur(36px);
+}
+
+/* Moon: cold silver radials emanating from the orb position (top-right) */
+body.lna-moon .lna-scene::before {
+    background:
+        radial-gradient(circle at 76% 8%, rgba(200, 225, 255, 0.13) 0%, transparent 45%),
+        radial-gradient(circle at 76% 8%, rgba(150, 190, 230, 0.06) 0%, transparent 70%),
+        radial-gradient(circle at 20% 90%, rgba(80, 110, 150, 0.05) 0%, transparent 50%);
+    filter: none;
+}
+
+/* Moon theme: subtle grain over the whole background */
+body.lna-moon .lna-scene::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ng'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ng)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    filter: contrast(120%) brightness(160%);
+    opacity: 0.025;
+}
+
+/* ── Stars ── */
+.lna-stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+}
+body.lna-moon .lna-stars { display: block; }
+
+.lna-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: lna-twinkle var(--tw-dur, 3s) ease-in-out infinite var(--tw-del, 0s);
+    opacity: var(--tw-min, 0.25);
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.3);
+}
+@keyframes lna-twinkle {
+    0%, 100% { opacity: var(--tw-min, 0.25); transform: scale(1); box-shadow: 0 0 2px 0px rgba(255, 255, 255, 0.1); }
+    50%       { opacity: var(--tw-max, 0.80); transform: scale(1.4); box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.6); }
+}
+
+/* ── Shooting Stars ── */
+.lna-shooting-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    height: 1.5px;
+    border-radius: 0 50% 50% 0;
+    transform-origin: left center;
+    animation: lna-shoot var(--sh-dur, 1.1s) ease-out forwards;
+}
+@keyframes lna-shoot {
+    0%   { opacity: 0;   transform: translateX(0)   scaleX(0.0); }
+    5%   { opacity: 1;   transform: translateX(0)   scaleX(1); }
+    80%  { opacity: 0.8; transform: translateX(var(--sh-travel)) scaleX(1); }
+    100% { opacity: 0;   transform: translateX(var(--sh-travel)) scaleX(0.5); }
+}
+
+/* Coffee ring marks — displayed by JS injection */
+.lna-coffee-ring {
+    position: fixed;
+    border-radius: 50%;
+    border: 10px solid rgba(88, 42, 4, 0.20);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(5px);
+    display: none;
+}
+body.lna-coffee .lna-coffee-ring { display: block; }
+
+/* ============================================================
+   MOON ORB — Backdrop element for the lna-moon theme.
+   Technique: fractalNoise SVG tiled over the sphere, processed
+   with contrast/brightness/invert + mix-blend-mode: screen to
+   burn crater-like texture into the lit face of the moon.
+   ============================================================ */
+.lna-moon-orb {
+    position: fixed;
+    top: -110px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: #ccddf0;
+    overflow: hidden;
+    display: none;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+        0 0  60px 18px rgba(180, 210, 255, 0.20),
+        0 0 130px 50px rgba(130, 170, 220, 0.09);
+}
+body.lna-moon .lna-moon-orb { display: block; }
+
+/* Noise layer — user's technique verbatim  Credit to : Jimmy Chion / Grany Gradients: https://css-tricks.com/grainy-gradients/ */
+.lna-moon-noise {
+    margin-top: -15%;
+    width: 100%;
+    height: 120%;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    filter: contrast(145%) brightness(650%) invert(100%);
+    mix-blend-mode: screen;
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
+    .lna-moon-noise {
+        filter: contrast(125%) brightness(650%) invert(100%);
+        mix-blend-mode: color-dodge;
+    }
+}
+
+/* ============================================================
+   GLASS UTILITY
+   ============================================================ */
+.lna-glass {
+    background: var(--lna-glass-bg);
+    backdrop-filter: blur(var(--lna-glass-blur));
+    -webkit-backdrop-filter: blur(var(--lna-glass-blur));
+    border: 1px solid var(--lna-glass-border);
+    border-radius: var(--lna-radius);
+    box-shadow: var(--lna-glass-shadow), var(--lna-glass-shine);
+    transition:
+        background var(--lna-speed) ease,
+        border-color var(--lna-speed) ease,
+        box-shadow var(--lna-speed) ease;
+}
+
+/* Heavier blur variant */
+.lna-glass-deep {
+    --lna-glass-bg:   rgba(255, 255, 255, 0.08);
+    --lna-glass-blur: 22px;
+}
+
+/* Grain surface modifier — SVG fractalNoise layer over glass via ::after
+   Safe to combine with .lna-card, .lna-glass, .lna-glass-deep.
+   Avoid on .lna-btn (both pseudo-elements already taken). */
+.lna-glass-grain {
+    position: relative;
+    overflow: hidden;
+}
+.lna-glass-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.39' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    filter: contrast(110%) brightness(250%);
+    opacity: 0.055;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.lna-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--lna-text);
+}
+
+.lna-heading {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--lna-text);
+    border-bottom: 1px solid var(--lna-glass-border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    transition: border-color var(--lna-speed) ease;
+}
+
+.lna-section-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--lna-text-sub);
+    margin-bottom: 14px;
+    text-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+}
+
+.lna-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--lna-text-muted);
+    margin-bottom: 8px;
+}
+
+.lna-subtitle    { font-size: 13px; color: var(--lna-text-muted); letter-spacing: 1px; }
+.lna-muted       { color: var(--lna-text-muted); }
+.lna-accent-txt  { color: var(--lna-accent-soft); }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.lna-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--lna-pad);
+    position: relative;
+    z-index: 1;
+}
+
+.lna-grid   { display: grid;  gap: var(--lna-gap); }
+.lna-grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.lna-grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.lna-grid-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+.lna-flex          { display: flex; gap: var(--lna-gap); }
+.lna-flex-col      { flex-direction: column; }
+.lna-flex-center   { align-items: center; }
+.lna-flex-between  { justify-content: space-between; }
+.lna-flex-wrap     { flex-wrap: wrap; }
+.lna-gap-sm        { gap: 8px; }
+.lna-gap-lg        { gap: 30px; }
+
+/* Dashboard-style split layout */
+.lna-layout  { display: flex; gap: var(--lna-gap); padding: var(--lna-pad); position: relative; z-index: 1; }
+.lna-sidebar { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 28px; padding: var(--lna-pad); }
+.lna-main    { flex: 1; display: flex; flex-direction: column; gap: var(--lna-gap); min-width: 0; }
+
+/* ============================================================
+   HEADER / NAV
+   ============================================================ */
+.lna-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--lna-glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 100;
+    transition: background var(--lna-speed) ease, border-color var(--lna-speed) ease;
+}
+
+.lna-nav { display: flex; gap: 12px; }
+
+.lna-logo        { font-size: 22px; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: color var(--lna-speed); }
+.lna-logo:hover  { color: var(--lna-accent-soft); }
+.lna-logo-accent { color: var(--lna-accent); text-shadow: 0 0 10px rgba(15, 18, 22, 0.88); }
+
+/* ============================================================
+   BUTTONS
+   ::before  — radial shine layer under text, above bg.
+               Dissolves into the glass on hover -> glossy look.
+   ::after   — dot sweep along bottom edge on hover.
+   ============================================================ */
+.lna-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid var(--lna-glass-border);
+    border-radius: var(--lna-radius);
+    color: var(--lna-text);
+    font-family: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition:
+        transform var(--lna-speed) ease,
+        border-color var(--lna-speed) ease,
+        box-shadow var(--lna-speed) ease;
+}
+
+/* Shine: top-down radial, sits behind content text */
+.lna-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Naturally below text in paint order — no explicit z-index needed */
+    background: radial-gradient(ellipse 130% 75% at 50% -20%, rgba(255, 255, 255, 0.20) 0%, transparent 95%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--lna-speed) ease;
+}
+
+/* Dot sweep */
+.lna-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -12px;
+    width: 52px;
+    height: 20px;
+    background: rgb(255, 255, 255);
+    filter: blur(19px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.lna-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+.lna-btn:hover::before { opacity: 1; }
+
+.lna-btn:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
+
+/* Variants */
+.lna-btn-primary { background: rgba(74, 86, 98, 0.22); border-color: rgba(74, 86, 98, 0.38); }
+.lna-btn-primary:hover { background: rgba(74, 86, 98, 0.32); border-color: rgba(138, 155, 174, 0.50); }
+
+.lna-btn-danger { background: rgba(160, 38, 38, 0.18); border-color: rgba(200, 50, 50, 0.28); }
+.lna-btn-danger:hover { background: rgba(190, 50, 50, 0.28); border-color: rgba(220, 70, 70, 0.50); }
+
+.lna-btn-ghost { background: transparent; border-color: transparent; backdrop-filter: none; }
+.lna-btn-ghost:hover { background: rgba(255, 255, 255, 0.04); border-color: var(--lna-glass-border); }
+
+.lna-btn-block  { width: 100%; justify-content: flex-start; margin-top: 16px; }
+.lna-btn-icon   { width: 40px; height: 40px; padding: 0; justify-content: center; }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.lna-card {
+    padding: var(--lna-pad);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--lna-speed) ease, border-color var(--lna-speed) ease;
+}
+
+/* Hover glow behind card content */
+.lna-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(130, 155, 175, 0.07) 0%, transparent 68%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--lna-speed) ease;
+}
+
+.lna-card > * { position: relative; z-index: 1; }
+.lna-card:hover::before { opacity: 1; }
+.lna-card:hover { transform: translateY(-4px); border-color: rgba(150, 170, 190, 0.25); }
+.lna-card-flat:hover { transform: none; }
+
+/* Stat card */
+.lna-stat        { display: flex; align-items: center; gap: 18px; }
+.lna-stat-icon   { font-size: 28px; filter: grayscale(0.4); flex-shrink: 0; }
+.lna-stat-info   { flex: 1; }
+.lna-stat-label  { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--lna-text-muted); margin-bottom: 4px; }
+.lna-stat-value  { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.lna-stat-change { font-size: 11px; font-weight: 600; }
+.lna-stat-change.up   { color: #6b9cae; }
+.lna-stat-change.down { color: #8a8a8a; }
+.lna-stat-change.flat { color: var(--lna-text-muted); }
+
+/* ============================================================
+   PROGRESS BARS
+   ============================================================ */
+.lna-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.lna-progress-label {
+    font-size: 11px;
+    width: 64px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    color: var(--lna-text-muted);
+}
+.lna-progress-track {
+    flex: 1;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.lna-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--lna-text-sub) 0%, var(--lna-accent-soft) 100%);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.7s ease;
+    width: 0%;
+}
+.lna-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 45%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.42) 50%, transparent 100%);
+    animation: lna-shimmer 2.2s ease-in-out infinite;
+}
+@keyframes lna-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(280%); }
+}
+.lna-progress-value {
+    font-size: 11px;
+    font-weight: 600;
+    width: 36px;
+    text-align: right;
+    color: var(--lna-accent-soft);
+}
+
+/* Inline bar (e.g. course list rows) */
+.lna-bar-track { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 3px; overflow: hidden; }
+.lna-bar-fill  { height: 100%; background: linear-gradient(90deg, #8a9bae 0%, #6b8cae 100%); border-radius: 3px; transition: width 0.6s ease; position: relative; overflow: hidden; }
+.lna-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 45%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.30) 50%, transparent 100%);
+    animation: lna-shimmer 2.2s ease-in-out infinite;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.lna-form-group { margin-bottom: 22px; }
+
+.lna-input,
+.lna-select,
+.lna-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--lna-glass-border);
+    border-radius: var(--lna-radius);
+    color: var(--lna-text);
+    font-family: inherit;
+    font-size: 13px;
+    transition: border-color var(--lna-speed) ease, background var(--lna-speed) ease;
+}
+.lna-input:focus,
+.lna-select:focus,
+.lna-textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.07);
+}
+.lna-input::placeholder, .lna-textarea::placeholder { color: #555; }
+.lna-textarea { resize: vertical; min-height: 90px; }
+.lna-select   { cursor: pointer; }
+
+/* Upload zone */
+.lna-upload {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px dashed rgba(255, 255, 255, 0.12);
+    border-radius: var(--lna-radius);
+    cursor: pointer;
+    color: var(--lna-text-muted);
+    font-family: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--lna-speed) ease;
+}
+.lna-upload:hover { border-color: rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.05); }
+
+/* Password strength */
+.lna-strength-track { height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 2px; overflow: hidden; margin: 8px 0 5px; }
+.lna-strength-fill  { height: 100%; width: 0%; background: linear-gradient(90deg, #ff6b6b 0%, #ffd93d 50%, #6bcf7f 100%); transition: width 0.4s ease; }
+.lna-strength-hint  { font-size: 11px; color: var(--lna-text-muted); }
+
+/* ============================================================
+   TOGGLE SWITCH
+   ============================================================ */
+.lna-toggle       { position: relative; display: inline-block; width: 50px; height: 24px; }
+.lna-toggle input { opacity: 0; width: 0; height: 0; }
+
+.lna-toggle-track {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--lna-glass-border);
+    border-radius: 24px;
+    transition: background 0.4s, border-color 0.4s;
+}
+.lna-toggle-track::before {
+    content: '';
+    position: absolute;
+    height: 16px; width: 16px;
+    left: 3px; bottom: 3px;
+    background: #888;
+    border-radius: 50%;
+    transition: transform 0.4s, background 0.4s;
+}
+.lna-toggle input:checked + .lna-toggle-track { background: rgba(74, 86, 98, 0.38); border-color: rgba(138, 155, 174, 0.3); }
+.lna-toggle input:checked + .lna-toggle-track::before { transform: translateX(26px); background: var(--lna-accent-soft); }
+
+/* Preference row: label + control pair */
+.lna-pref-row         { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.lna-pref-row:last-child { border-bottom: none; }
+.lna-pref-info h4     { font-size: 13px; margin-bottom: 3px; }
+.lna-pref-info p      { font-size: 11px; color: var(--lna-text-muted); }
+
+/* ============================================================
+   RANGE SLIDER
+   ============================================================ */
+.lna-slider-row { display: flex; align-items: center; gap: 14px; }
+
+.lna-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    transition: background var(--lna-speed);
+}
+.lna-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    background: var(--lna-accent-soft);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform var(--lna-speed), background var(--lna-speed);
+}
+.lna-slider::-moz-range-thumb {
+    width: 18px; height: 18px;
+    background: var(--lna-accent-soft);
+    border-radius: 50%; border: none;
+    cursor: pointer;
+}
+.lna-slider:hover::-webkit-slider-thumb { transform: scale(1.2); }
+.lna-slider:hover::-moz-range-thumb     { transform: scale(1.2); }
+.lna-slider-value { font-size: 11px; color: var(--lna-text-muted); min-width: 34px; text-align: right; }
+
+/* ============================================================
+   RADIO GROUP  (pill-style option picker)
+   ============================================================ */
+.lna-radio-group { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.lna-radio-opt { position: relative; }
+.lna-radio-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.lna-radio-opt label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border: 1px solid var(--lna-glass-border);
+    border-radius: var(--lna-radius);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--lna-text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    user-select: none;
+    transition: all var(--lna-speed) ease;
+}
+.lna-radio-opt label:hover { border-color: rgba(255, 255, 255, 0.20); color: var(--lna-text); }
+.lna-radio-opt input:checked + label { color: var(--lna-text); border-color: var(--lna-accent-soft); background: rgba(138, 155, 174, 0.12); }
+
+.lna-radio-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    flex-shrink: 0;
+    transition: background var(--lna-speed);
+}
+.lna-radio-opt input:checked + label .lna-radio-dot { background: var(--lna-accent-soft); border-color: var(--lna-accent-soft); }
+
+/* ============================================================
+   ACTIVITY FEED
+   ============================================================ */
+.lna-feed      { display: flex; flex-direction: column; gap: 10px; }
+
+.lna-feed-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--lna-radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background var(--lna-speed), border-color var(--lna-speed);
+}
+.lna-feed-item:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(120, 140, 160, 0.18); }
+
+.lna-feed-icon {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--lna-radius);
+    font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+}
+.lna-feed-icon.success { background: rgba(100, 120, 140, 0.20); color: #7a8a9a; }
+.lna-feed-icon.warning { background: rgba(180, 138, 55, 0.20);  color: #c4952a; }
+.lna-feed-icon.info    { background: rgba(100, 128, 180, 0.20); color: #8a9aba; }
+.lna-feed-icon.error   { background: rgba(180, 58, 58, 0.20);   color: #c47070; }
+
+.lna-feed-body { flex: 1; }
+.lna-feed-text { font-size: 13px; margin-bottom: 3px; }
+.lna-feed-time { font-size: 11px; color: var(--lna-text-muted); }
+
+/* ============================================================
+   NOTIFICATION TOAST
+   ============================================================ */
+.lna-notification {
+    position: fixed;
+    top: 20px; right: 20px;
+    padding: 14px 18px;
+    border-radius: var(--lna-radius);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--lna-text);
+    font-size: 13px;
+    max-width: 300px;
+    opacity: 0;
+    transform: translateX(110%);
+    transition: all 0.35s ease;
+    z-index: 9999;
+}
+.lna-notification.show    { opacity: 1; transform: translateX(0); }
+.lna-notification.success { background: rgba(80, 160, 80, 0.18); border-color: rgba(80, 180, 80, 0.3); }
+.lna-notification.error   { background: rgba(180, 50, 50, 0.18);  border-color: rgba(200, 50, 50, 0.3); }
+.lna-notification.info    { background: rgba(80, 120, 180, 0.18); border-color: rgba(80, 140, 200, 0.3); }
+.lna-notification.warn    { background: rgba(180, 140, 50, 0.18); border-color: rgba(200, 160, 50, 0.3); }
+
+/* ============================================================
+   SPECIAL ZONE'S
+   ============================================================ */
+.lna-danger-zone { border: 1px solid var(--lna-danger-border); background: var(--lna-danger-bg); }
+.lna-danger-zone .lna-heading { color: var(--lna-danger-text); border-bottom-color: var(--lna-danger-divider); }
+
+.lna-warning-zone { border: 1px solid var(--lna-warning-border); background: var(--lna-warning-bg); }
+.lna-warning-zone .lna-heading { color: var(--lna-warning-text); border-bottom-color: var(--lna-warning-divider); }
+
+.lna-green-zone { border: 1px solid var(--lna-success-border); background: var(--lna-success-bg); }
+.lna-green-zone .lna-heading { color: var(--lna-success-text); border-bottom-color: var(--lna-success-divider); }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.lna-empty       { text-align: center; padding: 40px 20px; opacity: 0.5; }
+.lna-empty-icon  { display: flex; justify-content: center; margin-bottom: 16px; opacity: 0.3; }
+.lna-empty-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.lna-empty-desc  { font-size: 12px; color: var(--lna-text-muted); line-height: 1.7; }
+.lna-empty-hint  { font-size: 11px; color: #555; margin-top: 16px; font-style: italic; }
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.lna-badge        { display: inline-block; padding: 3px 8px; border-radius: 2px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; background: rgba(138, 155, 174, 0.18); color: var(--lna-accent-soft); border: 1px solid rgba(138, 155, 174, 0.20); }
+.lna-badge-danger { background: rgba(180, 50, 50, 0.18); color: #c47070; border-color: rgba(180, 50, 50, 0.28); }
+.lna-badge-warn   { background: rgba(180, 140, 50, 0.18); color: #c4a040; border-color: rgba(180, 140, 50, 0.28); }
+.lna-badge-ok     { background: rgba(60, 160, 80, 0.18);  color: #6ab87a; border-color: rgba(60, 160, 80, 0.28); }
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+.lna-divider { border: none; border-top: 1px solid var(--lna-glass-border); margin: 22px 0; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.lna-p-sm  { padding: 10px; }
+.lna-p-md  { padding: var(--lna-pad); }
+.lna-p-lg  { padding: 30px; }
+.lna-mb-sm { margin-bottom: 8px; }
+.lna-mb-md { margin-bottom: var(--lna-pad); }
+.lna-mb-lg { margin-bottom: 30px; }
+.lna-mt-sm { margin-top: 8px; }
+.lna-mt-md { margin-top: var(--lna-pad); }
+.lna-w-full     { width: 100%; }
+.lna-text-center { text-align: center; }
+.lna-text-right  { text-align: right; }
+.lna-relative    { position: relative; }
+.lna-z-1         { position: relative; z-index: 1; }
+
+/* ============================================================
+   SVG MATCHER
+   Forces any SVG to inherit the surrounding glass theme
+   automatically using currentColor. Drop .lna-svg on the
+   <svg> element and it will follow the active theme palette.
+   ============================================================ */
+
+/* Core inherit wiring */
+.lna-svg {
+    color:       inherit;
+    fill:        currentColor;
+    stroke:      currentColor;
+    transition:  color var(--lna-speed) ease,
+                 fill  var(--lna-speed) ease,
+                 stroke var(--lna-speed) ease;
+}
+
+/* Stroke-only mode (outlines / wireframes) */
+.lna-svg-stroke {
+    fill:   none;
+    stroke: currentColor;
+}
+
+/* Fill-only mode (solid icons / shapes) */
+.lna-svg-fill {
+    fill:   currentColor;
+    stroke: none;
+}
+
+/* Muted variant — inherits muted text tone */
+.lna-svg-muted {
+    color: var(--lna-text-muted);
+}
+
+/* Accent variant — inherits accent soft tone */
+.lna-svg-accent {
+    color: var(--lna-accent-soft);
+}
+
+/* Glass surface SVG: semi-transparent fill that blends with glass panels */
+.lna-svg-glass {
+    fill:   rgba(255, 255, 255, 0.04);
+    stroke: var(--lna-glass-border);
+}
+
+/* Glow pulse — adds a theme-tinted drop-shadow animation */
+.lna-svg-glow {
+    filter: drop-shadow(0 0 4px currentColor);
+    animation: lna-svg-glow-pulse 3s ease-in-out infinite;
+}
+@keyframes lna-svg-glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 2px currentColor); opacity: 0.80; }
+    50%       { filter: drop-shadow(0 0 8px currentColor); opacity: 1.00; }
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.lna-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.lna-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.lna-table thead tr {
+    border-bottom: 1px solid var(--lna-glass-border);
+}
+
+.lna-table thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--lna-text-sub);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.lna-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background var(--lna-speed) ease;
+}
+
+.lna-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.lna-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.lna-table td {
+    padding: 11px 14px;
+    color: var(--lna-text);
+    vertical-align: middle;
+}
+
+.lna-table td.lna-td-muted {
+    color: var(--lna-text-muted);
+    font-size: 11px;
+}
+
+.lna-table td.lna-td-mono {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+}
+
+/* Status dot inside table cells */
+.lna-td-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.lna-td-dot::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+.lna-td-dot.ok     { color: #6ab87a; }
+.lna-td-dot.warn   { color: #c4a040; }
+.lna-td-dot.danger { color: #c47070; }
+.lna-td-dot.muted  { color: var(--lna-text-muted); }
+
+
