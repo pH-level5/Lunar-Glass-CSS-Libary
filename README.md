@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CSS](https://img.shields.io/badge/CSS3-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
-**[Live Preview / Showcase](https://plu101.github.io/Lunar-Glass-CSS-Libary/)**
+**[Live Preview / Showcase](https://pH-level5.github.io/Lunar-Glass-CSS-Libary/)**
 
 A darkish, moody modern glassmorphism design libary. This library provides a toned-down, simple, and reusable foundation of layered backdrop-filter glass, ambient scene radials, and SVG-noise grain textures.
 
